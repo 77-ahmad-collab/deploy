@@ -32,7 +32,7 @@ import { InternalAdvisorSchema } from './Models/INTERNAL_ADVISOR/internalAdvisor
 
     JwtModule.register({
       secret: 'helloworld',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '40000s' },
     }),
     AuthorizationModule,
     InternalAdvisorModule,

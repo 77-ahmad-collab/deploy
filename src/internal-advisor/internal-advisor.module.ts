@@ -31,7 +31,7 @@ import { InternalAdvisorService } from './internal-advisor.service';
     ]),
     JwtModule.register({
       secret: 'helloworld',
-      signOptions: { expiresIn: '90s' },
+      signOptions: { expiresIn: '40000s' },
     }),
   ],
   controllers: [InternalAdvisorController],
