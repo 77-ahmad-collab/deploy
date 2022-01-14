@@ -11,17 +11,23 @@ import { ProposalScehma } from './Models/Student/proposal.modal';
 import { FormSchema } from './Models/Student/form.model';
 import { InternalAdvisorModule } from './internal-advisor/internal-advisor.module';
 import { InternalAdvisorSchema } from './Models/INTERNAL_ADVISOR/internalAdvisor.model';
+import { StudentSchema } from './Models/Student/student.model';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'test', schema: UserSchema, collection: 'test' },
       {
         name: 'UndergradateStudents',
-        schema: UserSchema,
+        schema: StudentSchema,
         collection: 'UndergradateStudents',
       },
       { name: 'proposals', schema: ProposalScehma, collection: 'proposals' },
       { name: 'formdatas', schema: FormSchema, collection: 'formdatas' },
+      {
+        name: 'InternalAdvisor',
+        schema: InternalAdvisorSchema,
+        collection: 'internalAdvisor',
+      },
     ]),
 
     ConfigModule.forRoot(),

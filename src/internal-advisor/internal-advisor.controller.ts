@@ -12,6 +12,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { Form } from 'src/Models/Student/form.model';
+import { StudentInterface } from 'src/Models/Student/student.model';
 import { AuthorizationServiceAdvisor } from './authorization.service';
 import { InternalAdvisorDto } from './dtos/internalAdvisor.dto';
 
@@ -30,6 +31,8 @@ export class InternalAdvisorController {
     private jwtService: JwtService,
     private authorizationService: AuthorizationServiceAdvisor,
     private internalAdvisorService: InternalAdvisorService,
+    @InjectModel('UndergradateStudents')
+    private readonly StudentModel: Model<StudentInterface>,
   ) {}
   @Get('/')
   async get() {
@@ -79,16 +82,23 @@ export class InternalAdvisorController {
     const user = await this.InternalAdvisorModel.findOne({ id });
     if (!user) throw new NotFoundException('Not found with the given id');
     if (status == 'true') {
-      const data = await this.internalAdvisorService.approve(id, rollno);
+      const data = await this.internalAdvisorService.approveAllocation(
+        id,
+        rollno,
+      );
       return data;
     } else if (status == 'false') {
-      const data = await this.internalAdvisorService.review(id, rollno);
+      const data = await this.internalAdvisorService.reviewAllocation(
+        id,
+        rollno,
+      );
       return data;
     }
   }
   @Get('/all')
   async getInternalAdvisorList() {
-    const data = await this.InternalAdvisorModel.find();
+    const id = 'CT-18008';
+    const data = await this.StudentModel.findOne({ id: 'CT-18008' });
     return data;
   }
 }

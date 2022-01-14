@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthGuard } from '@nestjs/passport';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { AppService } from './app.service';
 import { User } from './Models/users.model';
 import { JwtService } from '@nestjs/jwt';
@@ -29,11 +29,40 @@ export class AppController {
     private StudentModel: Model<StudentInterface>,
     @InjectModel('proposals') private ProposalModel: Model<Proposal>,
     @InjectModel('formdatas') private FormModel: Model<Form>,
+    @InjectModel('InternalAdvisor')
+    private InternalAdvisorModel: Model<InternalAdvisor>,
   ) {}
 
   @Get()
   async getHello() {
-    const data = await this.FormModel.find();
+    const data: {
+      id: string;
+      groupid: number;
+      s_name: string;
+      isSUBMIT: string;
+      isINVITE: string;
+      isACCEPTED: string;
+      isPROPOSAL: string;
+      isPROPOSALSUBMIT: string;
+      s_rollno: string;
+      s_email: string;
+      s_batch: string;
+      password: string;
+      s_contact: string;
+      s_department: string;
+      s_status: string;
+      s_tokens: any[];
+      formid: { type: Schema.Types.ObjectId; ref: 'Form' };
+      proposalid: { type: Schema.Types.ObjectId; ref: 'proposal' };
+      groupRequest: string;
+      ResponseCount: string;
+    }[] = await this.StudentModel.find();
+    console.log(data[1].id, 'data');
+    // const result = data.filter((val) => {
+    //   console.log(val.id, 'CT-18010', '=======');
+    //   console.log(val.s_batch, ' CT - 18010');
+    //   return val.id == 'CT-18008';
+    // });
     return data;
   }
   // @Post('/student/signup')

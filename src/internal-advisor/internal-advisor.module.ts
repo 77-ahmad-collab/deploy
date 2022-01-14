@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AdvisorFormSchema } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisorSchema } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { FormSchema } from 'src/Models/Student/form.model';
+import { StudentSchema } from 'src/Models/Student/student.model';
 import { UserSchema } from 'src/Models/users.model';
 import { AuthorizationServiceAdvisor } from './authorization.service';
 import { InternalAdvisorController } from './internal-advisor.controller';
@@ -25,7 +26,7 @@ import { InternalAdvisorService } from './internal-advisor.service';
       },
       {
         name: 'UndergradateStudents',
-        schema: UserSchema,
+        schema: StudentSchema,
         collection: 'UndergradateStudents',
       },
     ]),
