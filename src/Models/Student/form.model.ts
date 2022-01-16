@@ -16,7 +16,9 @@ export interface Form {
   reject: string;
   reject1: string;
   internalAdvisor_status: string;
+  proposal_status: String;
   internalAdvisor_remarks: [index: String];
+  proposal_remarks: [index: string];
 }
 
 export const FormSchema = new Schema({
@@ -84,7 +86,15 @@ export const FormSchema = new Schema({
     trim: true,
     default: 'UNCLEAR',
   },
+  proposal_status: {
+    type: String,
+    trim: true,
+    default: 'UNCLEAR',
+  },
   internalAdvisor_remarks: {
+    type: [String],
+  },
+  proposal_remarks: {
     type: [String],
   },
 });

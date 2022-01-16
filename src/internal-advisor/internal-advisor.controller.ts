@@ -21,6 +21,7 @@ import {
   SerializeInterceptor,
 } from './interceptors/serialize.interceptor';
 import { InternalAdvisorService } from './internal-advisor.service';
+import { InternalAdvisorGetData } from './internalAdvisorGetData';
 
 @Controller('internaladvisor')
 export class InternalAdvisorController {
@@ -33,6 +34,7 @@ export class InternalAdvisorController {
     private internalAdvisorService: InternalAdvisorService,
     @InjectModel('UndergradateStudents')
     private readonly StudentModel: Model<StudentInterface>,
+    private internalAdvisorGetData: InternalAdvisorGetData,
   ) {}
   @Get('/')
   async get() {
@@ -73,32 +75,80 @@ export class InternalAdvisorController {
     }
   }
 
-  @Get('/status/:id/:status/:rollno')
-  async AdvisorStatus(
+  @Get('/allocation/:id/:status/:rollno')
+  async AdvisorStatusAllocation(
     @Param('status') status: string,
     @Param('id') id: string,
     @Param('rollno') rollno: string,
+    @Body('remarks') remarks: string,
   ) {
+    console.log(remarks, 'remarks');
     const user = await this.InternalAdvisorModel.findOne({ id });
     if (!user) throw new NotFoundException('Not found with the given id');
     if (status == 'true') {
       const data = await this.internalAdvisorService.approveAllocation(
         id,
         rollno,
+        remarks,
       );
       return data;
     } else if (status == 'false') {
       const data = await this.internalAdvisorService.reviewAllocation(
         id,
         rollno,
+        remarks,
       );
       return data;
     }
   }
+  @Get('/proposal/:id/:status/:rollno')
+  async AdvisorStatusProposal(
+    @Param('status') status: string,
+    @Param('id') id: string,
+    @Param('rollno') rollno: string,
+    @Body('remarks') remarks: string,
+  ) {
+    const user = await this.InternalAdvisorModel.findOne({ id });
+    if (!user) throw new NotFoundException('Not found with the given id');
+    if (status == 'true') {
+      const data = await this.internalAdvisorService.approveProposal(
+        id,
+        rollno,
+        remarks,
+      );
+      return data;
+    } else if (status == 'false') {
+      const data = await this.internalAdvisorService.reviewProposal(
+        id,
+        rollno,
+        remarks,
+      );
+      return data;
+    }
+  }
+  @Get('/information/:id')
+  async getInformation(@Param('id') id: string) {
+    try {
+      const user = await this.InternalAdvisorModel.findOne({ id });
+      if (!user) throw new NotFoundException('Not found with the given id');
+      return {
+        name: user.name,
+        email: user.email,
+        contact: user.contact,
+        designation: user.designation,
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  @Get('/information/projects/:id')
+  async getProjectsInformation(@Param('id') id: string) {
+    const data = this.internalAdvisorGetData.getProjectsInformation(id);
+    return data;
+  }
   @Get('/all')
   async getInternalAdvisorList() {
-    const id = 'CT-18008';
-    const data = await this.StudentModel.findOne({ id: 'CT-18008' });
+    const data = await this.StudentModel.find();
     return data;
   }
 }

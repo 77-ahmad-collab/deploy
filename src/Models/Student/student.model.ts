@@ -21,6 +21,7 @@ export interface StudentInterface {
   proposalid: { type: Schema.Types.ObjectId; ref: 'proposal' };
   groupRequest: string;
   ResponseCount: string;
+  internal: Boolean;
 }
 export const StudentSchema = new Schema({
   id: {
@@ -30,6 +31,10 @@ export const StudentSchema = new Schema({
   groupid: {
     type: Number,
     default: 0,
+  },
+  internal: {
+    type: Boolean,
+    default: false,
   },
   s_name: {
     type: String,
