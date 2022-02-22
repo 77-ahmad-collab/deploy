@@ -25,11 +25,28 @@ export class InternalAdvisorGetData {
     );
     return result;
   }
-  async getProjectsInformation(id: string) {
+  async getAllocationInformation(id: string) {
     try {
       const user = await this.InternalAdvisorModel.findOne({ id });
-      if (!user) throw new NotFoundException('Not found with the given id');
+      if (!user) return 'Not found with the given id';
       const advisorFormId = user.advisorformid;
+      console.log(advisorFormId, 'advisor form id');
+      if (advisorFormId == 'NONE') {
+        return {
+          internalAdvisorInfo: {
+            name: user.name,
+            email: user.email,
+            contact: user.contact,
+            designation: user.designation,
+          },
+          allocationAccepted: [],
+          allocationRejected: [],
+          allocationPending: [],
+          proposalPending: [],
+          proposalAccepted: [],
+          proposalRejected: [],
+        };
+      }
       const advisorFormData = await this.AdvisorFormModel.findOne({
         _id: advisorFormId,
       });
@@ -64,12 +81,60 @@ export class InternalAdvisorGetData {
         });
       }
       console.log(allocationPendingPlain, 'allocatinPending');
-      let proposalAcceptedPlain;
-      let proposalAccepted;
-      let proposalRejectedPlain;
-      let proposalRejected;
-      let proposalPendingPlain;
-      let proposalPending;
+
+      //  let  filterAccepted = accepted.map((val)=>{
+      //      return {
+      //          name:val.s_name,
+      //          email
+      //      }
+      //  })
+      const internalAdvisorInfo = {
+        name: user.name,
+        email: user.email,
+        contact: user.contact,
+        designation: user.designation,
+      };
+      return {
+        internalAdvisorInfo,
+        allocationAccepted: allocationAccepted || [],
+        allocationRejected: allocationRejected || [],
+        allocationPending: allocationPending || [],
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+  async getProposalInformation(id: string) {
+    try {
+      const user = await this.InternalAdvisorModel.findOne({ id });
+      if (!user) return 'Not found with the given id';
+      const advisorFormId = user.advisorformid;
+      console.log(advisorFormId, 'advisor form id');
+      if (advisorFormId == 'NONE') {
+        return {
+          internalAdvisorInfo: {
+            name: user.name,
+            email: user.email,
+            contact: user.contact,
+            designation: user.designation,
+          },
+
+          proposalPending: [],
+          proposalAccepted: [],
+          proposalRejected: [],
+        };
+      }
+      const advisorFormData = await this.AdvisorFormModel.findOne({
+        _id: advisorFormId,
+      });
+      console.log(advisorFormData, 'here its ');
+
+      let proposalAcceptedPlain = [];
+      let proposalAccepted = [];
+      let proposalRejectedPlain = [];
+      let proposalRejected = [];
+      let proposalPendingPlain = [];
+      let proposalPending = [];
       if (advisorFormData.proposalAccepted.length > 0) {
         proposalAcceptedPlain = await this.getData(
           advisorFormData.proposalAccepted,
@@ -112,9 +177,7 @@ export class InternalAdvisorGetData {
       };
       return {
         internalAdvisorInfo,
-        allocationAccepted: allocationAccepted || [],
-        allocationRejected: allocationRejected || [],
-        allocationPending: allocationPending || [],
+
         proposalPending: proposalPending || [],
         proposalAccepted: proposalAccepted || [],
         proposalRejected: proposalRejected || [],

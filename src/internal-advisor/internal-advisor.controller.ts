@@ -84,7 +84,7 @@ export class InternalAdvisorController {
   ) {
     console.log(remarks, 'remarks');
     const user = await this.InternalAdvisorModel.findOne({ id });
-    if (!user) throw new NotFoundException('Not found with the given id');
+    if (!user) return 'Not found with the given id';
     if (status == 'true') {
       const data = await this.internalAdvisorService.approveAllocation(
         id,
@@ -141,14 +141,21 @@ export class InternalAdvisorController {
       throw new Error(error);
     }
   }
-  @Get('/information/projects/:id')
-  async getProjectsInformation(@Param('id') id: string) {
-    const data = this.internalAdvisorGetData.getProjectsInformation(id);
+  @Get('/information/allocation/:id')
+  async getAllocationInformation(@Param('id') id: string) {
+    console.log(id, 'id');
+    const data = this.internalAdvisorGetData.getAllocationInformation(id);
+    return data;
+  }
+  @Get('/information/proposal/:id')
+  async getProposalInformation(@Param('id') id: string) {
+    console.log(id, 'id');
+    const data = this.internalAdvisorGetData.getProposalInformation(id);
     return data;
   }
   @Get('/all')
   async getInternalAdvisorList() {
-    const data = await this.StudentModel.find();
+    const data = await this.InternalAdvisorModel.find();
     return data;
   }
 }

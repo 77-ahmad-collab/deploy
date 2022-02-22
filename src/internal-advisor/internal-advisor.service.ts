@@ -209,7 +209,7 @@ export class InternalAdvisorService {
         {
           $set: {
             internalAdvisor_status: 'ACCEPTED',
-            internalAdvisor_remarks: [remarks],
+            // internalAdvisor_remarks: [remarks],
           },
         },
       );
@@ -436,24 +436,24 @@ export class InternalAdvisorService {
       console.log(student, 'the student');
       const UpdateStudentData = await this.StudentModel.updateOne(
         { id: rollno.toUpperCase() },
-        { $set: { isSUBMIT: false } },
+        { $set: { isSUBMIT: false, internal: true, isACCEPTED: false } },
       );
       console.log(UpdateStudentData, 'updateit by me');
       const formid = student.formid;
       const studentForm = await this.StudentFormModel.findOne({ _id: formid });
       console.log(studentForm, 'studet form');
       //update information of studet on allocation rejection
-      const data = await this.UpdateStudents(
-        studentForm.mem_count,
-        studentForm,
-        student.proposalid,
-      );
+      // const data = await this.UpdateStudents(
+      //   studentForm.mem_count,
+      //   studentForm,
+      //   student.proposalid,
+      // );
       const updateStudentFormData = await this.StudentFormModel.updateOne(
         { _id: formid },
         {
           $set: {
             internalAdvisor_status: 'REJECTED',
-            internalAdvisor_remarks: [remarks],
+            // internalAdvisor_remarks: [remarks],
           },
         },
       );
@@ -471,6 +471,10 @@ export class InternalAdvisorService {
       const advisorForm = await this.AdvisorFormModel.findOne({
         _id: advisorFormId,
       });
+      const UpdateStudentData = await this.StudentModel.updateOne(
+        { id: rollno.toUpperCase() },
+        { $set: { isPROPOSALSUBMIT: true, isPROPOSAL: true } },
+      );
       let proposalPending = advisorForm.proposalPending;
       let filterPending = proposalPending.filter(
         (val) => val != rollno.toUpperCase(),
@@ -511,7 +515,8 @@ export class InternalAdvisorService {
         {
           $set: {
             proposal_status: 'ACCEPTED',
-            proposal_remarks: [remarks],
+
+            // proposal_remarks: [remarks],
           },
         },
       );
@@ -553,7 +558,7 @@ export class InternalAdvisorService {
       });
       const UpdateStudentData = await this.StudentModel.updateOne(
         { id: rollno.toUpperCase() },
-        { $set: { isSUBMIT: false } },
+        { $set: { isPROPOSALSUBMIT: true, isPROPOSAL: false } },
       );
       const formid = student.formid;
       const studentForm = await this.StudentFormModel.findOne({ _id: formid });

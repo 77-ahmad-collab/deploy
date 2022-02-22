@@ -33,7 +33,7 @@ import { StudentSchema } from './Models/Student/student.model';
     ConfigModule.forRoot(),
 
     MongooseModule.forRoot(
-      'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/FYPPORTALV1?retryWrites=true&w=majority',
+      'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalV187?retryWrites=true&w=majority',
     ),
 
     JwtModule.register({
