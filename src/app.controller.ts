@@ -35,35 +35,7 @@ export class AppController {
 
   @Get()
   async getHello() {
-    const data: {
-      id: string;
-      groupid: number;
-      s_name: string;
-      isSUBMIT: string;
-      isINVITE: string;
-      isACCEPTED: string;
-      isPROPOSAL: string;
-      isPROPOSALSUBMIT: string;
-      s_rollno: string;
-      s_email: string;
-      s_batch: string;
-      password: string;
-      s_contact: string;
-      s_department: string;
-      s_status: string;
-      s_tokens: any[];
-      formid: { type: Schema.Types.ObjectId; ref: 'Form' };
-      proposalid: { type: Schema.Types.ObjectId; ref: 'proposal' };
-      groupRequest: string;
-      ResponseCount: string;
-    }[] = await this.StudentModel.find();
-    console.log(data[1].id, 'data');
-    // const result = data.filter((val) => {
-    //   console.log(val.id, 'CT-18010', '=======');
-    //   console.log(val.s_batch, ' CT - 18010');
-    //   return val.id == 'CT-18008';
-    // });
-    return data;
+    return 'Nest server is succcesfully up';
   }
   // @Post('/student/signup')
   // async signup(@Body() body) {

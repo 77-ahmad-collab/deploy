@@ -20,7 +20,8 @@ export class InternalAdvisorGetData {
   async getData(students: any[]) {
     const result = await Promise.all(
       students.map((val) => {
-        return axios.get('http://localhost:9000/student/getformdata/CT-18008');
+        console.log('===============================v1', val);
+        return axios.get(`http://localhost:9000/student/getformdata/${val}`);
       }),
     );
     return result;
