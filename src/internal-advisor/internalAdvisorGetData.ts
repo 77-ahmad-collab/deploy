@@ -18,13 +18,19 @@ export class InternalAdvisorGetData {
     @InjectModel('formdatas') private StudentFormModel: Model<Form>,
   ) {}
   async getData(students: any[]) {
-    const result = await Promise.all(
-      students.map((val) => {
-        console.log('===============================v1', val);
-        return axios.get(`http://localhost:9000/student/getformdata/${val}`);
-      }),
-    );
-    return result;
+    try {
+      const result = await Promise.all(
+        students.map((val) => {
+          console.log('===============================v1', val);
+          return axios.get(
+            `https://student-server-app.herokuapp.com/student/getformdata/${val}`,
+          );
+        }),
+      );
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
   }
   async getAllocationInformation(id: string) {
     try {

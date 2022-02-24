@@ -14,8 +14,8 @@ export class AuthorizationController {
   async signIn(@Body() body) {
     const { email, password } = body;
     const result = await this.AuthorizationService.signIn(email, password);
-    const resultof = await axios.get('http://localhost:7000/get');
+    // const resultof = await axios.get('http://localhost:7000/get');
 
-    return resultof.data;
+    return ' resultof.data';
   }
 }
