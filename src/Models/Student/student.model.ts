@@ -94,8 +94,8 @@ export const StudentSchema = new Schema({
       token: String,
     },
   ],
-  formid: { type: Schema.Types.ObjectId, ref: 'Form' },
-  proposalid: { type: Schema.Types.ObjectId, ref: 'proposal' },
+  formid: { type: String },
+  proposalid: { type: String },
   groupRequest: {
     type: String,
   },

@@ -424,39 +424,83 @@ export class InternalAdvisorService {
         {
           $set: {
             pending: filterPending,
-            rejected: [...advisorForm.rejected, rollno.toUpperCase()],
+            rejected: [...advisorForm.rejected],
           },
         },
       );
 
       console.log(updateAdvisorFormData, 'update adsoor ');
+      // <<<<<yahan tak upar ka shi hahy>>
       const student = await this.StudentModel.findOne({
         id: rollno.toUpperCase(),
       });
-      console.log(student, 'the student');
-      const UpdateStudentData = await this.StudentModel.updateOne(
-        { id: rollno.toUpperCase() },
-        { $set: { isSUBMIT: false, internal: true, isACCEPTED: false } },
-      );
-      console.log(UpdateStudentData, 'updateit by me');
       const formid = student.formid;
-      const studentForm = await this.StudentFormModel.findOne({ _id: formid });
-      console.log(studentForm, 'studet form');
+      let allMembers = [];
+      console.log(student, 'the student'); //OK
+      console.log(formid, 'teh form i', student.formid);
+      const studentForm = await this.StudentFormModel.findOne({
+        _id: formid,
+      });
+      console.log(studentForm, 'student form');
+      if (studentForm.mem_count == 1) {
+        const { mem1 } = studentForm;
+        allMembers = [mem1];
+      } else if (studentForm.mem_count == 2) {
+        const { mem1, mem2 } = studentForm;
+        allMembers = [mem1, mem2];
+      } else if (studentForm.mem_count == 3) {
+        const { mem1, mem2, mem3 } = studentForm;
+        console.log('in mem3 ', [mem1, mem2, mem3]);
+        allMembers = [mem1, mem2, mem3];
+      } else if (studentForm.mem_count == 4) {
+        const { mem1, mem2, mem3, mem4 } = studentForm;
+        allMembers = [mem1, mem2, mem3, mem4];
+      }
+      console.log(allMembers, 'all members');
+      const result = await Promise.all(
+        allMembers.map((val) => {
+          return this.StudentModel.updateOne(
+            { id: val },
+            {
+              $set: {
+                isPROPOSALSUBMIT: false,
+                isPROPOSAL: false,
+                isSUBMIT: false,
+                isACCEPTED: false,
+                isINVITE: false,
+
+                internal: false,
+                groupRequest: '',
+                formid: '',
+                s_status: '',
+              },
+            },
+          );
+        }),
+      );
+      const deleteForm = await this.StudentFormModel.deleteOne({ _id: formid });
+      console.log('all done');
+      // <------------------------->
+      // const UpdateStudentData = await this.StudentModel.updateOne(
+      //   { id: rollno.toUpperCase() },
+      //   { $set: { isSUBMIT: false, internal: true, isACCEPTED: false } },
+      // );
+      // console.log(studentForm, 'studet form');
       //update information of studet on allocation rejection
       // const data = await this.UpdateStudents(
       //   studentForm.mem_count,
       //   studentForm,
       //   student.proposalid,
       // );
-      const updateStudentFormData = await this.StudentFormModel.updateOne(
-        { _id: formid },
-        {
-          $set: {
-            internalAdvisor_status: 'REJECTED',
-            // internalAdvisor_remarks: [remarks],
-          },
-        },
-      );
+      // const updateStudentFormData = await this.StudentFormModel.updateOne(
+      //   { _id: formid },
+      //   {
+      //     $set: {
+      //       internalAdvisor_status: 'REJECTED',
+      //       // internalAdvisor_remarks: [remarks],
+      //     },
+      //   },
+      // );
       return 'please revie wit';
     } catch (error) {
       throw new Error(error);
