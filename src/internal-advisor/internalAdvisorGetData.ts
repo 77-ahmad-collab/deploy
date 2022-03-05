@@ -32,6 +32,21 @@ export class InternalAdvisorGetData {
       console.log(error);
     }
   }
+  async getDataProposal(students: any[]) {
+    try {
+      const result = await Promise.all(
+        students.map((val) => {
+          console.log('===============================v1', val);
+          return axios.get(
+            `https://student-server-app.herokuapp.com/student/getProposalData/${val}`,
+          );
+        }),
+      );
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async getAllocationInformation(id: string) {
     try {
       const user = await this.InternalAdvisorModel.findOne({ id });
@@ -143,7 +158,7 @@ export class InternalAdvisorGetData {
       let proposalPendingPlain = [];
       let proposalPending = [];
       if (advisorFormData.proposalAccepted.length > 0) {
-        proposalAcceptedPlain = await this.getData(
+        proposalAcceptedPlain = await this.getDataProposal(
           advisorFormData.proposalAccepted,
         );
         console.log(proposalAcceptedPlain);
@@ -152,7 +167,7 @@ export class InternalAdvisorGetData {
         });
       }
       if (advisorFormData.proposalRejected.length > 0) {
-        proposalRejectedPlain = await this.getData(
+        proposalRejectedPlain = await this.getDataProposal(
           advisorFormData.proposalRejected,
         );
         console.log(proposalRejectedPlain);
@@ -161,7 +176,7 @@ export class InternalAdvisorGetData {
         });
       }
       if (advisorFormData.proposalPending.length > 0) {
-        proposalPendingPlain = await this.getData(
+        proposalPendingPlain = await this.getDataProposal(
           advisorFormData.proposalPending,
         );
         console.log(proposalPendingPlain);
