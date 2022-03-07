@@ -47,6 +47,22 @@ export class InternalAdvisorGetData {
       console.log(error);
     }
   }
+  // async leaderInformation(students: any[]) {
+  //   try {
+  //     students = ['CT-18021'];
+  //     const result = await Promise.all(
+  //       students.map((val) => {
+  //         return this.StudentModel.findOne(
+  //           { id: val },
+  //           { s_name: 1, s_email: 1, _id: 0 },
+  //         ).select('s_name email');
+  //       }),
+  //     );
+  //     return result;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
   async getAllocationInformation(id: string) {
     try {
       const user = await this.InternalAdvisorModel.findOne({ id });

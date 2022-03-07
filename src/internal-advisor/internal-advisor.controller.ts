@@ -158,4 +158,8 @@ export class InternalAdvisorController {
     const data = await this.InternalAdvisorModel.find();
     return data;
   }
+  // @Get('/test')
+  // async getTest() {
+  //   return await this.internalAdvisorGetData.leaderInformation(['CT-18021']);
+  // }
 }
