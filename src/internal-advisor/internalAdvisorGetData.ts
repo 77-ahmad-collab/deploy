@@ -34,6 +34,7 @@ export class InternalAdvisorGetData {
   }
   async getDataProposal(students: any[]) {
     try {
+      console.log(students, '+++++++student');
       const result = await Promise.all(
         students.map((val) => {
           console.log('===============================v1', val);
@@ -44,7 +45,7 @@ export class InternalAdvisorGetData {
       );
       return result;
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }
   // async leaderInformation(students: any[]) {
@@ -174,6 +175,7 @@ export class InternalAdvisorGetData {
       let proposalPendingPlain = [];
       let proposalPending = [];
       if (advisorFormData.proposalAccepted.length > 0) {
+        console.log('not run it>>>>>');
         proposalAcceptedPlain = await this.getDataProposal(
           advisorFormData.proposalAccepted,
         );
@@ -183,6 +185,7 @@ export class InternalAdvisorGetData {
         });
       }
       if (advisorFormData.proposalRejected.length > 0) {
+        console.log('not run it>>>>>');
         proposalRejectedPlain = await this.getDataProposal(
           advisorFormData.proposalRejected,
         );
@@ -192,10 +195,11 @@ export class InternalAdvisorGetData {
         });
       }
       if (advisorFormData.proposalPending.length > 0) {
+        console.log('yes run it>>>>>============================');
         proposalPendingPlain = await this.getDataProposal(
           advisorFormData.proposalPending,
         );
-        console.log(proposalPendingPlain);
+        console.log(proposalPendingPlain, 'PROPOSAL PENDING>>');
         proposalPending = proposalPendingPlain.map((val) => {
           return val.data;
         });
@@ -221,7 +225,7 @@ export class InternalAdvisorGetData {
         proposalRejected: proposalRejected || [],
       };
     } catch (error) {
-      throw new Error(error);
+      return error;
     }
   }
 }

@@ -11,6 +11,8 @@ export interface Proposal {
   exp_budget: string;
   alignment: string;
   co_supervisor: string;
+  RecommendationsandApproval: string;
+  reason: string;
 }
 export const ProposalScehma = new Schema({
   category: {
@@ -50,6 +52,14 @@ export const ProposalScehma = new Schema({
     trim: true,
   },
   co_supervisor: {
+    type: String,
+    trim: true,
+  },
+  RecommendationsandApproval: {
+    type: String,
+    trim: true,
+  },
+  reason: {
     type: String,
     trim: true,
   },
