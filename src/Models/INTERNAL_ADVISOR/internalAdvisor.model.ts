@@ -39,4 +39,8 @@ export const InternalAdvisorSchema = new Schema({
     type: String,
     default: 'NONE',
   },
+  attendanceid: {
+    type: String,
+    default: 'NONE',
+  },
 });

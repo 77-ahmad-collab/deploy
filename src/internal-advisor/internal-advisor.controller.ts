@@ -9,8 +9,10 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
+import axios from 'axios';
 import { Model } from 'mongoose';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
+import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
 import { StudentInterface } from 'src/Models/Student/student.model';
 import { AuthorizationServiceAdvisor } from './authorization.service';
@@ -35,6 +37,7 @@ export class InternalAdvisorController {
     @InjectModel('UndergradateStudents')
     private readonly StudentModel: Model<StudentInterface>,
     private internalAdvisorGetData: InternalAdvisorGetData,
+    @InjectModel('attendance') private attendanceModel: Model<Attendance>,
   ) {}
   @Get('/')
   async get() {
@@ -157,6 +160,61 @@ export class InternalAdvisorController {
   async getInternalAdvisorList() {
     const data = await this.InternalAdvisorModel.find();
     return data;
+  }
+  // @Get('/attendance/:id')
+  // async attendance(@Param('id') id: string) {
+  //   try {
+  //     const data = await this.internalAdvisorService.attendance(id);
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  @Get('/attendance/:advisorid/:weekno/:count')
+  async updateAttendance(
+    @Param('advisorid') advisorid: string,
+    @Param('count') count: string,
+
+    @Param('weekno') weekno: string,
+    @Body() body,
+  ) {
+    try {
+      console.log(body, 'body>>>>>');
+      const data = await this.internalAdvisorService.updateAttendance(
+        advisorid,
+        count,
+
+        weekno,
+        body,
+      );
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  @Get('/leaders/all/:id')
+  async getAttendanceLeaders(@Param('id') id: string) {
+    try {
+      console.log('i hav ebeen ');
+      const data = await this.internalAdvisorGetData.getAttendanceLeaders(id);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  @Get('/attendance/group/information/:rollno')
+  async getAttendanceGroupInformation(@Param('rollno') rollno: string) {
+    try {
+      const result = await axios.get(
+        `http://localhost:9000/student/getformdata/${rollno}`,
+      );
+      const getData = await this.attendanceModel.findOne({ id: rollno });
+      let data = { ...result.data, week: getData.count || 1 };
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
   // @Get('/test')
   // async getTest() {

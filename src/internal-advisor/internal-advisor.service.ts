@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AdvisorForm } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
+import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
 import { Proposal } from 'src/Models/Student/proposal.modal';
 import { StudentInterface } from 'src/Models/Student/student.model';
@@ -17,6 +18,7 @@ export class InternalAdvisorService {
     private StudentModel: Model<StudentInterface>,
     @InjectModel('formdatas') private StudentFormModel: Model<Form>,
     @InjectModel('proposals') private ProposalModel: Model<Proposal>,
+    @InjectModel('attendance') private attendanceModel: Model<Attendance>,
   ) {}
 
   async openProposalFormForStudent(count, formdata) {
@@ -565,13 +567,158 @@ export class InternalAdvisorService {
         },
       );
       console.log(updateStudentFormData);
+      // yahan par hoga
+      // const addtheinfo =  await this.attendanceModel.create({
+
+      // });
+      const updateAttendance = await this.attendance(
+        rollno.toUpperCase(),
+        advisorFormId,
+      );
       return { student, rollno };
     } catch (error) {
       throw new Error('please deal with errors');
     }
   }
+  async attendance(id: string, FORMID) {
+    try {
+      const baseWeeks = 30;
+      const groupMembers = await this.getAllMembers(id);
+      // const singleWeek = groupMembers.map((val) => {
+      //   return {};
+      // });
+      // const weeks = [...Array(baseWeeks).keys()].map((val) => {
+      //   return groupMembers;
+      // });
+
+      const addtheinfo = await this.attendanceModel.create({
+        id,
+        // week: weeks,
+      });
+      const getAdvisorFormData = await this.AdvisorFormModel.findOne({
+        _id: FORMID,
+      });
+      let attendanceList = [];
+      console.log(getAdvisorFormData, 'adisor');
+      if (getAdvisorFormData.Attendance) {
+        attendanceList = getAdvisorFormData.Attendance;
+      }
+
+      attendanceList.push(addtheinfo._id);
+      const updateAdvisorFormData = await this.AdvisorFormModel.updateOne(
+        {
+          _id: FORMID,
+        },
+        { $set: { Attendance: attendanceList } },
+      );
+      console.log(FORMID, 'FORMID>>>>');
+      console.log('================================');
+      console.log(updateAdvisorFormData, 'addtheinfo');
+      return { groupMembers };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllMembers(id: string) {
+    try {
+      const student = await this.StudentModel.findOne({ id: id });
+      const formid = student.formid;
+      const studentForm = await this.StudentFormModel.findOne({ _id: formid });
+      const { mem_count } = studentForm;
+      if (mem_count == 3) {
+        const { mem1, mem2, mem3 } = studentForm;
+        return {
+          mem1,
+          mem1_status: 'NOTMARKED',
+          mem2,
+          mem2_status: 'NOTMARKED',
+          mem3,
+          mem3_status: 'NOTMARKED',
+        };
+      } else if (mem_count == 4) {
+        const { mem1, mem2, mem3, mem4 } = studentForm;
+        return {
+          mem1,
+          mem1_status: 'NOTMARKED',
+          mem2,
+          mem2_status: 'NOTMARKED',
+          mem3,
+          mem3_status: 'NOTMARKED',
+          mem4,
+          mem4_status: 'NOTMARKED',
+        };
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  // async updateSingleMember (rollno,list){
+  //   try {
+  //     return (list[weekno].mem1_status = value);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  async updateAttendance(advisorid, mem_count, weekno, body) {
+    try {
+      console.log(weekno, 'weekno >>===');
+      // let rollno = 'CT-18008';
+      let rollno = body.mem1;
+      weekno = parseInt(weekno) - 1;
+      console.log('==========================================================');
+      console.log(weekno, 'weekno');
+      // console.log(status == 'true');
+      // let value = '';
+      // if (status == 'true') value = 'PRESENT';
+      // else value = 'ABSENT';
+      const leader = await this.StudentModel.findOne({ id: rollno });
+      const formdata = await this.StudentFormModel.findOne({
+        _id: leader.formid,
+      });
+
+      const attendanceInfo = await this.attendanceModel.findOne({
+        id: leader.groupRequest,
+      });
+
+      let list = attendanceInfo.week;
+      list.push(body);
+      console.log(list, 'list');
+      const count = Number(attendanceInfo.count);
+      // if(mem_count===3){
+      //   if(body.mem1 == list[weekno].mem1){
+      //     list[weekno].mem1_status = body.mem1_status;
+      //   }
+      // }
+      // list[weekno].mem1_status = body.mem1_status;
+
+      // list[weekno].mem2_status = body.mem2_status;
+
+      // list[weekno].mem3_status = body.mem3_status;
+      // if (body.mem4_status != undefined) {
+      //   list[weekno].mem4_status = body.mem4_status;
+      // }
+      console.log(formdata, '>>>>>>formdata');
+      console.log(formdata.mem4 != undefined, 'formdata.mem4');
+      // if (formdata.mem4 != undefined) {
+      //   console.log('all checks croosees');
+      //   list[weekno].mem4_status = value;
+      // }
+
+      const updateAttendance = await this.attendanceModel.updateOne(
+        { id: leader.groupRequest },
+        { $set: { week: list, count: count + 1 } },
+      );
+      return { list: list[weekno], weekno };
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async reviewProposal(id: string, rollno: string, remarks: string) {
     try {
+      console.log('remarks======================', remarks);
+      console.log('=============================================');
+      console.table(remarks);
       const internalAdvisor = await this.InternalAdvisorModel.findOne({
         id: id,
       });
@@ -583,7 +730,7 @@ export class InternalAdvisorService {
       let filterPending = proposalPending.filter(
         (val) => val != rollno.toUpperCase(),
       );
-      console.log(filterPending, '>>-===filter pending', rollno);
+      // console.log(filterPending, '>>-===filter pending', rollno);
       const updateAdvisorFormData = await this.AdvisorFormModel.updateOne(
         { _id: advisorFormId },
         {
@@ -596,7 +743,7 @@ export class InternalAdvisorService {
           },
         },
       );
-      console.log(updateAdvisorFormData);
+      // console.log(updateAdvisorFormData);
       const student = await this.StudentModel.findOne({
         id: rollno.toUpperCase(),
       });
@@ -617,7 +764,7 @@ export class InternalAdvisorService {
       );
       return 'please revie wit';
     } catch (error) {
-      throw new Error('please deal with errors');
+      return error;
     }
   }
 }

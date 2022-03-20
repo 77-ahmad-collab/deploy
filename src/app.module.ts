@@ -12,6 +12,7 @@ import { FormSchema } from './Models/Student/form.model';
 import { InternalAdvisorModule } from './internal-advisor/internal-advisor.module';
 import { InternalAdvisorSchema } from './Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { StudentSchema } from './Models/Student/student.model';
+import { AttendanceSchema } from './Models/Student/attendance.model';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -27,6 +28,11 @@ import { StudentSchema } from './Models/Student/student.model';
         name: 'InternalAdvisor',
         schema: InternalAdvisorSchema,
         collection: 'internalAdvisor',
+      },
+      {
+        name: 'attendance',
+        schema: AttendanceSchema,
+        collection: 'attendance',
       },
     ]),
 

@@ -6,6 +6,7 @@ export interface AdvisorForm {
   proposalPending: [index: string];
   proposalAccepted: [index: string];
   proposalRejected: [index: string];
+  Attendance: [index: string];
 }
 export const AdvisorFormSchema = new Schema({
   pending: [String],
@@ -14,4 +15,8 @@ export const AdvisorFormSchema = new Schema({
   proposalPending: [String],
   proposalAccepted: [String],
   proposalRejected: [String],
+  Attendance: {
+    type: [String],
+    default: [],
+  },
 });

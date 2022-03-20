@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdvisorFormSchema } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisorSchema } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
+import { AttendanceSchema } from 'src/Models/Student/attendance.model';
 import { FormSchema } from 'src/Models/Student/form.model';
 import { ProposalScehma } from 'src/Models/Student/proposal.modal';
 import { StudentSchema } from 'src/Models/Student/student.model';
@@ -35,6 +36,11 @@ import { InternalAdvisorGetData } from './internalAdvisorGetData';
         name: 'proposals',
         schema: ProposalScehma,
         collection: 'proposals',
+      },
+      {
+        name: 'attendance',
+        schema: AttendanceSchema,
+        collection: 'attendance',
       },
     ]),
     JwtModule.register({

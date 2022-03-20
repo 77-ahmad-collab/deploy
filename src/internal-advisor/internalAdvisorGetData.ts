@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Model } from 'mongoose';
 import { AdvisorForm } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
+import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
 import { StudentInterface } from 'src/Models/Student/student.model';
 
@@ -16,6 +17,7 @@ export class InternalAdvisorGetData {
     @InjectModel('UndergradateStudents')
     private StudentModel: Model<StudentInterface>,
     @InjectModel('formdatas') private StudentFormModel: Model<Form>,
+    @InjectModel('attendance') private attendanceModel: Model<Attendance>,
   ) {}
   async getData(students: any[]) {
     try {
@@ -227,5 +229,27 @@ export class InternalAdvisorGetData {
     } catch (error) {
       return error;
     }
+  }
+  async getLeaders(list) {
+    try {
+      const result = await Promise.all(
+        list.map((val) =>
+          this.attendanceModel.findOne({ _id: val }, { week: 0, _id: 0 }),
+        ),
+      );
+      return result.map((val) => val.id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAttendanceLeaders(id: string) {
+    const { advisorformid } = await this.InternalAdvisorModel.findOne({ id });
+    if (!advisorformid) return 'Not found with the given id';
+    const { Attendance } = await this.AdvisorFormModel.findOne({
+      _id: advisorformid,
+    });
+    console.log(Attendance, 'Attendance');
+    const leadersList = await this.getLeaders(Attendance);
+    return leadersList;
   }
 }
