@@ -207,7 +207,7 @@ export class InternalAdvisorController {
   async getAttendanceGroupInformation(@Param('rollno') rollno: string) {
     try {
       const result = await axios.get(
-        `http://localhost:9000/student/getformdata/${rollno}`,
+        `https://student-server-app.herokuapp.com/student/getformdata/${rollno}`,
       );
       const getData = await this.attendanceModel.findOne({ id: rollno });
       let data = { ...result.data, week: getData.count || 1 };
