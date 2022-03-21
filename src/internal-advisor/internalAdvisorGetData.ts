@@ -34,6 +34,7 @@ export class InternalAdvisorGetData {
       console.log(error);
     }
   }
+  // https://student-server-app.herokuapp.com
   async getDataProposal(students: any[]) {
     try {
       console.log(students, '+++++++student');

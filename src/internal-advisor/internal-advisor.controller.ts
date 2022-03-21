@@ -203,7 +203,7 @@ export class InternalAdvisorController {
       console.log(error);
     }
   }
-  @Get('/attendance/group/information/:rollno')
+  @Get('/group/information/:rollno')
   async getAttendanceGroupInformation(@Param('rollno') rollno: string) {
     try {
       const result = await axios.get(
