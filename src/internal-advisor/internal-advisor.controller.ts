@@ -72,7 +72,11 @@ export class InternalAdvisorController {
     try {
       const user = await this.jwtService.verify(token);
       console.log(user);
-      return ' you have succesfully loged in without deployment issues';
+      const advisor = await this.InternalAdvisorModel.findOne({
+        email: user.email,
+      });
+
+      return advisor;
     } catch (error) {
       return 'jwt token expired';
     }

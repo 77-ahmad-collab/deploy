@@ -45,7 +45,7 @@ import { InternalAdvisorGetData } from './internalAdvisorGetData';
     ]),
     JwtModule.register({
       secret: 'helloworld',
-      signOptions: { expiresIn: '40000s' },
+      signOptions: { expiresIn: '190000s' },
     }),
   ],
   controllers: [InternalAdvisorController],
