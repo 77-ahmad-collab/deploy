@@ -13,6 +13,8 @@ import { InternalAdvisorModule } from './internal-advisor/internal-advisor.modul
 import { InternalAdvisorSchema } from './Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { StudentSchema } from './Models/Student/student.model';
 import { AttendanceSchema } from './Models/Student/attendance.model';
+import { CoordinatorModule } from './coordinator/coordinator.module';
+import { CoordinatorSchema } from './Models/Coordinator/Coordinator.Model';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -34,6 +36,11 @@ import { AttendanceSchema } from './Models/Student/attendance.model';
         schema: AttendanceSchema,
         collection: 'attendance',
       },
+      {
+        name: 'Coordinator',
+        schema: CoordinatorSchema,
+        collection: 'Coordinator',
+      },
     ]),
 
     ConfigModule.forRoot(),
@@ -49,6 +56,7 @@ import { AttendanceSchema } from './Models/Student/attendance.model';
     }),
     AuthorizationModule,
     InternalAdvisorModule,
+    CoordinatorModule,
   ],
   controllers: [AppController],
   providers: [AppService],

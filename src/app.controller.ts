@@ -18,6 +18,7 @@ import { StudentInterface } from './Models/Student/student.model';
 import { Proposal } from './Models/Student/proposal.modal';
 import { Form } from './Models/Student/form.model';
 import { InternalAdvisor } from './Models/INTERNAL_ADVISOR/internalAdvisor.model';
+import axios from 'axios';
 
 @Controller()
 export class AppController {
@@ -37,36 +38,18 @@ export class AppController {
   async getHello() {
     return 'Nest server is succcesfully up';
   }
-  // @Post('/student/signup')
-  // async signup(@Body() body) {
-  //   const { email, password } = body;
-  //   const result = await this.UserModel.create({ email, password });
-  //   return { email, password };
-  // }
-  // @Post('/student/login')
-  // async login(@Body() body) {
-  //   const { email, password } = body;
-  //   const user = await this.UserModel.findOne({ email });
-  //   if (!user) throw new UnauthorizedException('credentials are incorrect');
-  //   console.log(user.password, password);
-  //   if (user.password !== password) {
-  //     throw new UnauthorizedException('credentials do not match');
-  //   }
-
-  //   return {
-  //     jwt: this.appService.signUser(10, user.email, 'user'),
-  //     email: user.email,
-  //   };
-  // }
-  // @UseGuards(AuthGuard('jwt'))
-  // @Get('/student/login/:token')
-  // async getData(@Param('token') token: string) {
-  //   try {
-  //     const user = await this.jwtService.verify(token);
-  //     console.log(user);
-  //     return ' you have succesfully loged in without deployment issues';
-  //   } catch (error) {
-  //     return 'jwt token expired';
-  //   }
-  // }
+  @Get('/all/projects/title')
+  async getProjectsTitle() {
+    const data = await this.FormModel.find({}, { s_proj_title: 1, _id: 0 });
+    return data;
+  }
+  @Get('/project/title/information')
+  async getProjectInformationByTitle(@Body('title') title: string) {
+    const data = await this.FormModel.findOne({ s_proj_title: title });
+    const { mem1 } = data;
+    const result = await axios.get(
+      `https://student-server-app.herokuapp.com/student/getformdata/${mem1}`,
+    );
+    return result.data;
+  }
 }
