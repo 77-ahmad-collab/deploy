@@ -15,6 +15,7 @@ import { StudentSchema } from './Models/Student/student.model';
 import { AttendanceSchema } from './Models/Student/attendance.model';
 import { CoordinatorModule } from './coordinator/coordinator.module';
 import { CoordinatorSchema } from './Models/Coordinator/Coordinator.Model';
+import { ExternalModule } from './external/external.module';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -57,6 +58,7 @@ import { CoordinatorSchema } from './Models/Coordinator/Coordinator.Model';
     AuthorizationModule,
     InternalAdvisorModule,
     CoordinatorModule,
+    ExternalModule,
   ],
   controllers: [AppController],
   providers: [AppService],
