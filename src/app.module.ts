@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { InfoSchema, UserSchema } from './Models/users.model';
 import { JwtModule } from '@nestjs/jwt';
-// import { JwtStrategy } from './strategy/jwt.strategy';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { ProposalScehma } from './Models/Student/proposal.modal';
 import { FormSchema } from './Models/Student/form.model';

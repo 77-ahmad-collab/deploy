@@ -6,6 +6,7 @@ export interface Coordinator {
   contact: string;
   designation: string;
   password: string;
+  locationOfEvaluation: string[];
 }
 export const CoordinatorSchema = new Schema({
   name: {
@@ -33,5 +34,8 @@ export const CoordinatorSchema = new Schema({
   password: {
     type: String,
     required: true,
+  },
+  locationOfEvaluation: {
+    type: [String],
   },
 });
