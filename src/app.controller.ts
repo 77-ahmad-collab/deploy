@@ -43,7 +43,7 @@ export class AppController {
     const data = await this.FormModel.find({}, { s_proj_title: 1, _id: 0 });
     return data;
   }
-  @Get('/project/title/information')
+  @Post('/project/title/information')
   async getProjectInformationByTitle(@Body('title') title: string) {
     const data = await this.FormModel.findOne({ s_proj_title: title });
     const { mem1 } = data;
