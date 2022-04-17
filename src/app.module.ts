@@ -46,8 +46,8 @@ import { ExternalModule } from './external/external.module';
     ConfigModule.forRoot(),
 
     MongooseModule.forRoot(
-      'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalV187?retryWrites=true&w=majority',
-      // 'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalTEST?retryWrites=true&w=majority',
+      // 'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalV187?retryWrites=true&w=majority',
+      'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalTEST?retryWrites=true&w=majority',
     ),
 
     JwtModule.register({

@@ -15,12 +15,17 @@ export const EvaluationSchema = new Schema({
   location: {
     type: String,
     trim: true,
+    required: true,
   },
   project_title: {
     type: String,
+    trim: true,
+    required: true,
   },
   group_leader: {
     type: String,
+    trim: true,
+    required: true,
   },
   supervisor: {
     type: String,

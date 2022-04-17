@@ -104,10 +104,11 @@ export class CoordinatorService {
         date,
         time,
       });
-      return evaluation;
+      return { evaluation, body };
     } catch (error) {
       return {
         error: error.message,
+        body,
       };
     }
   }
@@ -116,10 +117,12 @@ export class CoordinatorService {
       const info = await this.StudentFormModel.findOne({
         s_proj_title,
       });
+      console.log(s_proj_title, 'the project title=>>>>>', info);
       const { mem1 } = info;
       const result = await axios.get(
         `https://student-server-app.herokuapp.com/student/getformdata/${mem1}`,
       );
+      console.log(result.data, 'the result============================');
       return result.data;
     } catch (error) {
       console.log(error);
@@ -128,12 +131,13 @@ export class CoordinatorService {
   async getAllEvaluationShedule() {
     //  target the form model
     let data = await this.EvaluationModel.find({}, { _id: 0 });
-
-    const Eval = await Promise.all(
+    console.log(data, 'the data length');
+    let Eval = await Promise.all(
       data.map((value) => {
         return this.getProjectInformationByTitle(value.project_title);
       }),
     );
+    console.log(Eval, 'eval=================');
     Eval.map((value, index) => {
       console.log(data[index], '>>>index');
       return (data[index] = {
