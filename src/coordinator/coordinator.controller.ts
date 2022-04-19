@@ -80,6 +80,7 @@ export class CoordinatorController {
   @Get('shedule/evaluation')
   async getAllEvaluation() {
     try {
+      console.log('api hited');
       const data = await this.CoordinatorService.getAllEvaluationShedule();
       return data;
     } catch (error) {
