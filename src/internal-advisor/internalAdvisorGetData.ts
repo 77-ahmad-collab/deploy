@@ -253,4 +253,19 @@ export class InternalAdvisorGetData {
     const leadersList = await this.getLeaders(Attendance);
     return leadersList;
   }
+  async getAllProjects(id: number) {
+    try {
+      const advisor = await this.InternalAdvisorModel.findOne({ id });
+      if (!advisor) return 'Not found with the given id';
+      const projectTitles = await this.StudentFormModel.find(
+        {
+          s_internal: advisor.name,
+        },
+        { _id: 0, s_proj_title: 1 },
+      );
+      return projectTitles;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

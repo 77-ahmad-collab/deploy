@@ -220,6 +220,15 @@ export class InternalAdvisorController {
       return error;
     }
   }
+  @Get('/all/projects/:id')
+  async getAllProjects(@Param('id') id: number) {
+    try {
+      const data = await this.internalAdvisorGetData.getAllProjects(id);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   // @Get('/test')
   // async getTest() {
   //   return await this.internalAdvisorGetData.leaderInformation(['CT-18021']);
