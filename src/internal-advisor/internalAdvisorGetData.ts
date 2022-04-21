@@ -498,6 +498,7 @@ export class InternalAdvisorGetData {
       const EvaluationMarks = await this.EvaluationMarksModel.findOne({
         std1_rollNo: body.std1_rollNo,
       });
+      console.log(EvaluationMarks, 'there is');
       let data;
       if (!EvaluationMarks) {
         console.log('frst time');
@@ -543,10 +544,12 @@ export class InternalAdvisorGetData {
         const SaveMarks = await this.EvaluationMarksModel.create(data);
         return { SaveMarks };
       } else {
+        console.log('entered here');
         const EvaluationMarks = await this.EvaluationMarksModel.findOne({
           std1_rollNo: body.std1_rollNo,
         });
 
+        console.log(EvaluationMarks, '===============there is');
         data = {
           std1_Literature_Review: [
             ...EvaluationMarks.std1_Literature_Review,
@@ -601,25 +604,184 @@ export class InternalAdvisorGetData {
           count: body.count,
           project_title: body.project_title,
         };
+        console.log(data, 'he dataaa');
         if (body.count === 4) {
           data = {
             ...data,
-            std4_rollNo: body.std4_rollNo,
-            std4_Literature_Review: [body.std4_Literature_Review],
 
-            std4_Methodology: [body.std4_Methodology],
-            std4_Adherence_to_Work_Plan: [body.std4_Adherence_to_Work_Plan],
+            std4_Literature_Review: [
+              ...EvaluationMarks.std4_Literature_Review,
+              body.std4_Literature_Review,
+            ],
+
+            std4_Methodology: [
+              ...EvaluationMarks.std4_Methodology,
+              body.std4_Methodology,
+            ],
+            std4_Adherence_to_Work_Plan: [
+              ...EvaluationMarks.std4_Adherence_to_Work_Plan,
+              body.std4_Adherence_to_Work_Plan,
+            ],
             std4_Reporting_and_Presentation: [
+              ...EvaluationMarks.std4_Reporting_and_Presentation,
               body.std4_Reporting_and_Presentation,
             ],
           };
         }
+        const checkLength = [
+          ...EvaluationMarks.std1_Methodology,
+          body.std1_Methodology,
+        ].length;
+        console.log(checkLength, 'check length');
+        if (checkLength === 3) {
+          console.log(' i shoud not enter here');
+          const std1_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Literature_Review,
+          );
+          const std1_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Methodology,
+          );
+          const std1_Adherence_to_Work_Plan_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Adherence_to_Work_Plan,
+            );
+          const std1_Reporting_and_Presentation_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Reporting_and_Presentation,
+            );
+          const std2_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Literature_Review,
+          );
+          const std2_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Methodology,
+          );
+          const std2_Adherence_to_Work_Plan_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std2_Adherence_to_Work_Plan,
+            );
+          const std2_Reporting_and_Presentation_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std2_Reporting_and_Presentation,
+            );
+          const std3_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Literature_Review,
+          );
+          const std3_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Methodology,
+          );
+          const std3_Adherence_to_Work_Plan_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std3_Adherence_to_Work_Plan,
+            );
+          const std3_Reporting_and_Presentation_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std3_Reporting_and_Presentation,
+            );
+          const std1_weighted_average = this.getEvaluationWeightedAverage(
+            std1_Literature_Review_average,
+            std1_Methodology_average,
+            std1_Adherence_to_Work_Plan_average,
+            std1_Reporting_and_Presentation_average,
+          );
+          const std2_weighted_average = this.getEvaluationWeightedAverage(
+            std2_Literature_Review_average,
+            std2_Methodology_average,
+            std2_Adherence_to_Work_Plan_average,
+
+            std2_Reporting_and_Presentation_average,
+          );
+          const std3_weighted_average = this.getEvaluationWeightedAverage(
+            std3_Literature_Review_average,
+            std3_Methodology_average,
+            std3_Adherence_to_Work_Plan_average,
+            std3_Reporting_and_Presentation_average,
+          );
+          data = {
+            ...data,
+            std1_Literature_Review_average,
+            std1_Methodology_average,
+            std1_Adherence_to_Work_Plan_average,
+            std1_Reporting_and_Presentation_average,
+            std2_Literature_Review_average,
+            std2_Methodology_average,
+            std2_Adherence_to_Work_Plan_average,
+            std2_Reporting_and_Presentation_average,
+            std3_Literature_Review_average,
+            std3_Methodology_average,
+            std3_Adherence_to_Work_Plan_average,
+            std3_Reporting_and_Presentation_average,
+            std1_weighted_average,
+            std2_weighted_average,
+            std3_weighted_average,
+          };
+          if (body.count === 4) {
+            const std4_Literature_Review_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Literature_Review,
+              );
+            const std4_Methodology_average = this.getSingleEvaluationAverge(
+              EvaluationMarks.std4_Methodology,
+            );
+            const std4_Adherence_to_Work_Plan_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Adherence_to_Work_Plan,
+              );
+            const std4_Reporting_and_Presentation_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Reporting_and_Presentation,
+              );
+            const std4_weighted_average = this.getEvaluationWeightedAverage(
+              std4_Literature_Review_average,
+              std4_Methodology_average,
+              std4_Adherence_to_Work_Plan_average,
+              std4_Reporting_and_Presentation_average,
+            );
+            data = {
+              ...data,
+              std4_Literature_Review_average,
+              std4_Methodology_average,
+              std4_Adherence_to_Work_Plan_average,
+              std4_Reporting_and_Presentation_average,
+              std4_weighted_average,
+            };
+          }
+        }
+        console.log('------------------final data', data);
         const updatedEvaluationMarks =
           await this.EvaluationMarksModel.updateOne(
             { std1_rollNo: body.std1_rollNo },
             { $set: data },
           );
+        console.log(updatedEvaluationMarks, 'updatedEvaluationMarks');
+        return updatedEvaluationMarks;
       }
+      return 'all has been achieved successfully';
+    } catch (error) {
+      return error;
+    }
+  }
+  getEvaluationWeightedAverage(
+    mark1: number,
+    mark2: number,
+    mark3: number,
+    mark4,
+  ) {
+    const multiplyByFactor = (mark, factor) => {
+      return mark * factor;
+    };
+    const resultAverage =
+      multiplyByFactor(mark1, 0.12) +
+      multiplyByFactor(mark2, 0.12) +
+      multiplyByFactor(mark3, 0.12) +
+      multiplyByFactor(mark4, 0.12);
+    return resultAverage;
+  }
+  async getEvaluationAverage(id: number) {
+    try {
+      const evaluationMarks = await this.EvaluationMarksModel.findOne({
+        std1_rollNo: id,
+      });
+      return evaluationMarks;
     } catch (error) {
       return error;
     }

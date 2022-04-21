@@ -239,9 +239,14 @@ export class InternalAdvisorController {
     const data = await this.internalAdvisorGetData.getAverage(id);
     return data;
   }
-  @Post('/submission/evaluation/marks/')
+  @Post('/submission/evaluation/marks')
   async getEvaluationMarks(@Body() body: any) {
     const data = await this.internalAdvisorGetData.getEvaluationMarks(body);
+    return data;
+  }
+  @Get('/submission/evaluation/average/:id')
+  async getEvaluationAverage(@Param('id') id: number) {
+    const data = await this.internalAdvisorGetData.getEvaluationAverage(id);
     return data;
   }
 }
