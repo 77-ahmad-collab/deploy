@@ -88,9 +88,14 @@ export class CoordinatorController {
       return error;
     }
   }
-  @Post('/submission/marks')
+  @Post('/submission/progress/marks')
   async getMarks(@Body() body: any) {
-    const data = await this.CoordinatorService.getMarks(body);
+    const data = await this.CoordinatorService.getProgressMarks(body);
+    return data;
+  }
+  @Get('/submission/progress/average/:id')
+  async getAverage(@Param('id') id: number) {
+    const data = await this.CoordinatorService.getAverage(id);
     return data;
   }
 }

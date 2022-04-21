@@ -155,83 +155,215 @@ export class CoordinatorService {
       // data,
     };
   }
-  async getMarks(body) {
+  getWeightedAverage(mark1: number, mark2: number, mark3: number) {
+    const multiplyByFactor = (mark, factor) => {
+      return mark * factor;
+    };
+    const resultAverage =
+      multiplyByFactor(mark1, 0.5) +
+      multiplyByFactor(mark2, 0.5) +
+      multiplyByFactor(mark3, 0.5);
+    return resultAverage;
+  }
+  async getProgressMarks(body) {
     try {
       const Marks = await this.MarksModel.findOne({
         std1_rollNo: body.std1_rollNo,
       });
-      if (!Marks) {
-        const marks = await this.MarksModel.create({
-          std1_coherence_with_group: [body.std1_coherence_with_group],
-          std1_intellectual_contribution: [body.std1_intellectual_contribution],
+      let data;
+      const std1_weighted_average = this.getWeightedAverage(
+        body.std1_coherence_with_group,
+        body.std1_intellectual_contribution,
+        body.std1_response_to_questions,
+      );
+      const std2_weighted_average = this.getWeightedAverage(
+        body.std2_coherence_with_group,
+        body.std2_intellectual_contribution,
+        body.std2_response_to_questions,
+      );
+      const std3_weighted_average = this.getWeightedAverage(
+        body.std3_coherence_with_group,
+        body.std3_intellectual_contribution,
+        body.std3_response_to_questions,
+      );
+      if (body.count === 3) {
+        data = {
+          std1_coherence_with_group: body.std1_coherence_with_group,
+          std1_intellectual_contribution: body.std1_intellectual_contribution,
           std1_name: body.std1_name,
-          std1_response_to_questions: [body.std1_response_to_questions],
+          std1_response_to_questions: body.std1_response_to_questions,
           std1_rollNo: body.std1_rollNo,
-          std2_coherence_with_group: [body.std2_coherence_with_group],
-          std2_intellectual_contribution: [body.std2_intellectual_contribution],
+          std2_coherence_with_group: body.std2_coherence_with_group,
+          std2_intellectual_contribution: body.std2_intellectual_contribution,
           std2_name: body.std2_name,
-          std2_response_to_questions: [body.std2_response_to_questions],
+          std2_response_to_questions: body.std2_response_to_questions,
           std2_rollNo: body.std2_rollNo,
-          std3_coherence_with_group: [body.std3_coherence_with_group],
-          std3_intellectual_contribution: [body.std3_intellectual_contribution],
+          std3_coherence_with_group: body.std3_coherence_with_group,
+          std3_intellectual_contribution: body.std3_intellectual_contribution,
           std3_name: body.std3_name,
-          std3_response_to_questions: [body.std3_response_to_questions],
+          std3_response_to_questions: body.std3_response_to_questions,
           std3_rollNo: body.std3_rollNo,
-        });
-        return { message: 'FIRST TIME SUBMisso', marks };
-      } else {
-        const UpdatedMarks = await this.MarksModel.updateOne(
-          { std1_rollNo: body.std1_rollNo },
-          {
-            $set: {
-              std1_coherence_with_group: [
-                ...Marks.std1_coherence_with_group,
-                body.std1_coherence_with_group,
-              ],
-              std1_intellectual_contribution: [
-                ...Marks.std1_intellectual_contribution,
-                body.std1_intellectual_contribution,
-              ],
-              std1_response_to_questions: [
-                ...Marks.std1_response_to_questions,
-                body.std1_response_to_questions,
-              ],
-
-              std2_coherence_with_group: [
-                ...Marks.std2_coherence_with_group,
-                body.std2_coherence_with_group,
-              ],
-              std2_intellectual_contribution: [
-                ...Marks.std2_intellectual_contribution,
-                body.std2_intellectual_contribution,
-              ],
-
-              std2_response_to_questions: [
-                ...Marks.std2_response_to_questions,
-                body.std2_response_to_questions,
-              ],
-
-              std3_coherence_with_group: [
-                ...Marks.std3_coherence_with_group,
-                body.std3_coherence_with_group,
-              ],
-              std3_intellectual_contribution: [
-                ...Marks.std3_intellectual_contribution,
-                body.std3_intellectual_contribution,
-              ],
-
-              std3_response_to_questions: [
-                ...Marks.std3_response_to_questions,
-                body.std3_response_to_questions,
-              ],
-            },
-          },
+          supervior_id: body.supervior_id,
+          count: parseInt(body.count),
+          project_title: body.project_title,
+          std1_weighted_average,
+          std2_weighted_average,
+          std3_weighted_average,
+        };
+      } else if (body.count === 4) {
+        const std4_weighted_average = this.getWeightedAverage(
+          body.std4_coherence_with_group,
+          body.std4_intellectual_contribution,
+          body.std4_response_to_questions,
         );
-        return Marks;
+        data = {
+          std1_coherence_with_group: body.std1_coherence_with_group,
+          std1_intellectual_contribution: body.std1_intellectual_contribution,
+          std1_name: body.std1_name,
+          std1_response_to_questions: body.std1_response_to_questions,
+          std1_rollNo: body.std1_rollNo,
+          std2_coherence_with_group: body.std2_coherence_with_group,
+          std2_intellectual_contribution: body.std2_intellectual_contribution,
+          std2_name: body.std2_name,
+          std2_response_to_questions: body.std2_response_to_questions,
+          std2_rollNo: body.std2_rollNo,
+          std3_coherence_with_group: body.std3_coherence_with_group,
+          std3_intellectual_contribution: body.std3_intellectual_contribution,
+          std3_name: body.std3_name,
+          std3_response_to_questions: body.std3_response_to_questions,
+          std3_rollNo: body.std3_rollNo,
+          std4_coherence_with_group: body.std4_coherence_with_group,
+          std4_intellectual_contribution: body.std4_intellectual_contribution,
+          std4_name: body.std4_name,
+          std4_response_to_questions: body.std4_response_to_questions,
+          std4_rollNo: body.std4_rollNo,
+          supervior_id: body.supervior_id,
+          count: parseInt(body.count),
+          project_title: body.project_title,
+          std1_weighted_average,
+          std2_weighted_average,
+          std3_weighted_average,
+          std4_weighted_average,
+        };
       }
-      return { status: 'ok', body };
+      const marks = await this.MarksModel.create(data);
+      return { message: 'FIRST TIME SUBMisso', marks };
+      //  else {
+      //   if (body.count === 3) {
+      //     data = {
+      //       std1_coherence_with_group: [
+      //         ...Marks.std1_coherence_with_group,
+      //         body.std1_coherence_with_group,
+      //       ],
+      //       std1_intellectual_contribution: [
+      //         ...Marks.std1_intellectual_contribution,
+      //         body.std1_intellectual_contribution,
+      //       ],
+      //       std1_response_to_questions: [
+      //         ...Marks.std1_response_to_questions,
+      //         body.std1_response_to_questions,
+      //       ],
+
+      //       std2_coherence_with_group: [
+      //         ...Marks.std2_coherence_with_group,
+      //         body.std2_coherence_with_group,
+      //       ],
+      //       std2_intellectual_contribution: [
+      //         ...Marks.std2_intellectual_contribution,
+      //         body.std2_intellectual_contribution,
+      //       ],
+
+      //       std2_response_to_questions: [
+      //         ...Marks.std2_response_to_questions,
+      //         body.std2_response_to_questions,
+      //       ],
+
+      //       std3_coherence_with_group: [
+      //         ...Marks.std3_coherence_with_group,
+      //         body.std3_coherence_with_group,
+      //       ],
+      //       std3_intellectual_contribution: [
+      //         ...Marks.std3_intellectual_contribution,
+      //         body.std3_intellectual_contribution,
+      //       ],
+
+      //       std3_response_to_questions: [
+      //         ...Marks.std3_response_to_questions,
+      //         body.std3_response_to_questions,
+      //       ],
+      //     };
+      //   } else if (body.count === 4) {
+      //     data = {
+      //       std1_coherence_with_group: [
+      //         ...Marks.std1_coherence_with_group,
+      //         body.std1_coherence_with_group,
+      //       ],
+      //       std1_intellectual_contribution: [
+      //         ...Marks.std1_intellectual_contribution,
+      //         body.std1_intellectual_contribution,
+      //       ],
+      //       std1_response_to_questions: [
+      //         ...Marks.std1_response_to_questions,
+      //         body.std1_response_to_questions,
+      //       ],
+
+      //       std2_coherence_with_group: [
+      //         ...Marks.std2_coherence_with_group,
+      //         body.std2_coherence_with_group,
+      //       ],
+      //       std2_intellectual_contribution: [
+      //         ...Marks.std2_intellectual_contribution,
+      //         body.std2_intellectual_contribution,
+      //       ],
+
+      //       std2_response_to_questions: [
+      //         ...Marks.std2_response_to_questions,
+      //         body.std2_response_to_questions,
+      //       ],
+
+      //       std3_coherence_with_group: [
+      //         ...Marks.std3_coherence_with_group,
+      //         body.std3_coherence_with_group,
+      //       ],
+      //       std3_intellectual_contribution: [
+      //         ...Marks.std3_intellectual_contribution,
+      //         body.std3_intellectual_contribution,
+      //       ],
+
+      //       std3_response_to_questions: [
+      //         ...Marks.std3_response_to_questions,
+      //         body.std3_response_to_questions,
+      //       ],
+      //       std4_coherence_with_group: [
+      //         ...Marks.std4_coherence_with_group,
+      //         body.std4_coherence_with_group,
+      //       ],
+      //       std4_intellectual_contribution: [
+      //         ...Marks.std4_intellectual_contribution,
+      //         body.std4_intellectual_contribution,
+      //       ],
+
+      //       std4_response_to_questions: [
+      //         ...Marks.std4_response_to_questions,
+      //         body.std4_response_to_questions,
+      //       ],
+      //     };
+      //   }
+      //   const UpdatedMarks = await this.MarksModel.updateOne(
+      //     { std1_rollNo: body.std1_rollNo },
+      //     {
+      //       $set: data,
+      //     },
+      //   );
+      // //   return Marks;
+      // }
+      // return { status: 'ok', body };
     } catch (error) {
       return error;
     }
+  }
+  async getAverage(id: number) {
+    const Marks = await this.MarksModel.findOne({ supervior_id: id });
+    return Marks;
   }
 }
