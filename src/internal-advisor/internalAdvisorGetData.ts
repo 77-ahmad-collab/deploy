@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
 import { Model } from 'mongoose';
+import { EvaluationMarks } from 'src/Models/Evaluation/EvaluationMarks.model';
 import { Marks } from 'src/Models/Evaluation/Marks.model';
 import { AdvisorForm } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
@@ -20,7 +21,10 @@ export class InternalAdvisorGetData {
     @InjectModel('formdatas') private StudentFormModel: Model<Form>,
     @InjectModel('attendance') private attendanceModel: Model<Attendance>,
     @InjectModel('Marks') private MarksModel: Model<Marks>,
+    @InjectModel('EvaluationMarks')
+    private EvaluationMarksModel: Model<EvaluationMarks>,
   ) {}
+
   async getData(students: any[]) {
     try {
       const result = await Promise.all(
@@ -480,5 +484,58 @@ export class InternalAdvisorGetData {
   async getAverage(id: number) {
     const Marks = await this.MarksModel.findOne({ supervior_id: id });
     return Marks;
+  }
+  async getEvaluationMarks(body) {
+    try {
+      const EvaluationMarks = await this.EvaluationMarksModel.findOne({
+        std1_rollNo: body.std1_rollNo,
+      });
+      let data;
+      if (!EvaluationMarks) {
+        console.log('frst time');
+        data = {
+          std1_rollNo: body.std1_rollNo,
+          std1_Literature_Review: [body.std1_Literature_Review],
+          std1_Methodology: [body.std1_Methodology],
+          std1_Adherence_to_Work_Plan: [body.std1_Adherence_to_Work_Plan],
+          std1_Reporting_and_Presentation: [
+            body.std1_Reporting_and_Presentation,
+          ],
+          std2_rollNo: body.std2_rollNo,
+          std2_Literature_Review: [body.std2_Literature_Review],
+          std2_Methodology: [body.std2_Methodology],
+          std2_Adherence_to_Work_Plan: [body.std2_Adherence_to_Work_Plan],
+          std2_Reporting_and_Presentation: [
+            body.std2_Reporting_and_Presentation,
+          ],
+          std3_rollNo: body.std3_rollNo,
+          std3_Literature_Review: [body.std3_Literature_Review],
+          std3_Methodology: [body.std3_Methodology],
+          std3_Adherence_to_Work_Plan: [body.std3_Adherence_to_Work_Plan],
+          std3_Reporting_and_Presentation: [
+            body.std3_Reporting_and_Presentation,
+          ],
+          count: body.count,
+          project_title: body.project_title,
+        };
+        if (body.count === 4) {
+          data = {
+            ...data,
+            std4_rollNo: body.std4_rollNo,
+            std4_Literature_Review: [body.std4_Literature_Review],
+
+            std4_Methodology: [body.std4_Methodology],
+            std4_Adherence_to_Work_Plan: [body.std4_Adherence_to_Work_Plan],
+            std4_Reporting_and_Presentation: [
+              body.std4_Reporting_and_Presentation,
+            ],
+          };
+        }
+        const SaveMarks = await this.EvaluationMarksModel.create(data);
+      } else {
+      }
+    } catch (error) {
+      return error;
+    }
   }
 }

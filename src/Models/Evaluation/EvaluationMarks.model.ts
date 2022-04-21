@@ -37,6 +37,10 @@ export interface EvaluationMarks {
   std4_Reporting_and_Presentation_average: number;
   std4_weighted_average: number;
   count: number;
+  std1_rollNo: string;
+  std2_rollNo: string;
+  std3_rollNo: string;
+  std4_rollNo: string;
   project_title: string;
 }
 export const EvaluationMarksSchema = new Schema({
@@ -52,7 +56,7 @@ export const EvaluationMarksSchema = new Schema({
   std1_Reporting_and_Presentation: {
     type: [Number],
   },
-  std1_literature_review_averageMarks: {
+  std1_Literature_Review_average: {
     type: Number,
   },
   std1_Methodology_average: {
@@ -69,6 +73,11 @@ export const EvaluationMarksSchema = new Schema({
   },
   std2_Literature_Review: {
     type: [Number],
+  },
+  std1_rollNo: {
+    type: String,
+
+    uppercase: true,
   },
   std2_Methodology: {
     type: [Number],
@@ -93,6 +102,11 @@ export const EvaluationMarksSchema = new Schema({
   },
   std2_weighted_average: {
     type: Number,
+  },
+  std2_rollNo: {
+    type: String,
+
+    uppercase: true,
   },
   std3_Literature_Review: {
     type: [Number],
@@ -121,6 +135,11 @@ export const EvaluationMarksSchema = new Schema({
   std3_weighted_average: {
     type: Number,
   },
+  std3_rollNo: {
+    type: String,
+
+    uppercase: true,
+  },
   std4_Literature_Review: {
     type: [Number],
   },
@@ -147,6 +166,11 @@ export const EvaluationMarksSchema = new Schema({
   },
   std4_weighted_average: {
     type: Number,
+  },
+  std4_rollNo: {
+    type: String,
+
+    uppercase: true,
   },
   count: {
     type: Number,

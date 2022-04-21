@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
+import { EvaluationMarksSchema } from 'src/Models/Evaluation/EvaluationMarks.model';
 import { MarksSchema } from 'src/Models/Evaluation/Marks.model';
 import { AdvisorFormSchema } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisorSchema } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
@@ -47,6 +48,11 @@ import { InternalAdvisorGetData } from './internalAdvisorGetData';
         name: 'Marks',
         schema: MarksSchema,
         collection: 'Marks',
+      },
+      {
+        name: 'EvaluationMarks',
+        schema: EvaluationMarksSchema,
+        collection: 'EvaluationMarks',
       },
     ]),
     JwtModule.register({

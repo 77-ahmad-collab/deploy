@@ -239,8 +239,9 @@ export class InternalAdvisorController {
     const data = await this.internalAdvisorGetData.getAverage(id);
     return data;
   }
-  // @Get('/test')
-  // async getTest() {
-  //   return await this.internalAdvisorGetData.leaderInformation(['CT-18021']);
-  // }
+  @Post('/submission/evaluation/marks/')
+  async getEvaluationMarks(@Body() body: any) {
+    const data = await this.internalAdvisorGetData.getEvaluationMarks(body);
+    return data;
+  }
 }
