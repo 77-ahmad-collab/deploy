@@ -485,6 +485,14 @@ export class InternalAdvisorGetData {
     const Marks = await this.MarksModel.findOne({ supervior_id: id });
     return Marks;
   }
+  getSingleEvaluationAverge(number: number[]) {
+    let sum = 0;
+    for (let i = 0; i < number.length; i++) {
+      sum += number[i];
+    }
+    return sum / number.length;
+  }
+
   async getEvaluationMarks(body) {
     try {
       const EvaluationMarks = await this.EvaluationMarksModel.findOne({
@@ -493,6 +501,7 @@ export class InternalAdvisorGetData {
       let data;
       if (!EvaluationMarks) {
         console.log('frst time');
+
         data = {
           std1_rollNo: body.std1_rollNo,
           std1_Literature_Review: [body.std1_Literature_Review],
@@ -532,7 +541,84 @@ export class InternalAdvisorGetData {
           };
         }
         const SaveMarks = await this.EvaluationMarksModel.create(data);
+        return { SaveMarks };
       } else {
+        const EvaluationMarks = await this.EvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
+
+        data = {
+          std1_Literature_Review: [
+            ...EvaluationMarks.std1_Literature_Review,
+            body.std1_Literature_Review,
+          ],
+          std1_Methodology: [
+            ...EvaluationMarks.std1_Methodology,
+            body.std1_Methodology,
+          ],
+          std1_Adherence_to_Work_Plan: [
+            ...EvaluationMarks.std1_Adherence_to_Work_Plan,
+            body.std1_Adherence_to_Work_Plan,
+          ],
+          std1_Reporting_and_Presentation: [
+            ...EvaluationMarks.std1_Reporting_and_Presentation,
+            body.std1_Reporting_and_Presentation,
+          ],
+
+          std2_Literature_Review: [
+            ...EvaluationMarks.std2_Literature_Review,
+            body.std2_Literature_Review,
+          ],
+          std2_Methodology: [
+            ...EvaluationMarks.std2_Methodology,
+            body.std2_Methodology,
+          ],
+          std2_Adherence_to_Work_Plan: [
+            ...EvaluationMarks.std2_Adherence_to_Work_Plan,
+            body.std2_Adherence_to_Work_Plan,
+          ],
+          std2_Reporting_and_Presentation: [
+            ...EvaluationMarks.std2_Reporting_and_Presentation,
+            body.std2_Reporting_and_Presentation,
+          ],
+
+          std3_Literature_Review: [
+            ...EvaluationMarks.std3_Literature_Review,
+            body.std3_Literature_Review,
+          ],
+          std3_Methodology: [
+            ...EvaluationMarks.std3_Methodology,
+            body.std3_Methodology,
+          ],
+          std3_Adherence_to_Work_Plan: [
+            ...EvaluationMarks.std3_Adherence_to_Work_Plan,
+            body.std3_Adherence_to_Work_Plan,
+          ],
+          std3_Reporting_and_Presentation: [
+            ...EvaluationMarks.std3_Reporting_and_Presentation,
+            body.std3_Reporting_and_Presentation,
+          ],
+          count: body.count,
+          project_title: body.project_title,
+        };
+        if (body.count === 4) {
+          data = {
+            ...data,
+            std4_rollNo: body.std4_rollNo,
+            std4_Literature_Review: [body.std4_Literature_Review],
+
+            std4_Methodology: [body.std4_Methodology],
+            std4_Adherence_to_Work_Plan: [body.std4_Adherence_to_Work_Plan],
+            std4_Reporting_and_Presentation: [
+              body.std4_Reporting_and_Presentation,
+            ],
+          };
+        }
+        const updatedEvaluationMarks =
+          await this.EvaluationMarksModel.updateOne(
+            { std1_rollNo: body.std1_rollNo },
+            { $set: data },
+          );
       }
     } catch (error) {
       return error;
