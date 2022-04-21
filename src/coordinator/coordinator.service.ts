@@ -10,6 +10,7 @@ import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { Model } from 'mongoose';
 import { Coordinator } from 'src/Models/Coordinator/Coordinator.Model';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
+import { Marks } from 'src/Models/Evaluation/Marks.model';
 import { Form } from 'src/Models/Student/form.model';
 import { promisify } from 'util';
 const scrypt = promisify(_scrypt);
@@ -22,7 +23,9 @@ export class CoordinatorService {
     @InjectModel('Evaluation')
     private EvaluationModel: Model<Evaluation>,
     @InjectModel('formdatas') private StudentFormModel: Model<Form>,
+    @InjectModel('Marks') private MarksModel: Model<Marks>,
   ) {}
+
   async register(body) {
     try {
       const {
@@ -151,5 +154,84 @@ export class CoordinatorService {
       data,
       // data,
     };
+  }
+  async getMarks(body) {
+    try {
+      const Marks = await this.MarksModel.findOne({
+        std1_rollNo: body.std1_rollNo,
+      });
+      if (!Marks) {
+        const marks = await this.MarksModel.create({
+          std1_coherence_with_group: [body.std1_coherence_with_group],
+          std1_intellectual_contribution: [body.std1_intellectual_contribution],
+          std1_name: body.std1_name,
+          std1_response_to_questions: [body.std1_response_to_questions],
+          std1_rollNo: body.std1_rollNo,
+          std2_coherence_with_group: [body.std2_coherence_with_group],
+          std2_intellectual_contribution: [body.std2_intellectual_contribution],
+          std2_name: body.std2_name,
+          std2_response_to_questions: [body.std2_response_to_questions],
+          std2_rollNo: body.std2_rollNo,
+          std3_coherence_with_group: [body.std3_coherence_with_group],
+          std3_intellectual_contribution: [body.std3_intellectual_contribution],
+          std3_name: body.std3_name,
+          std3_response_to_questions: [body.std3_response_to_questions],
+          std3_rollNo: body.std3_rollNo,
+        });
+        return { message: 'FIRST TIME SUBMisso', marks };
+      } else {
+        const UpdatedMarks = await this.MarksModel.updateOne(
+          { std1_rollNo: body.std1_rollNo },
+          {
+            $set: {
+              std1_coherence_with_group: [
+                ...Marks.std1_coherence_with_group,
+                body.std1_coherence_with_group,
+              ],
+              std1_intellectual_contribution: [
+                ...Marks.std1_intellectual_contribution,
+                body.std1_intellectual_contribution,
+              ],
+              std1_response_to_questions: [
+                ...Marks.std1_response_to_questions,
+                body.std1_response_to_questions,
+              ],
+
+              std2_coherence_with_group: [
+                ...Marks.std2_coherence_with_group,
+                body.std2_coherence_with_group,
+              ],
+              std2_intellectual_contribution: [
+                ...Marks.std2_intellectual_contribution,
+                body.std2_intellectual_contribution,
+              ],
+
+              std2_response_to_questions: [
+                ...Marks.std2_response_to_questions,
+                body.std2_response_to_questions,
+              ],
+
+              std3_coherence_with_group: [
+                ...Marks.std3_coherence_with_group,
+                body.std3_coherence_with_group,
+              ],
+              std3_intellectual_contribution: [
+                ...Marks.std3_intellectual_contribution,
+                body.std3_intellectual_contribution,
+              ],
+
+              std3_response_to_questions: [
+                ...Marks.std3_response_to_questions,
+                body.std3_response_to_questions,
+              ],
+            },
+          },
+        );
+        return Marks;
+      }
+      return { status: 'ok', body };
+    } catch (error) {
+      return error;
+    }
   }
 }

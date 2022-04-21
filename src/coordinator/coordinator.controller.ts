@@ -13,6 +13,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Coordinator } from 'src/Models/Coordinator/Coordinator.Model';
 import { Model } from 'mongoose';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
+import { Marks } from 'src/Models/Evaluation/Marks.model';
 @Controller('coordinator')
 export class CoordinatorController {
   constructor(
@@ -86,5 +87,10 @@ export class CoordinatorController {
     } catch (error) {
       return error;
     }
+  }
+  @Post('/submission/marks')
+  async getMarks(@Body() body: any) {
+    const data = await this.CoordinatorService.getMarks(body);
+    return data;
   }
 }

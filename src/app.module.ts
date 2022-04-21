@@ -15,6 +15,7 @@ import { AttendanceSchema } from './Models/Student/attendance.model';
 import { CoordinatorModule } from './coordinator/coordinator.module';
 import { CoordinatorSchema } from './Models/Coordinator/Coordinator.Model';
 import { ExternalModule } from './external/external.module';
+import { MarksSchema } from './Models/Evaluation/Marks.model';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -41,13 +42,18 @@ import { ExternalModule } from './external/external.module';
         schema: CoordinatorSchema,
         collection: 'Coordinator',
       },
+      {
+        name: 'Marks',
+        schema: MarksSchema,
+        collection: 'Marks',
+      },
     ]),
 
     ConfigModule.forRoot(),
 
     MongooseModule.forRoot(
-      'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalV187?retryWrites=true&w=majority',
-      // 'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalTEST?retryWrites=true&w=majority',
+      // 'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalV187?retryWrites=true&w=majority',
+      'mongodb+srv://fypportal:ahmed123@cluster0.yvupc.mongodb.net/PortalTEST?retryWrites=true&w=majority',
     ),
 
     JwtModule.register({
