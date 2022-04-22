@@ -42,6 +42,7 @@ export interface EvaluationMarks {
   std3_rollNo: string;
   std4_rollNo: string;
   project_title: string;
+  id: number;
 }
 export const EvaluationMarksSchema = new Schema({
   std1_Literature_Review: {
@@ -178,5 +179,10 @@ export const EvaluationMarksSchema = new Schema({
   project_title: {
     type: String,
     trim: true,
+  },
+  id: {
+    type: Number,
+    trim: true,
+    required: true,
   },
 });

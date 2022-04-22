@@ -527,6 +527,7 @@ export class InternalAdvisorGetData {
           ],
           count: body.count,
           project_title: body.project_title,
+          id: body.id,
         };
         if (body.count === 4) {
           data = {
@@ -778,9 +779,29 @@ export class InternalAdvisorGetData {
   }
   async getEvaluationAverage(id: number) {
     try {
-      const evaluationMarks = await this.EvaluationMarksModel.findOne({
-        std1_rollNo: id,
-      });
+      const evaluationMarks = await this.EvaluationMarksModel.findOne(
+        {
+          id,
+        },
+        {
+          std1_Literature_Review: 0,
+          std1_Methodology: 0,
+          std1_Adherence_to_Work_Plan: 0,
+          std1_Reporting_and_Presentation: 0,
+          std2_Literature_Review: 0,
+          std2_Methodology: 0,
+          std2_Adherence_to_Work_Plan: 0,
+          std2_Reporting_and_Presentation: 0,
+          std3_Literature_Review: 0,
+          std3_Methodology: 0,
+          std3_Adherence_to_Work_Plan: 0,
+          std3_Reporting_and_Presentation: 0,
+          std4_Literature_Review: 0,
+          std4_Methodology: 0,
+          std4_Adherence_to_Work_Plan: 0,
+          std4_Reporting_and_Presentation: 0,
+        },
+      );
       return evaluationMarks;
     } catch (error) {
       return error;
