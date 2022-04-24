@@ -9,7 +9,7 @@ import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.mod
 import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
 import { StudentInterface } from 'src/Models/Student/student.model';
-
+import { External } from 'src/Models/External/Externel.Model';
 @Injectable()
 export class InternalAdvisorGetData {
   constructor(
@@ -23,6 +23,8 @@ export class InternalAdvisorGetData {
     @InjectModel('Marks') private MarksModel: Model<Marks>,
     @InjectModel('EvaluationMarks')
     private EvaluationMarksModel: Model<EvaluationMarks>,
+    @InjectModel('External')
+    private ExternalModel: Model<External>,
   ) {}
 
   async getData(students: any[]) {
@@ -262,7 +264,13 @@ export class InternalAdvisorGetData {
   async getAllProjects(id: number) {
     try {
       const advisor = await this.InternalAdvisorModel.findOne({ id });
-      if (!advisor) return 'Not found with the given id';
+      if (!advisor) {
+        const data = await this.ExternalModel.findOne(
+          { id },
+          { s_proj_title: 1 },
+        );
+        return data;
+      }
       const projectTitles = await this.StudentFormModel.find(
         {
           s_internal: advisor.name,
@@ -528,6 +536,8 @@ export class InternalAdvisorGetData {
           count: body.count,
           project_title: body.project_title,
           id: body.id,
+          comment: [body.comment],
+          isPanelSubmitted: false,
         };
         if (body.count === 4) {
           data = {
@@ -604,6 +614,7 @@ export class InternalAdvisorGetData {
           ],
           count: body.count,
           project_title: body.project_title,
+          comment: [...EvaluationMarks.comment, body.comment],
         };
         console.log(data, 'he dataaa');
         if (body.count === 4) {
@@ -714,6 +725,7 @@ export class InternalAdvisorGetData {
             std1_weighted_average,
             std2_weighted_average,
             std3_weighted_average,
+            isPanelSubmitted: true,
           };
           if (body.count === 4) {
             const std4_Literature_Review_average =
@@ -777,11 +789,11 @@ export class InternalAdvisorGetData {
       multiplyByFactor(mark4, 0.12);
     return resultAverage;
   }
-  async getEvaluationAverage(id: number) {
+  async getEvaluationAverage(id: string) {
     try {
       const evaluationMarks = await this.EvaluationMarksModel.findOne(
         {
-          id,
+          std1_rollNo: id,
         },
         {
           std1_Literature_Review: 0,

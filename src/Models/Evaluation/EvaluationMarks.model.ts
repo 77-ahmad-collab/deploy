@@ -43,6 +43,8 @@ export interface EvaluationMarks {
   std4_rollNo: string;
   project_title: string;
   id: number;
+  comment: string[];
+  isPanelSubmitted: boolean;
 }
 export const EvaluationMarksSchema = new Schema({
   std1_Literature_Review: {
@@ -59,18 +61,23 @@ export const EvaluationMarksSchema = new Schema({
   },
   std1_Literature_Review_average: {
     type: Number,
+    default: 0,
   },
   std1_Methodology_average: {
     type: Number,
+    default: 0,
   },
   std1_Adherence_to_Work_Plan_average: {
     type: Number,
+    default: 0,
   },
   std1_Reporting_and_Presentation_average: {
     type: Number,
+    default: 0,
   },
   std1_weighted_average: {
     type: Number,
+    default: 0,
   },
   std2_Literature_Review: {
     type: [Number],
@@ -91,18 +98,23 @@ export const EvaluationMarksSchema = new Schema({
   },
   std2_Literature_Review_average: {
     type: Number,
+    default: 0,
   },
   std2_Methodology_average: {
     type: Number,
+    default: 0,
   },
   std2_Adherence_to_Work_Plan_average: {
     type: Number,
+    default: 0,
   },
   std2_Reporting_and_Presentation_average: {
     type: Number,
+    default: 0,
   },
   std2_weighted_average: {
     type: Number,
+    default: 0,
   },
   std2_rollNo: {
     type: String,
@@ -123,18 +135,23 @@ export const EvaluationMarksSchema = new Schema({
   },
   std3_Literature_Review_average: {
     type: Number,
+    default: 0,
   },
   std3_Methodology_average: {
     type: Number,
+    default: 0,
   },
   std3_Adherence_to_Work_Plan_average: {
     type: Number,
+    default: 0,
   },
   std3_Reporting_and_Presentation_average: {
     type: Number,
+    default: 0,
   },
   std3_weighted_average: {
     type: Number,
+    default: 0,
   },
   std3_rollNo: {
     type: String,
@@ -155,18 +172,23 @@ export const EvaluationMarksSchema = new Schema({
   },
   std4_Literature_Review_average: {
     type: Number,
+    default: 0,
   },
   std4_Methodology_average: {
     type: Number,
+    default: 0,
   },
   std4_Adherence_to_Work_Plan_average: {
     type: Number,
+    default: 0,
   },
   std4_Reporting_and_Presentation_average: {
     type: Number,
+    default: 0,
   },
   std4_weighted_average: {
     type: Number,
+    default: 0,
   },
   std4_rollNo: {
     type: String,
@@ -184,5 +206,13 @@ export const EvaluationMarksSchema = new Schema({
     type: Number,
     trim: true,
     required: true,
+  },
+  isPanelSubmitted: {
+    type: Boolean,
+    default: false,
+    // assign a predefined false value
+  },
+  comment: {
+    type: [String],
   },
 });

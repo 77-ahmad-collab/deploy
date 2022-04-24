@@ -245,7 +245,7 @@ export class InternalAdvisorController {
     return data;
   }
   @Get('/submission/evaluation/average/:id')
-  async getEvaluationAverage(@Param('id') id: number) {
+  async getEvaluationAverage(@Param('id') id: string) {
     const data = await this.internalAdvisorGetData.getEvaluationAverage(id);
     return data;
   }
