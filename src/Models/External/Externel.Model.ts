@@ -6,6 +6,8 @@ export interface External {
   contact: string;
   designation: string;
   password: string;
+  projectList: string[];
+  respondedList: string[];
 }
 export const ExternalSchema = new Schema({
   name: {
@@ -33,5 +35,13 @@ export const ExternalSchema = new Schema({
   password: {
     type: String,
     required: true,
+  },
+  projectList: {
+    type: [String],
+    default: [],
+  },
+  respondedList: {
+    type: [String],
+    default: [],
   },
 });

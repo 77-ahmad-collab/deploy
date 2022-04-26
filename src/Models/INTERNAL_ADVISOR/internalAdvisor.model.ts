@@ -7,6 +7,8 @@ export interface InternalAdvisor {
   designation: string;
   password: string;
   advisorformid: string;
+  projectList: string[];
+  respondedList: string[];
 }
 export const InternalAdvisorSchema = new Schema({
   name: {
@@ -42,5 +44,13 @@ export const InternalAdvisorSchema = new Schema({
   attendanceid: {
     type: String,
     default: 'NONE',
+  },
+  projectList: {
+    type: [String],
+    default: [],
+  },
+  respondedList: {
+    type: [String],
+    default: [],
   },
 });
