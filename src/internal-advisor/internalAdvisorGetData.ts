@@ -589,6 +589,47 @@ export class InternalAdvisorGetData {
           };
         }
         const SaveMarks = await this.EvaluationMarksModel.create(data);
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.id,
+        });
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({ id: body.id });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.id },
+            {
+              $set: {
+                projectList: external.projectList.filter(
+                  (val) => val !== body.project_title,
+                ),
+
+                respondedList: [...external.respondedList, body.project_title],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.id,
+          });
+          console.log('internale', internal);
+          if (internal.projectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.id },
+              {
+                $set: {
+                  projectList: internal.projectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
+
+                  respondedList: [
+                    ...internal.respondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
         return { SaveMarks };
       } else {
         console.log('entered here');
@@ -801,8 +842,52 @@ export class InternalAdvisorGetData {
             { std1_rollNo: body.std1_rollNo },
             { $set: data },
           );
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.id,
+        });
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({ id: body.id });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.id },
+            {
+              $set: {
+                projectList: external.projectList.filter(
+                  (val) => val !== body.project_title,
+                ),
+
+                respondedList: [...external.respondedList, body.project_title],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.id,
+          });
+          console.log('internale', internal);
+          if (internal.projectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.id },
+              {
+                $set: {
+                  projectList: internal.projectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
+
+                  respondedList: [
+                    ...internal.respondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
+        const SaveMarks = await this.EvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
         console.log(updatedEvaluationMarks, 'updatedEvaluationMarks');
-        return updatedEvaluationMarks;
+        return { SaveMarks };
       }
       return 'all has been achieved successfully';
     } catch (error) {
