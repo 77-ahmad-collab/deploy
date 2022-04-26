@@ -9,6 +9,7 @@ export interface InternalAdvisor {
   advisorformid: string;
   projectList: string[];
   respondedList: string[];
+  isFirstTime: boolean;
 }
 export const InternalAdvisorSchema = new Schema({
   name: {
@@ -52,5 +53,9 @@ export const InternalAdvisorSchema = new Schema({
   respondedList: {
     type: [String],
     default: [],
+  },
+  isFirstTime: {
+    type: Boolean,
+    default: true,
   },
 });

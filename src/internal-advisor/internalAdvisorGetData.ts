@@ -264,7 +264,7 @@ export class InternalAdvisorGetData {
   async getProjectListforAdvisor(advisor, Model) {
     try {
       console.log(advisor, 'advisor in');
-      if (advisor.projectList.length == 0) {
+      if (advisor.projectList.length == 0 && advisor.isFirstTime) {
         const projectTitles = await this.StudentFormModel.find(
           { $or: [{ s_internal: advisor.name }, { s_external: advisor.name }] },
           { _id: 0, s_proj_title: 1 },
@@ -275,6 +275,7 @@ export class InternalAdvisorGetData {
           {
             $set: {
               projectList: projectTitles.map((val) => val.s_proj_title),
+              isFirstTime: false,
             },
           },
         );

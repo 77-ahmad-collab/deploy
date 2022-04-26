@@ -116,7 +116,9 @@ export class InternalAdvisorController {
     @Body('remarks') remarks: string,
   ) {
     const user = await this.InternalAdvisorModel.findOne({ id });
+
     if (!user) throw new NotFoundException('Not found with the given id');
+
     if (status == 'true') {
       const data = await this.internalAdvisorService.approveProposal(
         id,

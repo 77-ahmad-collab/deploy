@@ -8,6 +8,7 @@ export interface External {
   password: string;
   projectList: string[];
   respondedList: string[];
+  isFirstTime: boolean;
 }
 export const ExternalSchema = new Schema({
   name: {
@@ -43,5 +44,9 @@ export const ExternalSchema = new Schema({
   respondedList: {
     type: [String],
     default: [],
+  },
+  isFirstTime: {
+    type: Boolean,
+    default: true,
   },
 });
