@@ -265,12 +265,11 @@ export class InternalAdvisorGetData {
     try {
       console.log(advisor, 'advisor in');
       if (advisor.projectList.length == 0) {
-        const projectTitles = await Model.find(
-          {
-            s_internal: advisor.name,
-          },
+        const projectTitles = await this.StudentFormModel.find(
+          { $or: [{ s_internal: advisor.name }, { s_external: advisor.name }] },
           { _id: 0, s_proj_title: 1 },
         );
+        console.log(projectTitles, 'projectTitles');
         const updateAdvisor = await Model.findOneAndUpdate(
           { id: advisor.id },
           {
@@ -296,11 +295,12 @@ export class InternalAdvisorGetData {
       const advisor = await this.InternalAdvisorModel.findOne({ id });
       // console.log(advisor, 'advisor');
       if (!advisor) {
-        const data = await this.ExternalModel.findOne(
-          { id },
-          { s_proj_title: 1 },
+        const data = await this.ExternalModel.findOne({ id });
+        const projectTitles = await this.getProjectListforAdvisor(
+          data,
+          this.ExternalModel,
         );
-        return data;
+        return projectTitles;
       }
       const projectTitles = await this.getProjectListforAdvisor(
         advisor,
