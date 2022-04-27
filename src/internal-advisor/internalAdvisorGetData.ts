@@ -462,6 +462,28 @@ export class InternalAdvisorGetData {
           std4_weighted_average,
         };
       }
+      const internal = await this.InternalAdvisorModel.findOne({
+        id: body.supervior_id,
+      });
+      console.log('internale', internal);
+      if (internal.progressProjectList.includes(body.project_title)) {
+        const updateInternal = await this.InternalAdvisorModel.updateOne(
+          { id: body.supervior_id },
+          {
+            $set: {
+              progressProjectList: internal.progressProjectList.filter(
+                (val) => val !== body.project_title,
+              ),
+
+              progressRespondedList: [
+                ...internal.progressRespondedList,
+                body.project_title,
+              ],
+            },
+          },
+        );
+        console.log(updateInternal);
+      }
       const marks = await this.MarksModel.create(data);
       return { message: 'FIRST TIME SUBMisso', marks };
       //  else {
