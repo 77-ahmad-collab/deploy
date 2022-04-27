@@ -231,6 +231,15 @@ export class InternalAdvisorController {
       console.log(error);
     }
   }
+  @Get('/all/progress/projects/:id')
+  async getAllProgressProjects(@Param('id') id: number) {
+    try {
+      const data = await this.internalAdvisorGetData.getAllProgressProjects(id);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   @Post('/submission/progress/marks')
   async getMarks(@Body() body: any) {
     const data = await this.internalAdvisorGetData.getProgressMarks(body);

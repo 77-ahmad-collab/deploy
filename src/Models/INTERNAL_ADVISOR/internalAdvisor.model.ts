@@ -10,6 +10,9 @@ export interface InternalAdvisor {
   projectList: string[];
   respondedList: string[];
   isFirstTime: boolean;
+  progressProjectList: string[];
+  progressRespondedList: string[];
+  isProgressFirstTime: boolean;
 }
 export const InternalAdvisorSchema = new Schema({
   name: {
@@ -55,6 +58,18 @@ export const InternalAdvisorSchema = new Schema({
     default: [],
   },
   isFirstTime: {
+    type: Boolean,
+    default: true,
+  },
+  progressProjectList: {
+    type: [String],
+    default: [],
+  },
+  progressRespondedList: {
+    type: [String],
+    default: [],
+  },
+  isProgressFirstTime: {
     type: Boolean,
     default: true,
   },

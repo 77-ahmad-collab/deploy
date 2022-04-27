@@ -318,6 +318,59 @@ export class InternalAdvisorGetData {
       console.log(error);
     }
   }
+  async getProgressProjectListforAdvisor(advisor, Model) {
+    try {
+      // console.log(advisor, 'advisor in');
+      if (
+        advisor.progressProjectList.length == 0 &&
+        advisor.isProgressFirstTime
+      ) {
+        const projectTitles = await this.StudentFormModel.find(
+          { $or: [{ s_internal: advisor.name }] },
+          { _id: 0, s_proj_title: 1 },
+        );
+        console.log(projectTitles, 'projectTitles');
+        const updateAdvisor = await Model.findOneAndUpdate(
+          { id: advisor.id },
+          {
+            $set: {
+              progressProjectList: projectTitles.map((val) => val.s_proj_title),
+              isProgressFirstTime: false,
+            },
+          },
+        );
+        return projectTitles;
+      } else {
+        let projectTitles = advisor.progressProjectList;
+        projectTitles = projectTitles.map((str, index) => ({
+          s_proj_title: str,
+        }));
+        return projectTitles;
+      }
+    } catch (error) {
+      return error;
+    }
+  }
+  async getAllProgressProjects(id: number) {
+    try {
+      const advisor = await this.InternalAdvisorModel.findOne({ id });
+      console.log(advisor, 'advisor======================');
+
+      const projectTitles = await this.getProgressProjectListforAdvisor(
+        advisor,
+        this.InternalAdvisorModel,
+      );
+      // const projectTitles = await this.StudentFormModel.find(
+      //   {
+      //     s_internal: advisor.name,
+      //   },
+      //   { _id: 0, s_proj_title: 1 },
+      // );
+      return projectTitles;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   getWeightedAverage(mark1: number, mark2: number, mark3: number) {
     const multiplyByFactor = (mark, factor) => {
       return mark * factor;
