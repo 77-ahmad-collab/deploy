@@ -19,6 +19,7 @@ export interface Form {
   proposal_status: String;
   internalAdvisor_remarks: [index: String];
   proposal_remarks: [index: string];
+  external_evaluator: string;
 }
 
 export const FormSchema = new Schema({
@@ -96,5 +97,9 @@ export const FormSchema = new Schema({
   },
   proposal_remarks: {
     type: [String],
+  },
+  external_evaluator: {
+    type: String,
+    trim: true,
   },
 });

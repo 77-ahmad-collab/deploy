@@ -266,7 +266,12 @@ export class InternalAdvisorGetData {
       console.log(advisor, 'advisor in');
       if (advisor.projectList.length == 0 && advisor.isFirstTime) {
         const projectTitles = await this.StudentFormModel.find(
-          { $or: [{ s_internal: advisor.name }, { s_external: advisor.name }] },
+          {
+            $or: [
+              { s_internal: advisor.name },
+              { external_evaluator: advisor.name },
+            ],
+          },
           { _id: 0, s_proj_title: 1 },
         );
         console.log(projectTitles, 'projectTitles');
@@ -294,7 +299,7 @@ export class InternalAdvisorGetData {
   async getAllProjects(id: number) {
     try {
       const advisor = await this.InternalAdvisorModel.findOne({ id });
-      // console.log(advisor, 'advisor');
+      console.log(advisor, 'advisor>>');
       if (!advisor) {
         const data = await this.ExternalModel.findOne({ id });
         const projectTitles = await this.getProjectListforAdvisor(

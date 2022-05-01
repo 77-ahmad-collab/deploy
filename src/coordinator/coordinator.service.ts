@@ -95,6 +95,14 @@ export class CoordinatorService {
         date,
         time,
       } = body;
+      const form = await this.StudentFormModel.updateOne(
+        {
+          s_proj_title: project_title,
+        },
+        {
+          $set: { external_evaluator: external_evaluator },
+        },
+      );
       const evaluation = await this.EvaluationModel.create({
         location,
         project_title,
@@ -107,6 +115,7 @@ export class CoordinatorService {
         date,
         time,
       });
+
       return { evaluation, body };
     } catch (error) {
       return {
