@@ -20,6 +20,7 @@ export interface Form {
   internalAdvisor_remarks: [index: String];
   proposal_remarks: [index: string];
   external_evaluator: string;
+  isProgressResponded: boolean;
 }
 
 export const FormSchema = new Schema({
@@ -101,5 +102,9 @@ export const FormSchema = new Schema({
   external_evaluator: {
     type: String,
     trim: true,
+  },
+  isProgressResponded: {
+    type: Boolean,
+    default: true,
   },
 });

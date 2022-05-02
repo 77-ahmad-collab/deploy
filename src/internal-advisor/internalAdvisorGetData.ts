@@ -356,21 +356,25 @@ export class InternalAdvisorGetData {
       return error;
     }
   }
-  async getAllProgressProjects(id: number) {
+  async getAllProgressProjects(id: string) {
     try {
-      const advisor = await this.InternalAdvisorModel.findOne({ id });
-      console.log(advisor, 'advisor======================');
-
-      const projectTitles = await this.getProgressProjectListforAdvisor(
-        advisor,
-        this.InternalAdvisorModel,
+      const projectTitles = await this.StudentFormModel.find(
+        {
+          $or: [
+            { s_internal: id, isProgressResponded: true },
+            { s_external: id, isProgressResponded: true },
+          ],
+        },
+        { _id: 0, s_proj_title: 1 },
       );
-      // const projectTitles = await this.StudentFormModel.find(
-      //   {
-      //     s_internal: advisor.name,
-      //   },
-      //   { _id: 0, s_proj_title: 1 },
+      // const advisor = await this.InternalAdvisorModel.findOne({ id });
+      // console.log(advisor, 'advisor======================');
+
+      // const projectTitles = await this.getProgressProjectListforAdvisor(
+      //   advisor,
+      //   this.InternalAdvisorModel,
       // );
+
       return projectTitles;
     } catch (error) {
       console.log(error);
@@ -489,6 +493,15 @@ export class InternalAdvisorGetData {
         );
         console.log(updateInternal);
       }
+      const form = await this.StudentFormModel.findOne({
+        mem1: body.std1_rollNo,
+      });
+      console.log(form);
+      const updateForm = await this.StudentFormModel.updateOne(
+        { mem1: body.std1_rollNo },
+        { $set: { isProgressResponded: false } },
+      );
+      console.log(updateForm, 'updare form');
       const marks = await this.MarksModel.create(data);
       return { message: 'FIRST TIME SUBMisso', marks };
       //  else {

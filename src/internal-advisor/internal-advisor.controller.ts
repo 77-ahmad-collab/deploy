@@ -231,8 +231,8 @@ export class InternalAdvisorController {
       console.log(error);
     }
   }
-  @Get('/all/progress/projects/:id')
-  async getAllProgressProjects(@Param('id') id: number) {
+  @Get('/all/progress/projects')
+  async getAllProgressProjects(@Body('id') id: string) {
     try {
       const data = await this.internalAdvisorGetData.getAllProgressProjects(id);
       return data;
