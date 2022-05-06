@@ -264,34 +264,62 @@ export class InternalAdvisorGetData {
   async getProjectListforAdvisor(advisor, Model) {
     try {
       console.log(advisor, 'advisor in');
-      if (advisor.projectList.length == 0 && advisor.isFirstTime) {
-        const projectTitles = await this.StudentFormModel.find(
-          {
-            $or: [
-              { s_internal: advisor.name },
-              { external_evaluator: advisor.name },
-            ],
-          },
-          { _id: 0, s_proj_title: 1 },
-        );
-        console.log(projectTitles, 'projectTitles');
-        const updateAdvisor = await Model.findOneAndUpdate(
-          { id: advisor.id },
-          {
-            $set: {
-              projectList: projectTitles.map((val) => val.s_proj_title),
-              isFirstTime: false,
-            },
-          },
-        );
-        return projectTitles;
-      } else {
-        let projectTitles = advisor.projectList;
-        projectTitles = projectTitles.map((str, index) => ({
-          s_proj_title: str,
-        }));
-        return projectTitles;
+      let newProjectList = [];
+      const projectTitles = await this.StudentFormModel.find(
+        {
+          $or: [
+            { s_internal: advisor.name },
+            { external_evaluator: advisor.name },
+          ],
+        },
+        { _id: 0, s_proj_title: 1 },
+      );
+      console.log(projectTitles, 'projectTitles');
+      let projectList = advisor.projectList;
+
+      console.log(projectList);
+      for (let i = 0; i < projectTitles.length; i++) {
+        if (
+          projectList.includes(projectTitles[i].s_proj_title) ||
+          advisor.respondedList.includes(projectTitles[i].s_proj_title)
+        ) {
+          console.log('yes it inclued ine ', projectTitles[i].s_proj_title);
+        } else {
+          newProjectList.push(projectTitles[i].s_proj_title);
+        }
       }
+      console.log('new project st', newProjectList);
+      const updateAdvisor = await Model.findOneAndUpdate(
+        { id: advisor.id },
+        {
+          $set: {
+            projectList: [...projectList, ...newProjectList],
+          },
+        },
+      );
+      // if (advisor.projectList.length == 0 && advisor.isFirstTime) {
+      //   // const projectTitles = await this.StudentFormModel.find(
+      //   //   {
+      //   //     $or: [
+      //   //       { s_internal: advisor.name },
+      //   //       { external_evaluator: advisor.name },
+      //   //     ],
+      //   //   },
+      //   //   { _id: 0, s_proj_title: 1 },
+      //   // );
+      //   // console.log(projectTitles, 'projectTitles');
+
+      //   return projectTitles;
+      // } else {
+      let NewprojectTitles = advisor.projectList;
+      NewprojectTitles = [...projectList, ...newProjectList].map(
+        (str, index) => ({
+          s_proj_title: str,
+        }),
+      );
+      return NewprojectTitles;
+      // }
+      return projectTitles;
     } catch (error) {
       return error;
     }
@@ -299,9 +327,10 @@ export class InternalAdvisorGetData {
   async getAllProjects(id: number) {
     try {
       const advisor = await this.InternalAdvisorModel.findOne({ id });
-      console.log(advisor, 'advisor>>');
+      // console.log(advisor, 'advisor>>');
       if (!advisor) {
         const data = await this.ExternalModel.findOne({ id });
+        if (!data) return [];
         const projectTitles = await this.getProjectListforAdvisor(
           data,
           this.ExternalModel,
