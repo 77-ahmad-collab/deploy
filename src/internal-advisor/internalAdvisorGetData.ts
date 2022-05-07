@@ -530,8 +530,8 @@ export class InternalAdvisorGetData {
         mem1: body.std1_rollNo,
       });
       console.log(form);
-      const updateForm = await this.StudentFormModel.updateOne(
-        { mem1: body.std1_rollNo },
+      const updateForm = await this.EvaluationModel.updateOne(
+        { group_leader: body.std1_rollNo },
         { $set: { isProgressResponded: false } },
       );
       console.log(updateForm, 'updare form');
