@@ -11,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
 import { Model } from 'mongoose';
+import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
@@ -38,6 +39,8 @@ export class InternalAdvisorController {
     private readonly StudentModel: Model<StudentInterface>,
     private internalAdvisorGetData: InternalAdvisorGetData,
     @InjectModel('attendance') private attendanceModel: Model<Attendance>,
+    @InjectModel('Evaluation')
+    private EvaluationModel: Model<Evaluation>,
   ) {}
   @Get('/')
   async get() {
@@ -258,6 +261,14 @@ export class InternalAdvisorController {
   @Get('/submission/evaluation/average/:id')
   async getEvaluationAverage(@Param('id') id: string) {
     const data = await this.internalAdvisorGetData.getEvaluationAverage(id);
+    return data;
+  }
+  @Get('/all/allocated/projects')
+  async getAllAllocatedProjects() {
+    const data = this.EvaluationModel.find(
+      { isProgressResponded: false },
+      { project_title: 1, _id: 0 },
+    );
     return data;
   }
 }
