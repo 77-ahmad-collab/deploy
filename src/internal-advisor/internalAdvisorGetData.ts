@@ -268,14 +268,14 @@ export class InternalAdvisorGetData {
     try {
       console.log(advisor, 'advisor in');
       let newProjectList = [];
-      const projectTitles = await this.StudentFormModel.find(
+      const projectTitles = await this.EvaluationModel.find(
         {
           $or: [
-            { s_internal: advisor.name },
+            { supervisor: advisor.name },
             { external_evaluator: advisor.name },
           ],
         },
-        { _id: 0, s_proj_title: 1 },
+        { _id: 0, project_title: 1 },
       );
       console.log(projectTitles, 'projectTitles');
       let projectList = advisor.projectList;
@@ -283,12 +283,12 @@ export class InternalAdvisorGetData {
       console.log(projectList);
       for (let i = 0; i < projectTitles.length; i++) {
         if (
-          projectList.includes(projectTitles[i].s_proj_title) ||
-          advisor.respondedList.includes(projectTitles[i].s_proj_title)
+          projectList.includes(projectTitles[i].project_title) ||
+          advisor.respondedList.includes(projectTitles[i].project_title)
         ) {
-          console.log('yes it inclued ine ', projectTitles[i].s_proj_title);
+          console.log('yes it inclued ine ', projectTitles[i].project_title);
         } else {
-          newProjectList.push(projectTitles[i].s_proj_title);
+          newProjectList.push(projectTitles[i].project_title);
         }
       }
       console.log('new project st', newProjectList);
