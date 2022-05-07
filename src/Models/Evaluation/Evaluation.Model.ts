@@ -10,6 +10,7 @@ export interface Evaluation {
   external_evaluator: string;
   date: string;
   time: string;
+  isProgressResponded: boolean;
 }
 export const EvaluationSchema = new Schema({
   location: {
@@ -47,5 +48,9 @@ export const EvaluationSchema = new Schema({
   },
   time: {
     type: String,
+  },
+  isProgressResponded: {
+    type: Boolean,
+    default: true,
   },
 });

@@ -10,6 +10,7 @@ import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
 import { StudentInterface } from 'src/Models/Student/student.model';
 import { External } from 'src/Models/External/Externel.Model';
+import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
 @Injectable()
 export class InternalAdvisorGetData {
   constructor(
@@ -25,6 +26,8 @@ export class InternalAdvisorGetData {
     private EvaluationMarksModel: Model<EvaluationMarks>,
     @InjectModel('External')
     private ExternalModel: Model<External>,
+    @InjectModel('Evaluation')
+    private EvaluationModel: Model<Evaluation>,
   ) {}
 
   async getData(students: any[]) {
@@ -387,15 +390,16 @@ export class InternalAdvisorGetData {
   }
   async getAllProgressProjects(id: string) {
     try {
-      const projectTitles = await this.StudentFormModel.find(
+      const projectTitles = await this.EvaluationModel.find(
         {
           $or: [
-            { s_internal: id, isProgressResponded: true },
-            { s_external: id, isProgressResponded: true },
+            { supervisor: id, isProgressResponded: true },
+            { external_evaluator: id, isProgressResponded: true },
           ],
         },
-        { _id: 0, s_proj_title: 1 },
+        { _id: 0, project_title: 1 },
       );
+      console.log(projectTitles, 'project tiles===');
       // const advisor = await this.InternalAdvisorModel.findOne({ id });
       // console.log(advisor, 'advisor======================');
 
