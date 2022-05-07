@@ -652,7 +652,7 @@ export class InternalAdvisorGetData {
     }
   }
   async getAverage(id: number) {
-    const Marks = await this.MarksModel.findOne({ supervior_id: id });
+    const Marks = await this.MarksModel.find({ supervior_id: id });
     return Marks;
   }
   getSingleEvaluationAverge(number: number[]) {
