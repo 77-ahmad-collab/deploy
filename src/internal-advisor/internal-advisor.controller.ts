@@ -248,9 +248,9 @@ export class InternalAdvisorController {
     const data = await this.internalAdvisorGetData.getProgressMarks(body);
     return data;
   }
-  @Get('/submission/progress/average/:id')
-  async getAverage(@Param('id') id: number) {
-    const data = await this.internalAdvisorGetData.getAverage(id);
+  @Post('/submission/progress/average')
+  async getAverage(@Body() body: any) {
+    const data = await this.internalAdvisorGetData.getAverage(body.id);
     return data;
   }
   @Post('/submission/evaluation/marks')
