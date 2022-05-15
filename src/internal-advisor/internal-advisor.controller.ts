@@ -273,7 +273,9 @@ export class InternalAdvisorController {
   }
   @Get('/all/allocated/evaluation')
   async getAllAllocatedEvaluations() {
-    const data = this.EvaluationModel.find(
+    const testData = await this.EvaluationModel.find();
+    console.log(testData, 'test adat');
+    const data = await this.EvaluationModel.find(
       { isEvaluationResponded: false },
       { project_title: 1, _id: 0 },
     );
