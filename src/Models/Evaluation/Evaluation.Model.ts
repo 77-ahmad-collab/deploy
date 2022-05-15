@@ -12,6 +12,7 @@ export interface Evaluation {
   time: string;
   isProgressResponded: boolean;
   isResultSubmitted: boolean;
+  isEvaluationResponded: boolean;
 }
 export const EvaluationSchema = new Schema({
   location: {
@@ -55,6 +56,10 @@ export const EvaluationSchema = new Schema({
     default: true,
   },
   isResultSubmitted: {
+    type: Boolean,
+    default: true,
+  },
+  isEvaluationResponded: {
     type: Boolean,
     default: true,
   },

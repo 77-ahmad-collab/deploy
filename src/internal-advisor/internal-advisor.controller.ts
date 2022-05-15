@@ -271,4 +271,12 @@ export class InternalAdvisorController {
     );
     return data;
   }
+  @Get('/all/allocated/evaluation')
+  async getAllAllocatedEvaluations() {
+    const data = this.EvaluationModel.find(
+      { isEvaluationResponded: false },
+      { project_title: 1, _id: 0 },
+    );
+    return data;
+  }
 }

@@ -968,6 +968,12 @@ export class InternalAdvisorGetData {
             { std1_rollNo: body.std1_rollNo },
             { $set: data },
           );
+        const myEvaluation = await this.EvaluationModel.updateOne(
+          {
+            group_leader: body.std1_rollNo,
+          },
+          { $set: { isEvaluationResponded: false } },
+        );
         const internalAdvisor = await this.InternalAdvisorModel.findOne({
           id: body.id,
         });
