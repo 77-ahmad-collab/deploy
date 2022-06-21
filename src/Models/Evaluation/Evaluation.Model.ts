@@ -8,6 +8,8 @@ export interface Evaluation {
   external: string;
   chairmen: string;
   external_evaluator: string;
+  external_evaluator2: string;
+  external_evaluator3: string;
   date: string;
   time: string;
   isProgressResponded: boolean;
@@ -43,6 +45,12 @@ export const EvaluationSchema = new Schema({
     type: String,
   },
   external_evaluator: {
+    type: String,
+  },
+  external_evaluator2: {
+    type: String,
+  },
+  external_evaluator3: {
     type: String,
   },
   date: {

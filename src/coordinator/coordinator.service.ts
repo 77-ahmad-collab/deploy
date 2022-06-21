@@ -92,6 +92,8 @@ export class CoordinatorService {
         external,
         chairmen,
         external_evaluator,
+        external_evaluator2,
+        external_evaluator3,
         date,
         time,
       } = body;
@@ -112,6 +114,8 @@ export class CoordinatorService {
         external,
         chairmen,
         external_evaluator,
+        external_evaluator2,
+        external_evaluator3,
         date,
         time,
       });
