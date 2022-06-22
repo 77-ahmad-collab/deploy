@@ -1069,7 +1069,47 @@ export class InternalAdvisorGetData {
           std4_Reporting_and_Presentation: 0,
         },
       );
-      return evaluationMarks;
+      const {
+        std1_Methodology,
+        std1_Adherence_to_Work_Plan,
+        std1_Reporting_and_Presentation,
+        std2_Literature_Review,
+        std2_Methodology,
+        std2_Adherence_to_Work_Plan,
+        std2_Reporting_and_Presentation,
+        std3_Literature_Review,
+        std3_Methodology,
+        std3_Adherence_to_Work_Plan,
+        std3_Reporting_and_Presentation,
+        std4_Literature_Review,
+        std4_Methodology,
+        std4_Adherence_to_Work_Plan,
+        std4_Reporting_and_Presentation,
+      } = evaluationMarks;
+      let evaluatedResult;
+      evaluatedResult = {
+        std1_Methodology,
+        std1_Adherence_to_Work_Plan,
+        std1_Reporting_and_Presentation,
+        std2_Literature_Review,
+        std2_Methodology,
+        std2_Adherence_to_Work_Plan,
+        std2_Reporting_and_Presentation,
+        std3_Literature_Review,
+        std3_Methodology,
+        std3_Adherence_to_Work_Plan,
+        std3_Reporting_and_Presentation,
+      };
+      if (evaluationMarks.std4_weighted_average !== 0) {
+        evaluatedResult = {
+          ...evaluatedResult,
+          std4_Literature_Review,
+          std4_Methodology,
+          std4_Adherence_to_Work_Plan,
+          std4_Reporting_and_Presentation,
+        };
+      }
+      return evaluatedResult;
     } catch (error) {
       return error;
     }
