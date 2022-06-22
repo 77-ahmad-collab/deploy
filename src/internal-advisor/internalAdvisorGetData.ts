@@ -273,6 +273,8 @@ export class InternalAdvisorGetData {
           $or: [
             { supervisor: advisor.name },
             { external_evaluator: advisor.name },
+            { external_evaluator2: advisor.name },
+            { external_evaluator3: advisor.name },
           ],
         },
         { _id: 0, project_title: 1 },
