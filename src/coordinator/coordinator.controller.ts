@@ -73,7 +73,6 @@ export class CoordinatorController {
   @Get('/all/EvaluationLocation')
   async getAllEvaluationLocation() {
     const data = await this.CoordinatorModel.find();
-    console.log(data[0].locationOfEvaluation);
     return {
       data: data[0].locationOfEvaluation,
     };
@@ -81,7 +80,6 @@ export class CoordinatorController {
   @Get('shedule/evaluation')
   async getAllEvaluation() {
     try {
-      console.log('api hited');
       const data = await this.CoordinatorService.getAllEvaluationShedule();
       return data;
     } catch (error) {
