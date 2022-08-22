@@ -148,7 +148,7 @@ export class CoordinatorService {
   }
   async getAllEvaluationShedule(midEvaluation: string) {
     //  target the form model
-    let data = await this.EvaluationModel.find({}, { _id: 0, midEvaluation });
+    let data = await this.EvaluationModel.find({ midEvaluation }, { _id: 0 });
     console.log(data, 'the data length');
     let Eval = await Promise.all(
       data.map((value) => {
