@@ -62,6 +62,7 @@ export class CoordinatorController {
       return 'jwt token expired';
     }
   }
+  ///---for final evaluation---/// same for mid just in final it will overwrite
   @Post('/evaluation')
   async evaluation(@Body() body: any) {
     const data = await this.CoordinatorService.evaluation(body);
@@ -70,6 +71,7 @@ export class CoordinatorController {
       data,
     };
   }
+  ///---for final evaluation---/// same for mid just in final it will overwrite
   @Get('/all/EvaluationLocation')
   async getAllEvaluationLocation() {
     const data = await this.CoordinatorModel.find();
@@ -77,10 +79,11 @@ export class CoordinatorController {
       data: data[0].locationOfEvaluation,
     };
   }
-  @Get('shedule/evaluation')
-  async getAllEvaluation() {
+  ///---for final evaluation---/// same for mid just in final it will overwrite
+  @Get('shedule/evaluation/:mid') //if mid then true
+  async getAllEvaluation(@Param('mid') mid: string) {
     try {
-      const data = await this.CoordinatorService.getAllEvaluationShedule();
+      const data = await this.CoordinatorService.getAllEvaluationShedule(mid);
       return data;
     } catch (error) {
       return error;

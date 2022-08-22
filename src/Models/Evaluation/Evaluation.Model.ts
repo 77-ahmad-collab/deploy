@@ -15,6 +15,7 @@ export interface Evaluation {
   isProgressResponded: boolean;
   isResultSubmitted: boolean;
   isEvaluationResponded: boolean;
+  midEvaluation: boolean;
 }
 export const EvaluationSchema = new Schema({
   location: {
@@ -68,6 +69,10 @@ export const EvaluationSchema = new Schema({
     default: true,
   },
   isEvaluationResponded: {
+    type: Boolean,
+    default: true,
+  },
+  midEvaluation: {
     type: Boolean,
     default: true,
   },

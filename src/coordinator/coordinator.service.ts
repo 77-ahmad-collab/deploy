@@ -96,6 +96,7 @@ export class CoordinatorService {
         external_evaluator3,
         date,
         time,
+        midEvaluation,
       } = body;
       const form = await this.StudentFormModel.updateOne(
         {
@@ -118,6 +119,7 @@ export class CoordinatorService {
         external_evaluator3,
         date,
         time,
+        midEvaluation,
       });
 
       return { evaluation, body };
@@ -144,9 +146,9 @@ export class CoordinatorService {
       console.log(error);
     }
   }
-  async getAllEvaluationShedule() {
+  async getAllEvaluationShedule(midEvaluation: string) {
     //  target the form model
-    let data = await this.EvaluationModel.find({}, { _id: 0 });
+    let data = await this.EvaluationModel.find({}, { _id: 0, midEvaluation });
     console.log(data, 'the data length');
     let Eval = await Promise.all(
       data.map((value) => {
