@@ -8,6 +8,6 @@ async function bootstrap() {
   const PORT = process.env.PORT || 5000;
   console.log('app is listening on port 5000');
   console.log(process.env.PORT);
-  await app.listen( PORT);
+  await app.listen(PORT);
 }
 bootstrap();
