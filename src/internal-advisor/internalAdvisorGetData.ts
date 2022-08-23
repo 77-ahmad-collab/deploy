@@ -264,72 +264,113 @@ export class InternalAdvisorGetData {
     const leadersList = await this.getLeaders(Attendance);
     return leadersList;
   }
-  async getProjectListforAdvisor(advisor, Model) {
+  async getProjectListforAdvisor(advisor, Model, mid) {
     try {
-      console.log(advisor, 'advisor in');
-      let newProjectList = [];
-      const projectTitles = await this.EvaluationModel.find(
-        {
-          $or: [
-            { supervisor: advisor.name },
-            { external_evaluator: advisor.name },
-            { external_evaluator2: advisor.name },
-            { external_evaluator3: advisor.name },
-          ],
-        },
-        { _id: 0, project_title: 1 },
-      );
-      console.log(projectTitles, 'projectTitles');
-      let projectList = advisor.projectList;
-
-      console.log(projectList);
-      for (let i = 0; i < projectTitles.length; i++) {
-        if (
-          projectList.includes(projectTitles[i].project_title) ||
-          advisor.respondedList.includes(projectTitles[i].project_title)
-        ) {
-          console.log('yes it inclued ine ', projectTitles[i].project_title);
-        } else {
-          newProjectList.push(projectTitles[i].project_title);
-        }
-      }
-      console.log('new project st', newProjectList);
-      const updateAdvisor = await Model.findOneAndUpdate(
-        { id: advisor.id },
-        {
-          $set: {
-            projectList: [...projectList, ...newProjectList],
+      if (mid === 'true') {
+        console.log(advisor, 'advisor in');
+        let newProjectList = [];
+        const projectTitles = await this.EvaluationModel.find(
+          {
+            $or: [
+              { supervisor: advisor.name },
+              { external_evaluator: advisor.name },
+              { external_evaluator2: advisor.name },
+              { external_evaluator3: advisor.name },
+              { midEvaluation: mid },
+            ],
           },
-        },
-      );
-      // if (advisor.projectList.length == 0 && advisor.isFirstTime) {
-      //   // const projectTitles = await this.StudentFormModel.find(
-      //   //   {
-      //   //     $or: [
-      //   //       { s_internal: advisor.name },
-      //   //       { external_evaluator: advisor.name },
-      //   //     ],
-      //   //   },
-      //   //   { _id: 0, s_proj_title: 1 },
-      //   // );
-      //   // console.log(projectTitles, 'projectTitles');
+          { _id: 0, project_title: 1 },
+        );
+        console.log(projectTitles, 'projectTitles');
+        let projectList = [];
 
-      //   return projectTitles;
-      // } else {
-      let NewprojectTitles = advisor.projectList;
-      NewprojectTitles = [...projectList, ...newProjectList].map(
-        (str, index) => ({
-          s_proj_title: str,
-        }),
-      );
-      return NewprojectTitles;
-      // }
-      return projectTitles;
+        projectList = advisor.projectList;
+
+        console.log(projectList);
+        for (let i = 0; i < projectTitles.length; i++) {
+          if (
+            projectList.includes(projectTitles[i].project_title) ||
+            advisor.respondedList.includes(projectTitles[i].project_title)
+          ) {
+            console.log('yes it inclued ine ', projectTitles[i].project_title);
+          } else {
+            newProjectList.push(projectTitles[i].project_title);
+          }
+        }
+        console.log('new project st', newProjectList);
+        const updateAdvisor = await Model.findOneAndUpdate(
+          { id: advisor.id },
+          {
+            $set: {
+              projectList: [...projectList, ...newProjectList],
+            },
+          },
+        );
+
+        let NewprojectTitles = advisor.projectList;
+        NewprojectTitles = [...projectList, ...newProjectList].map(
+          (str, index) => ({
+            s_proj_title: str,
+          }),
+        );
+        return NewprojectTitles;
+      } else {
+        //----------------------------
+        console.log(advisor, 'advisor in');
+        let newProjectList = [];
+        const projectTitles = await this.EvaluationModel.find(
+          {
+            $or: [
+              { supervisor: advisor.name },
+              { external_evaluator: advisor.name },
+              { external_evaluator2: advisor.name },
+              { external_evaluator3: advisor.name },
+              { midEvaluation: mid },
+            ],
+          },
+          { _id: 0, project_title: 1 },
+        );
+        console.log(projectTitles, 'projectTitles');
+        let projectList = [];
+
+        projectList = advisor.finalprojectList;
+
+        console.log(projectList);
+        for (let i = 0; i < projectTitles.length; i++) {
+          if (
+            projectList.includes(projectTitles[i].project_title) ||
+            advisor.finalrespondedList.includes(projectTitles[i].project_title)
+          ) {
+            console.log('yes it inclued ine ', projectTitles[i].project_title);
+          } else {
+            newProjectList.push(projectTitles[i].project_title);
+          }
+        }
+        console.log('new project st', newProjectList);
+        const updateAdvisor = await Model.findOneAndUpdate(
+          { id: advisor.id },
+          {
+            $set: {
+              finalprojectList: [...projectList, ...newProjectList],
+            },
+          },
+        );
+
+        let NewprojectTitles = advisor.finalprojectList;
+        NewprojectTitles = [...projectList, ...newProjectList].map(
+          (str, index) => ({
+            s_proj_title: str,
+          }),
+        );
+        return NewprojectTitles;
+
+        ///-----------------
+      }
     } catch (error) {
       return error;
     }
   }
-  async getAllProjects(id: number) {
+  async getAllProjects(id: number, mid: string) {
     try {
       const advisor = await this.InternalAdvisorModel.findOne({ id });
       // console.log(advisor, 'advisor>>');
@@ -339,12 +380,14 @@ export class InternalAdvisorGetData {
         const projectTitles = await this.getProjectListforAdvisor(
           data,
           this.ExternalModel,
+          mid,
         );
         return projectTitles;
       }
       const projectTitles = await this.getProjectListforAdvisor(
         advisor,
         this.InternalAdvisorModel,
+        mid,
       );
       // const projectTitles = await this.StudentFormModel.find(
       //   {

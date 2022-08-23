@@ -7,7 +7,9 @@ export interface External {
   designation: string;
   password: string;
   projectList: string[];
+  finalprojectList: string[];
   respondedList: string[];
+  finalrespondedList: string[];
   isFirstTime: boolean;
 }
 export const ExternalSchema = new Schema({
@@ -41,7 +43,16 @@ export const ExternalSchema = new Schema({
     type: [String],
     default: [],
   },
+  finalprojectList: {
+    type: [String],
+    default: [],
+  },
+
   respondedList: {
+    type: [String],
+    default: [],
+  },
+  finalrespondedList: {
     type: [String],
     default: [],
   },

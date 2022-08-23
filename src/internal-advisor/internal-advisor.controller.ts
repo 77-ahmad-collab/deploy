@@ -225,10 +225,10 @@ export class InternalAdvisorController {
       return error;
     }
   }
-  @Get('/all/projects/:id')
-  async getAllProjects(@Param('id') id: number) {
+  @Get('/all/projects/:id/:mid') // mid
+  async getAllProjects(@Param('id') id: number, @Param('mid') mid: string) {
     try {
-      const data = await this.internalAdvisorGetData.getAllProjects(id);
+      const data = await this.internalAdvisorGetData.getAllProjects(id, mid);
       return data;
     } catch (error) {
       console.log(error);
@@ -243,27 +243,27 @@ export class InternalAdvisorController {
       console.log(error);
     }
   }
-  @Post('/submission/progress/marks')
+  @Post('/submission/progress/marks') // dont need in final evaluation
   async getMarks(@Body() body: any) {
     const data = await this.internalAdvisorGetData.getProgressMarks(body);
     return data;
   }
-  @Post('/submission/progress/average')
+  @Post('/submission/progress/average') // dont need in final evaluation
   async getAverage(@Body() body: any) {
     const data = await this.internalAdvisorGetData.getAverage(body.id);
     return data;
   }
-  @Post('/submission/evaluation/marks')
+  @Post('/submission/evaluation/marks') // mid evaluation marks submiision
   async getEvaluationMarks(@Body() body: any) {
     const data = await this.internalAdvisorGetData.getEvaluationMarks(body);
     return data;
   }
-  @Get('/submission/evaluation/average/:id')
+  @Get('/submission/evaluation/average/:id') //get mif marks
   async getEvaluationAverage(@Param('id') id: string) {
     const data = await this.internalAdvisorGetData.getEvaluationAverage(id);
     return data;
   }
-  @Get('/all/allocated/projects')
+  @Get('/all/allocated/projects') // dont need
   async getAllAllocatedProjects() {
     const data = this.EvaluationModel.find(
       { isProgressResponded: false },
