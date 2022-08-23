@@ -11,6 +11,7 @@ import { Form } from 'src/Models/Student/form.model';
 import { StudentInterface } from 'src/Models/Student/student.model';
 import { External } from 'src/Models/External/Externel.Model';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
+import { FinalEvaluationMarks } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
 @Injectable()
 export class InternalAdvisorGetData {
   constructor(
@@ -24,6 +25,8 @@ export class InternalAdvisorGetData {
     @InjectModel('Marks') private MarksModel: Model<Marks>,
     @InjectModel('EvaluationMarks')
     private EvaluationMarksModel: Model<EvaluationMarks>,
+    @InjectModel('FinalEvaluationMarks')
+    private FinalEvaluationMarksModel: Model<FinalEvaluationMarks>,
     @InjectModel('External')
     private ExternalModel: Model<External>,
     @InjectModel('Evaluation')
@@ -713,6 +716,7 @@ export class InternalAdvisorGetData {
       const EvaluationMarks = await this.EvaluationMarksModel.findOne({
         std1_rollNo: body.std1_rollNo,
       });
+
       console.log(EvaluationMarks, 'there is');
       let data;
       if (!EvaluationMarks) {
@@ -1071,6 +1075,376 @@ export class InternalAdvisorGetData {
       return error;
     }
   }
+  async getFinalEvaluationMarks(body) {
+    try {
+      const EvaluationMarks = await this.FinalEvaluationMarksModel.findOne({
+        std1_rollNo: body.std1_rollNo,
+      });
+
+      console.log(EvaluationMarks, 'there is');
+      let data;
+      if (!EvaluationMarks) {
+        console.log('frst time');
+
+        data = {
+          std1_rollNo: body.std1_rollNo,
+          std1_Literature_Review: [body.std1_Literature_Review],
+          std1_Methodology: [body.std1_Methodology],
+          std1_Adherence_to_Work_Plan: [body.std1_Adherence_to_Work_Plan],
+          std1_Reporting_and_Presentation: [
+            body.std1_Reporting_and_Presentation,
+          ],
+          std2_rollNo: body.std2_rollNo,
+          std2_Literature_Review: [body.std2_Literature_Review],
+          std2_Methodology: [body.std2_Methodology],
+          std2_Adherence_to_Work_Plan: [body.std2_Adherence_to_Work_Plan],
+          std2_Reporting_and_Presentation: [
+            body.std2_Reporting_and_Presentation,
+          ],
+          std3_rollNo: body.std3_rollNo,
+          std3_Literature_Review: [body.std3_Literature_Review],
+          std3_Methodology: [body.std3_Methodology],
+          std3_Adherence_to_Work_Plan: [body.std3_Adherence_to_Work_Plan],
+          std3_Reporting_and_Presentation: [
+            body.std3_Reporting_and_Presentation,
+          ],
+          count: body.count,
+          project_title: body.project_title,
+          id: body.id,
+          comment: [body.comment],
+          isPanelSubmitted: false,
+        };
+        if (body.count === 4) {
+          data = {
+            ...data,
+            std4_rollNo: body.std4_rollNo,
+            std4_Literature_Review: [body.std4_Literature_Review],
+
+            std4_Methodology: [body.std4_Methodology],
+            std4_Adherence_to_Work_Plan: [body.std4_Adherence_to_Work_Plan],
+            std4_Reporting_and_Presentation: [
+              body.std4_Reporting_and_Presentation,
+            ],
+          };
+        }
+        const SaveMarks = await this.FinalEvaluationMarksModel.create(data);
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.id,
+        });
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({ id: body.id });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.id },
+            {
+              $set: {
+                finalprojectList: external.finalprojectList.filter(
+                  (val) => val !== body.project_title,
+                ),
+
+                finalrespondedList: [
+                  ...external.finalrespondedList,
+                  body.project_title,
+                ],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.id,
+          });
+          console.log('internale', internal);
+          if (internal.finalprojectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.id },
+              {
+                $set: {
+                  finalprojectList: internal.finalprojectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
+
+                  finalrespondedList: [
+                    ...internal.finalrespondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
+        return { SaveMarks };
+      } else {
+        console.log('entered here');
+        const EvaluationMarks = await this.FinalEvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
+
+        console.log(EvaluationMarks, '===============there is');
+        data = {
+          std1_Literature_Review: [
+            ...EvaluationMarks.std1_Literature_Review,
+            body.std1_Literature_Review,
+          ],
+          std1_Methodology: [
+            ...EvaluationMarks.std1_Methodology,
+            body.std1_Methodology,
+          ],
+          std1_Adherence_to_Work_Plan: [
+            ...EvaluationMarks.std1_Adherence_to_Work_Plan,
+            body.std1_Adherence_to_Work_Plan,
+          ],
+          std1_Reporting_and_Presentation: [
+            ...EvaluationMarks.std1_Reporting_and_Presentation,
+            body.std1_Reporting_and_Presentation,
+          ],
+
+          std2_Literature_Review: [
+            ...EvaluationMarks.std2_Literature_Review,
+            body.std2_Literature_Review,
+          ],
+          std2_Methodology: [
+            ...EvaluationMarks.std2_Methodology,
+            body.std2_Methodology,
+          ],
+          std2_Adherence_to_Work_Plan: [
+            ...EvaluationMarks.std2_Adherence_to_Work_Plan,
+            body.std2_Adherence_to_Work_Plan,
+          ],
+          std2_Reporting_and_Presentation: [
+            ...EvaluationMarks.std2_Reporting_and_Presentation,
+            body.std2_Reporting_and_Presentation,
+          ],
+
+          std3_Literature_Review: [
+            ...EvaluationMarks.std3_Literature_Review,
+            body.std3_Literature_Review,
+          ],
+          std3_Methodology: [
+            ...EvaluationMarks.std3_Methodology,
+            body.std3_Methodology,
+          ],
+          std3_Adherence_to_Work_Plan: [
+            ...EvaluationMarks.std3_Adherence_to_Work_Plan,
+            body.std3_Adherence_to_Work_Plan,
+          ],
+          std3_Reporting_and_Presentation: [
+            ...EvaluationMarks.std3_Reporting_and_Presentation,
+            body.std3_Reporting_and_Presentation,
+          ],
+          count: body.count,
+          project_title: body.project_title,
+          comment: [...EvaluationMarks.comment, body.comment],
+        };
+        console.log(data, 'he dataaa');
+        if (body.count === 4) {
+          data = {
+            ...data,
+
+            std4_Literature_Review: [
+              ...EvaluationMarks.std4_Literature_Review,
+              body.std4_Literature_Review,
+            ],
+
+            std4_Methodology: [
+              ...EvaluationMarks.std4_Methodology,
+              body.std4_Methodology,
+            ],
+            std4_Adherence_to_Work_Plan: [
+              ...EvaluationMarks.std4_Adherence_to_Work_Plan,
+              body.std4_Adherence_to_Work_Plan,
+            ],
+            std4_Reporting_and_Presentation: [
+              ...EvaluationMarks.std4_Reporting_and_Presentation,
+              body.std4_Reporting_and_Presentation,
+            ],
+          };
+        }
+        const checkLength = [
+          ...EvaluationMarks.std1_Methodology,
+          body.std1_Methodology,
+        ].length;
+        console.log(checkLength, 'check length');
+        if (checkLength === 3) {
+          console.log(' i shoud not enter here');
+          const std1_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Literature_Review,
+          );
+          const std1_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Methodology,
+          );
+          const std1_Adherence_to_Work_Plan_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Adherence_to_Work_Plan,
+            );
+          const std1_Reporting_and_Presentation_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Reporting_and_Presentation,
+            );
+          const std2_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Literature_Review,
+          );
+          const std2_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Methodology,
+          );
+          const std2_Adherence_to_Work_Plan_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std2_Adherence_to_Work_Plan,
+            );
+          const std2_Reporting_and_Presentation_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std2_Reporting_and_Presentation,
+            );
+          const std3_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Literature_Review,
+          );
+          const std3_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Methodology,
+          );
+          const std3_Adherence_to_Work_Plan_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std3_Adherence_to_Work_Plan,
+            );
+          const std3_Reporting_and_Presentation_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std3_Reporting_and_Presentation,
+            );
+          const std1_weighted_average = this.getEvaluationWeightedAverage(
+            std1_Literature_Review_average,
+            std1_Methodology_average,
+            std1_Adherence_to_Work_Plan_average,
+            std1_Reporting_and_Presentation_average,
+          );
+          const std2_weighted_average = this.getEvaluationWeightedAverage(
+            std2_Literature_Review_average,
+            std2_Methodology_average,
+            std2_Adherence_to_Work_Plan_average,
+
+            std2_Reporting_and_Presentation_average,
+          );
+          const std3_weighted_average = this.getEvaluationWeightedAverage(
+            std3_Literature_Review_average,
+            std3_Methodology_average,
+            std3_Adherence_to_Work_Plan_average,
+            std3_Reporting_and_Presentation_average,
+          );
+          data = {
+            ...data,
+            std1_Literature_Review_average,
+            std1_Methodology_average,
+            std1_Adherence_to_Work_Plan_average,
+            std1_Reporting_and_Presentation_average,
+            std2_Literature_Review_average,
+            std2_Methodology_average,
+            std2_Adherence_to_Work_Plan_average,
+            std2_Reporting_and_Presentation_average,
+            std3_Literature_Review_average,
+            std3_Methodology_average,
+            std3_Adherence_to_Work_Plan_average,
+            std3_Reporting_and_Presentation_average,
+            std1_weighted_average,
+            std2_weighted_average,
+            std3_weighted_average,
+            isPanelSubmitted: true,
+          };
+          if (body.count === 4) {
+            const std4_Literature_Review_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Literature_Review,
+              );
+            const std4_Methodology_average = this.getSingleEvaluationAverge(
+              EvaluationMarks.std4_Methodology,
+            );
+            const std4_Adherence_to_Work_Plan_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Adherence_to_Work_Plan,
+              );
+            const std4_Reporting_and_Presentation_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Reporting_and_Presentation,
+              );
+            const std4_weighted_average = this.getEvaluationWeightedAverage(
+              std4_Literature_Review_average,
+              std4_Methodology_average,
+              std4_Adherence_to_Work_Plan_average,
+              std4_Reporting_and_Presentation_average,
+            );
+            data = {
+              ...data,
+              std4_Literature_Review_average,
+              std4_Methodology_average,
+              std4_Adherence_to_Work_Plan_average,
+              std4_Reporting_and_Presentation_average,
+              std4_weighted_average,
+            };
+          }
+        }
+        console.log('------------------final data', data);
+        const updatedEvaluationMarks =
+          await this.FinalEvaluationMarksModel.updateOne(
+            { std1_rollNo: body.std1_rollNo },
+            { $set: data },
+          );
+        const myEvaluation = await this.EvaluationModel.updateOne(
+          {
+            group_leader: body.std1_rollNo,
+          },
+          { $set: { isfinalEvaluationResponded: false } },
+        );
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.id,
+        });
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({ id: body.id });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.id },
+            {
+              $set: {
+                finalprojectList: external.finalprojectList.filter(
+                  (val) => val !== body.project_title,
+                ),
+
+                finalrespondedList: [
+                  ...external.finalrespondedList,
+                  body.project_title,
+                ],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.id,
+          });
+          console.log('internale', internal);
+          if (internal.finalprojectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.id },
+              {
+                $set: {
+                  finalprojectList: internal.projectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
+
+                  finalrespondedList: [
+                    ...internal.respondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
+        const SaveMarks = await this.FinalEvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
+        console.log(updatedEvaluationMarks, 'updatedEvaluationMarks');
+        return { SaveMarks };
+      }
+      return 'all has been achieved successfully';
+    } catch (error) {
+      return error;
+    }
+  }
   getEvaluationWeightedAverage(
     mark1: number,
     mark2: number,
@@ -1087,9 +1461,15 @@ export class InternalAdvisorGetData {
       multiplyByFactor(mark4, 0.12);
     return resultAverage;
   }
-  async getEvaluationAverage(id: string) {
+  async getEvaluationAverage(id: string, mid) {
     try {
-      const evaluationMarks = await this.EvaluationMarksModel.findOne(
+      // let collection;
+      let Collection = this.EvaluationMarksModel;
+      if (mid !== 'true') {
+        Collection = this.FinalEvaluationMarksModel;
+      }
+      // } else collection = this.FinalEvaluationMarksModel;
+      const evaluationMarks = await Collection.findOne(
         {
           std1_rollNo: id,
         },

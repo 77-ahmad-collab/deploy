@@ -225,7 +225,7 @@ export class InternalAdvisorController {
       return error;
     }
   }
-  @Get('/all/projects/:id/:mid') // mid
+  @Get('/all/projects/:id/:mid') // mid 1 updated that need tobe given today
   async getAllProjects(@Param('id') id: number, @Param('mid') mid: string) {
     try {
       const data = await this.internalAdvisorGetData.getAllProjects(id, mid);
@@ -234,7 +234,7 @@ export class InternalAdvisorController {
       console.log(error);
     }
   }
-  @Post('/all/progress/projects')
+  @Post('/all/progress/projects') // dont need in final evalution
   async getAllProgressProjects(@Body('id') id: string) {
     try {
       const data = await this.internalAdvisorGetData.getAllProgressProjects(id);
@@ -253,14 +253,27 @@ export class InternalAdvisorController {
     const data = await this.internalAdvisorGetData.getAverage(body.id);
     return data;
   }
-  @Post('/submission/evaluation/marks') // mid evaluation marks submiision
-  async getEvaluationMarks(@Body() body: any) {
-    const data = await this.internalAdvisorGetData.getEvaluationMarks(body);
-    return data;
+  @Post('/submission/evaluation/marks/:mid') // mid evaluation marks submiision update 2222
+  async getEvaluationMarks(@Body() body: any, @Param('mid') mid: string) {
+    if (mid === 'true') {
+      const data = await this.internalAdvisorGetData.getEvaluationMarks(body);
+      return data;
+    } else {
+      const data = await this.internalAdvisorGetData.getFinalEvaluationMarks(
+        body,
+      );
+      return data;
+    }
   }
-  @Get('/submission/evaluation/average/:id') //get mif marks
-  async getEvaluationAverage(@Param('id') id: string) {
-    const data = await this.internalAdvisorGetData.getEvaluationAverage(id);
+  @Get('/submission/evaluation/average/:id/:mid') //get mif marks updated 3
+  async getEvaluationAverage(
+    @Param('id') id: string,
+    @Param('mid') mid: string,
+  ) {
+    const data = await this.internalAdvisorGetData.getEvaluationAverage(
+      id,
+      mid,
+    );
     return data;
   }
   @Get('/all/allocated/projects') // dont need
