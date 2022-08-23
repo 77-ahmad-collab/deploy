@@ -283,13 +283,15 @@ export class InternalAdvisorGetData {
           },
           { _id: 0, project_title: 1, midEvaluation: 1 },
         );
+        console.log(projectTitles, 'projectTtles befire');
         projectTitles = projectTitles.map((val) => {
-          if (val.midEvaluation === mid) {
+          console.log(val, 'val-------');
+          if (val.midEvaluation == Boolean(mid)) {
             return val;
-          }
+          } else return;
         });
-
-        console.log(projectTitles, 'projectTitles');
+        projectTitles = projectTitles.filter((val) => val !== undefined);
+        console.log(projectTitles, 'projectTitles7777------------');
         let projectList = [];
 
         projectList = advisor.projectList;
@@ -316,11 +318,13 @@ export class InternalAdvisorGetData {
         );
 
         let NewprojectTitles = advisor.projectList;
+        console.log(NewprojectTitles, 'newwwwwwwww');
         NewprojectTitles = [...projectList, ...newProjectList].map(
           (str, index) => ({
             s_proj_title: str,
           }),
         );
+        console.log(NewprojectTitles, 'newww99999999999999swwwwww');
         return NewprojectTitles;
       } else {
         //----------------------------
