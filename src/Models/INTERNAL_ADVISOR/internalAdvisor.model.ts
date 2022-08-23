@@ -8,7 +8,9 @@ export interface InternalAdvisor {
   password: string;
   advisorformid: string;
   projectList: string[];
+  finalprojectList: string[];
   respondedList: string[];
+  finalrespondedList: string[];
   isFirstTime: boolean;
   progressProjectList: string[];
   progressRespondedList: string[];
@@ -53,7 +55,16 @@ export const InternalAdvisorSchema = new Schema({
     type: [String],
     default: [],
   },
+  finalprojectList: {
+    type: [String],
+    default: [],
+  },
+
   respondedList: {
+    type: [String],
+    default: [],
+  },
+  finalrespondedList: {
     type: [String],
     default: [],
   },
