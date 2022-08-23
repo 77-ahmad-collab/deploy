@@ -284,14 +284,22 @@ export class InternalAdvisorController {
     );
     return data;
   }
-  @Get('/all/allocated/evaluation')
-  async getAllAllocatedEvaluations() {
+  @Get('/all/allocated/evaluation/:mid')
+  async getAllAllocatedEvaluations(@Param('mid') mid: string) {
     const testData = await this.EvaluationModel.find();
     console.log(testData, 'test adat');
-    const data = await this.EvaluationModel.find(
-      { isEvaluationResponded: false },
-      { project_title: 1, _id: 0 },
-    );
-    return data;
+    if (mid === 'true') {
+      const data = await this.EvaluationModel.find(
+        { isEvaluationResponded: false },
+        { project_title: 1, _id: 0 },
+      );
+      return data;
+    } else {
+      const data = await this.EvaluationModel.find(
+        { isfinalEvaluationResponded: false },
+        { project_title: 1, _id: 0 },
+      );
+      return data;
+    }
   }
 }
