@@ -328,19 +328,31 @@ export class InternalAdvisorGetData {
         return NewprojectTitles;
       } else {
         //----------------------------
-        console.log(advisor, 'advisor in');
+        console.log(advisor, 'advisor in enteruing in else stGE');
         let newProjectList = [];
-        const projectTitles = await this.EvaluationModel.find(
+        let projectTitles = await this.EvaluationModel.find(
           {
             $or: [
               { supervisor: advisor.name },
               { external_evaluator: advisor.name },
               { external_evaluator2: advisor.name },
               { external_evaluator3: advisor.name },
-              { midEvaluation: mid },
             ],
           },
-          { _id: 0, project_title: 1 },
+          { _id: 0, project_title: 1, midEvaluation: 1 },
+        );
+        projectTitles = projectTitles.map((val) => {
+          console.log(val, 'val-------');
+          if (val.midEvaluation == false) {
+            return val;
+          } else return;
+        });
+        projectTitles = projectTitles.filter((val) => val !== undefined);
+        console.log(
+          projectTitles,
+          'projectTitles7777------------',
+          Boolean(mid),
+          mid,
         );
         console.log(projectTitles, 'projectTitles');
         let projectList = [];
