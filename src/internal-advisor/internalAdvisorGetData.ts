@@ -272,17 +272,19 @@ export class InternalAdvisorGetData {
       if (mid === 'true') {
         console.log(advisor, 'advisor in');
         let newProjectList = [];
-        const projectTitles = await this.EvaluationModel.find(
+        let projectTitles = await this.EvaluationModel.find(
           {
             $or: [
               { supervisor: advisor.name },
               { external_evaluator: advisor.name },
               { external_evaluator2: advisor.name },
               { external_evaluator3: advisor.name },
-              { midEvaluation: mid },
             ],
           },
           { _id: 0, project_title: 1 },
+        );
+        projectTitles = projectTitles.filter(
+          (val) => val.midEvaluation === mid,
         );
         console.log(projectTitles, 'projectTitles');
         let projectList = [];
