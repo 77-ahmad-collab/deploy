@@ -281,11 +281,14 @@ export class InternalAdvisorGetData {
               { external_evaluator3: advisor.name },
             ],
           },
-          { _id: 0, project_title: 1 },
+          { _id: 0, project_title: 1, midEvaluation: 1 },
         );
-        projectTitles = projectTitles.filter(
-          (val) => val.midEvaluation === mid,
-        );
+        projectTitles = projectTitles.map((val) => {
+          if (val.midEvaluation === mid) {
+            return val;
+          }
+        });
+
         console.log(projectTitles, 'projectTitles');
         let projectList = [];
 
