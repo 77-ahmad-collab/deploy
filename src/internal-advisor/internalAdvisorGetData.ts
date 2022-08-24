@@ -1154,7 +1154,7 @@ export class InternalAdvisorGetData {
       console.log(EvaluationMarks, 'there is');
       let data;
       if (!EvaluationMarks) {
-        console.log('frst time');
+        console.log('frst time', body);
 
         data = {
           supervior_id: body.supervior_id,
