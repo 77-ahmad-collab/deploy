@@ -6,6 +6,7 @@ import { EvaluationSchema } from 'src/Models/Evaluation/Evaluation.Model';
 import { FinalEvaluationSchema } from 'src/Models/Evaluation/FinalEvaluation.model';
 import { MarksSchema } from 'src/Models/Evaluation/Marks.model';
 import { FormSchema } from 'src/Models/Student/form.model';
+import { StudentSchema } from 'src/Models/Student/student.model';
 import { CoordinatorController } from './coordinator.controller';
 import { CoordinatorService } from './coordinator.service';
 
@@ -17,6 +18,12 @@ import { CoordinatorService } from './coordinator.service';
         schema: CoordinatorSchema,
         collection: 'Coordinator',
       },
+      {
+        name: 'UndergradateStudents',
+        schema: StudentSchema,
+        collection: 'UndergradateStudents',
+      },
+      { name: 'formdatas', schema: FormSchema, collection: 'formdatas' },
       {
         name: 'Evaluation',
         schema: EvaluationSchema,
