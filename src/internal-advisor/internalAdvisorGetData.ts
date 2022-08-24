@@ -918,7 +918,14 @@ export class InternalAdvisorGetData {
           body.std1_Methodology,
         ].length;
         console.log(checkLength, 'check length');
-        if (checkLength === 3) {
+        let evaluatorLength = 3;
+        const sheduleEvaluation = await this.EvaluationModel.findOne({
+          group_leader: body.std1_rollNo,
+        });
+        if (sheduleEvaluation.external_evaluator3.length > 0) {
+          evaluatorLength = 4;
+        }
+        if (checkLength === evaluatorLength) {
           console.log(' i shoud not enter here');
           const std1_Literature_Review_average = this.getSingleEvaluationAverge(
             EvaluationMarks.std1_Literature_Review,
@@ -1486,9 +1493,9 @@ export class InternalAdvisorGetData {
     try {
       // let collection;
       let Collection = this.EvaluationMarksModel;
-      if (mid !== 'true') {
-        Collection = this.FinalEvaluationMarksModel;
-      }
+      // if (mid !== 'true') {
+      //   Collection = this.FinalEvaluationMarksModel;
+      // }
       // } else collection = this.FinalEvaluationMarksModel;
       const evaluationMarks = await Collection.findOne(
         {
@@ -1530,6 +1537,16 @@ export class InternalAdvisorGetData {
         std4_Methodology_average,
         std4_Adherence_to_Work_Plan_average,
         std4_Reporting_and_Presentation_average,
+        std1_weighted_average,
+        std2_weighted_average,
+        std3_weighted_average,
+        std4_weighted_average,
+        std1_rollNo,
+        std2_rollNo,
+        std3_rollNo,
+        std4_rollNo,
+        project_title,
+        count,
       } = evaluationMarks;
       let evaluatedResult;
       evaluatedResult = {
@@ -1544,6 +1561,15 @@ export class InternalAdvisorGetData {
         std3_Methodology_average,
         std3_Adherence_to_Work_Plan_average,
         std3_Reporting_and_Presentation_average,
+        std1_weighted_average,
+        std2_weighted_average,
+        std3_weighted_average,
+
+        std1_rollNo,
+        std2_rollNo,
+        std3_rollNo,
+        project_title,
+        count,
       };
       console.log(evaluatedResult, 'evajfhi8484488448848');
       if (evaluationMarks.std4_weighted_average !== 0) {
@@ -1553,6 +1579,8 @@ export class InternalAdvisorGetData {
           std4_Methodology_average,
           std4_Adherence_to_Work_Plan_average,
           std4_Reporting_and_Presentation_average,
+          std4_weighted_average,
+          std4_rollNo,
         };
       }
       return evaluatedResult;
