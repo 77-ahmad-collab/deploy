@@ -1369,7 +1369,10 @@ export class InternalAdvisorGetData {
         const sheduleEvaluation = await this.FinalEvaluationModel.findOne({
           group_leader: body.std1_rollNo,
         });
-        if (sheduleEvaluation.external_evaluator3.length > 0) {
+        if (
+          sheduleEvaluation?.external_evaluator3 !== undefined &&
+          sheduleEvaluation?.external_evaluator3.length > 0
+        ) {
           evaluatorLength = 4;
         }
         if (checkLength === evaluatorLength) {
