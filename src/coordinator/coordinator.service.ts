@@ -10,6 +10,7 @@ import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { Model } from 'mongoose';
 import { Coordinator } from 'src/Models/Coordinator/Coordinator.Model';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
+import { FinalEvaluation } from 'src/Models/Evaluation/FinalEvaluation.model';
 import { Marks } from 'src/Models/Evaluation/Marks.model';
 import { Form } from 'src/Models/Student/form.model';
 import { promisify } from 'util';
@@ -22,6 +23,8 @@ export class CoordinatorService {
     private jwtService: JwtService,
     @InjectModel('Evaluation')
     private EvaluationModel: Model<Evaluation>,
+    @InjectModel('FinalEvaluation')
+    private FinalEvaluationModel: Model<FinalEvaluation>,
     @InjectModel('formdatas') private StudentFormModel: Model<Form>,
     @InjectModel('Marks') private MarksModel: Model<Marks>,
   ) {}
@@ -107,6 +110,55 @@ export class CoordinatorService {
         },
       );
       const evaluation = await this.EvaluationModel.create({
+        location,
+        project_title,
+        group_leader,
+        supervisor,
+        co_supervisor,
+        external,
+        chairmen,
+        external_evaluator,
+        external_evaluator2,
+        external_evaluator3,
+        date,
+        time,
+        midEvaluation,
+      });
+
+      return { evaluation, body };
+    } catch (error) {
+      return {
+        error: error.message,
+        body,
+      };
+    }
+  }
+  async finalevaluation(body) {
+    try {
+      const {
+        location,
+        project_title,
+        group_leader,
+        supervisor,
+        co_supervisor,
+        external,
+        chairmen,
+        external_evaluator,
+        external_evaluator2,
+        external_evaluator3,
+        date,
+        time,
+        midEvaluation,
+      } = body;
+      const form = await this.StudentFormModel.updateOne(
+        {
+          s_proj_title: project_title,
+        },
+        {
+          $set: { external_evaluator: external_evaluator },
+        },
+      );
+      const evaluation = await this.FinalEvaluationModel.create({
         location,
         project_title,
         group_leader,

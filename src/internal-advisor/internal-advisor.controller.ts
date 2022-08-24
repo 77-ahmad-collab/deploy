@@ -259,10 +259,10 @@ export class InternalAdvisorController {
       const data = await this.internalAdvisorGetData.getEvaluationMarks(body);
       return data;
     } else {
-      const data = await this.internalAdvisorGetData.getFinalEvaluationMarks(
-        body,
-      );
-      return data;
+      // const data = await this.internalAdvisorGetData.getFinalEvaluationMarks(
+      //   body,
+      // );
+      // return data;
     }
   }
   @Get('/submission/evaluation/average/:id/:mid') //get mif marks updated 3

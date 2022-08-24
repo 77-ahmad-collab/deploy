@@ -71,6 +71,15 @@ export class CoordinatorController {
       data,
     };
   }
+  @Post('/finalevaluation')
+  async finalevaluation(@Body() body: any) {
+    const data = await this.CoordinatorService.finalevaluation(body);
+    return {
+      message: 'Evaluation has been submitted',
+      data,
+    };
+  }
+
   ///---for final evaluation---/// same for mid just in final it will overwrite
   @Get('/all/EvaluationLocation')
   async getAllEvaluationLocation() {

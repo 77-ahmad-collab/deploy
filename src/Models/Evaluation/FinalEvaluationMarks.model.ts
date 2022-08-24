@@ -1,218 +1,286 @@
 import { Schema } from 'mongoose';
 export interface FinalEvaluationMarks {
-  std1_Literature_Review: number[];
-  std1_Methodology: number[];
-  std1_Adherence_to_Work_Plan: number[];
-  std1_Reporting_and_Presentation: number[];
-  std1_Literature_Review_average: number;
-  std1_Methodology_average: number;
-  std1_Adherence_to_Work_Plan_average: number;
-  std1_Reporting_and_Presentation_average: number;
-  std1_weighted_average: number;
-  std2_Literature_Review: number[];
-  std2_Methodology: number[];
-  std2_Adherence_to_Work_Plan: number[];
-  std2_Reporting_and_Presentation: number[];
-  std2_Literature_Review_average: number;
-  std2_Methodology_average: number;
-  std2_Adherence_to_Work_Plan_average: number;
-  std2_Reporting_and_Presentation_average: number;
-  std2_weighted_average: number;
-  std3_Literature_Review: number[];
-  std3_Methodology: number[];
-  std3_Adherence_to_Work_Plan: number[];
-  std3_Reporting_and_Presentation: number[];
-  std3_Literature_Review_average: number;
-  std3_Methodology_average: number;
-  std3_Adherence_to_Work_Plan_average: number;
-  std3_Reporting_and_Presentation_average: number;
-  std3_weighted_average: number;
-  std4_Literature_Review: number[];
-  std4_Methodology: number[];
-  std4_Adherence_to_Work_Plan: number[];
-  std4_Reporting_and_Presentation: number[];
-  std4_Literature_Review_average: number;
-  std4_Methodology_average: number;
-  std4_Adherence_to_Work_Plan_average: number;
-  std4_Reporting_and_Presentation_average: number;
-  std4_weighted_average: number;
   count: number;
-  std1_rollNo: string;
-  std2_rollNo: string;
-  std3_rollNo: string;
-  std4_rollNo: string;
+  supervior_id: string;
   project_title: string;
+
+  std1_name: string;
+  std1_rollNo: string;
+  std1_Relevance_Content: number[];
+  std1_Organization_and_Delivery: number[];
+  std1_Design_or_Layout: number[];
+  std1_Time_Management: number[];
+  std1_Questions_and_Answers: number[];
+  std1_weighted_average: number;
+  std1_Relevance_Content_average: number;
+  std1_Organization_and_Delivery_average: number;
+  std1_Design_or_Layout_average: number;
+  std1_Time_Management_average: number;
+  std1_Questions_and_Answers_average: number;
+
+  std2_name: string;
+  std2_rollNo: string;
+  std2_Relevance_Content: number[];
+  std2_Organization_and_Delivery: number[];
+  std2_Design_or_Layout: number[];
+  std2_Time_Management: number[];
+  std2_Questions_and_Answers: number[];
+  std2_weighted_average: number;
+  std2_Relevance_Content_average: number;
+  std2_Organization_and_Delivery_average: number;
+  std2_Design_or_Layout_average: number;
+  std2_Time_Management_average: number;
+  std2_Questions_and_Answers_average: number;
+
+  std3_name: string;
+  std3_rollNo: string;
+  std3_Relevance_Content: number[];
+  std3_Organization_and_Delivery: number[];
+  std3_Design_or_Layout: number[];
+  std3_Time_Management: number[];
+  std3_Questions_and_Answers: number[];
+  std3_weighted_average: number;
+  std3_Relevance_Content_average: number;
+  std3_Organization_and_Delivery_average: number;
+  std3_Design_or_Layout_average: number;
+  std3_Time_Management_average: number;
+  std3_Questions_and_Answers_average: number;
+
+  std4_name: string;
+  std4_rollNo: string;
+  std4_Relevance_Content: number[];
+  std4_Organization_and_Delivery: number[];
+  std4_Design_or_Layout: number[];
+  std4_Time_Management: number[];
+  std4_Questions_and_Answers: number[];
+  std4_weighted_average: number;
+  std4_Relevance_Content_average: number;
+  std4_Organization_and_Delivery_average: number;
+  std4_Design_or_Layout_average: number;
+  std4_Time_Management_average: number;
+  std4_Questions_and_Answers_average: number;
+
   id: number;
   comment: string[];
   isPanelSubmitted: boolean;
 }
 export const FinalEvaluationMarksSchema = new Schema({
-  std1_Literature_Review: {
-    type: [Number],
-  },
-  std1_Methodology: {
-    type: [Number],
-  },
-  std1_Adherence_to_Work_Plan: {
-    type: [Number],
-  },
-  std1_Reporting_and_Presentation: {
-    type: [Number],
-  },
-  std1_Literature_Review_average: {
+  count: {
     type: Number,
     default: 0,
   },
-  std1_Methodology_average: {
-    type: Number,
-    default: 0,
+  supervior_id: {
+    type: String,
+    default: '',
   },
-  std1_Adherence_to_Work_Plan_average: {
-    type: Number,
-    default: 0,
+
+  project_title: {
+    type: String,
+    default: '',
   },
-  std1_Reporting_and_Presentation_average: {
-    type: Number,
-    default: 0,
+
+  std1_name: {
+    type: String,
+    default: '',
+  },
+  std1_rollNo: {
+    type: String,
+    default: '',
+  },
+  std1_Relevance_Content: {
+    type: [Number],
+  },
+  std1_Organization_and_Delivery: {
+    type: [Number],
+  },
+  std1_Design_or_Layout: {
+    type: [Number],
+  },
+  std1_Time_Management: {
+    type: [Number],
+  },
+  std1_Questions_and_Answers: {
+    type: [Number],
   },
   std1_weighted_average: {
     type: Number,
     default: 0,
   },
-  std2_Literature_Review: {
-    type: [Number],
+  std1_Relevance_Content_average: {
+    type: Number,
+    default: 0,
   },
-  std1_rollNo: {
-    type: String,
+  std1_Organization_and_Delivery_average: {
+    type: Number,
+    default: 0,
+  },
+  std1_Design_or_Layout_average: {
+    type: Number,
+    default: 0,
+  },
+  std1_Time_Management_average: {
+    type: Number,
+    default: 0,
+  },
+  std1_Questions_and_Answers_average: {
+    type: Number,
+    default: 0,
+  },
 
-    uppercase: true,
+  std2_name: {
+    type: String,
+    default: '',
   },
-  std2_Methodology: {
+  std2_rollNo: {
+    type: String,
+    default: '',
+  },
+  std2_Relevance_Content: {
     type: [Number],
   },
-  std2_Adherence_to_Work_Plan: {
+  std2_Organization_and_Delivery: {
     type: [Number],
   },
-  std2_Reporting_and_Presentation: {
+  std2_Design_or_Layout: {
     type: [Number],
   },
-  std2_Literature_Review_average: {
-    type: Number,
-    default: 0,
+  std2_Time_Management: {
+    type: [Number],
   },
-  std2_Methodology_average: {
-    type: Number,
-    default: 0,
-  },
-  std2_Adherence_to_Work_Plan_average: {
-    type: Number,
-    default: 0,
-  },
-  std2_Reporting_and_Presentation_average: {
-    type: Number,
-    default: 0,
+  std2_Questions_and_Answers: {
+    type: [Number],
   },
   std2_weighted_average: {
     type: Number,
     default: 0,
   },
-  std2_rollNo: {
-    type: String,
+  std2_Relevance_Content_average: {
+    type: Number,
+    default: 0,
+  },
+  std2_Organization_and_Delivery_average: {
+    type: Number,
+    default: 0,
+  },
+  std2_Design_or_Layout_average: {
+    type: Number,
+    default: 0,
+  },
+  std2_Time_Management_average: {
+    type: Number,
+    default: 0,
+  },
+  std2_Questions_and_Answers_average: {
+    type: Number,
+    default: 0,
+  },
 
-    uppercase: true,
+  std3_name: {
+    type: String,
+    default: '',
   },
-  std3_Literature_Review: {
+  std3_rollNo: {
+    type: String,
+    default: '',
+  },
+  std3_Relevance_Content: {
     type: [Number],
   },
-  std3_Methodology: {
+  std3_Organization_and_Delivery: {
     type: [Number],
   },
-  std3_Adherence_to_Work_Plan: {
+  std3_Design_or_Layout: {
     type: [Number],
   },
-  std3_Reporting_and_Presentation: {
+  std3_Time_Management: {
     type: [Number],
   },
-  std3_Literature_Review_average: {
-    type: Number,
-    default: 0,
-  },
-  std3_Methodology_average: {
-    type: Number,
-    default: 0,
-  },
-  std3_Adherence_to_Work_Plan_average: {
-    type: Number,
-    default: 0,
-  },
-  std3_Reporting_and_Presentation_average: {
-    type: Number,
-    default: 0,
+  std3_Questions_and_Answers: {
+    type: [Number],
   },
   std3_weighted_average: {
     type: Number,
     default: 0,
   },
-  std3_rollNo: {
-    type: String,
+  std3_Relevance_Content_average: {
+    type: Number,
+    default: 0,
+  },
+  std3_Organization_and_Delivery_average: {
+    type: Number,
+    default: 0,
+  },
+  std3_Design_or_Layout_average: {
+    type: Number,
+    default: 0,
+  },
+  std3_Time_Management_average: {
+    type: Number,
+    default: 0,
+  },
+  std3_Questions_and_Answers_average: {
+    type: Number,
+    default: 0,
+  },
 
-    uppercase: true,
+  std4_name: {
+    type: String,
+    default: '',
   },
-  std4_Literature_Review: {
+  std4_rollNo: {
+    type: String,
+    default: '',
+  },
+  std4_Relevance_Content: {
     type: [Number],
   },
-  std4_Methodology: {
+  std4_Organization_and_Delivery: {
     type: [Number],
   },
-  std4_Adherence_to_Work_Plan: {
+  std4_Design_or_Layout: {
     type: [Number],
   },
-  std4_Reporting_and_Presentation: {
+  std4_Time_Management: {
     type: [Number],
   },
-  std4_Literature_Review_average: {
-    type: Number,
-    default: 0,
-  },
-  std4_Methodology_average: {
-    type: Number,
-    default: 0,
-  },
-  std4_Adherence_to_Work_Plan_average: {
-    type: Number,
-    default: 0,
-  },
-  std4_Reporting_and_Presentation_average: {
-    type: Number,
-    default: 0,
+  std4_Questions_and_Answers: {
+    type: [Number],
   },
   std4_weighted_average: {
     type: Number,
     default: 0,
   },
-  std4_rollNo: {
-    type: String,
-
-    uppercase: true,
-  },
-  count: {
+  std4_Relevance_Content_average: {
     type: Number,
+    default: 0,
   },
-  project_title: {
-    type: String,
-    trim: true,
+  std4_Organization_and_Delivery_average: {
+    type: Number,
+    default: 0,
   },
+  std4_Design_or_Layout_average: {
+    type: Number,
+    default: 0,
+  },
+  std4_Time_Management_average: {
+    type: Number,
+    default: 0,
+  },
+  std4_Questions_and_Answers_average: {
+    type: Number,
+    default: 0,
+  },
+
   id: {
     type: Number,
-    trim: true,
-    required: true,
+    default: 0,
+  },
+  comment: {
+    type: [String],
   },
   isPanelSubmitted: {
     type: Boolean,
     default: false,
     // assign a predefined false value
-  },
-  comment: {
-    type: [String],
   },
 });
