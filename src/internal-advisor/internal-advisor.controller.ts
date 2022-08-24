@@ -12,6 +12,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
 import { Model } from 'mongoose';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
+import { FinalEvaluationMarks } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
@@ -41,6 +42,8 @@ export class InternalAdvisorController {
     @InjectModel('attendance') private attendanceModel: Model<Attendance>,
     @InjectModel('Evaluation')
     private EvaluationModel: Model<Evaluation>,
+    @InjectModel('FinalEvaluationMarks')
+    private FinalEvaluationMarksModel: Model<FinalEvaluationMarks>,
   ) {}
   @Get('/')
   async get() {
@@ -259,10 +262,10 @@ export class InternalAdvisorController {
       const data = await this.internalAdvisorGetData.getEvaluationMarks(body);
       return data;
     } else {
-      // const data = await this.internalAdvisorGetData.getFinalEvaluationMarks(
-      //   body,
-      // );
-      // return data;
+      const data = await this.internalAdvisorGetData.getFinalEvaluationMarks(
+        body,
+      );
+      return data;
     }
   }
   @Get('/submission/evaluation/average/:id/:mid') //get mif marks updated 3
@@ -270,11 +273,18 @@ export class InternalAdvisorController {
     @Param('id') id: string,
     @Param('mid') mid: string,
   ) {
-    const data = await this.internalAdvisorGetData.getEvaluationAverage(
-      id,
-      mid,
-    );
-    return data;
+    if (mid === 'true') {
+      const data = await this.internalAdvisorGetData.getEvaluationAverage(
+        id,
+        mid,
+      );
+      return data;
+    } else {
+      const data = await this.FinalEvaluationMarksModel.findOne({
+        std1_rollNo: id,
+      });
+      return data;
+    }
   }
   @Get('/all/allocated/projects') // dont need
   async getAllAllocatedProjects() {

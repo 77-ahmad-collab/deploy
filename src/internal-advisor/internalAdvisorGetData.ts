@@ -12,6 +12,7 @@ import { StudentInterface } from 'src/Models/Student/student.model';
 import { External } from 'src/Models/External/Externel.Model';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
 import { FinalEvaluationMarks } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
+import { FinalEvaluation } from 'src/Models/Evaluation/FinalEvaluation.model';
 @Injectable()
 export class InternalAdvisorGetData {
   constructor(
@@ -31,6 +32,8 @@ export class InternalAdvisorGetData {
     private ExternalModel: Model<External>,
     @InjectModel('Evaluation')
     private EvaluationModel: Model<Evaluation>,
+    @InjectModel('FinalEvaluation')
+    private FinalEvaluationModel: Model<FinalEvaluation>,
   ) {}
 
   async getData(students: any[]) {
@@ -330,7 +333,7 @@ export class InternalAdvisorGetData {
         //----------------------------
         console.log(advisor, 'advisor in enteruing in else stGE');
         let newProjectList = [];
-        let projectTitles = await this.EvaluationModel.find(
+        let projectTitles = await this.FinalEvaluationModel.find(
           {
             $or: [
               { supervisor: advisor.name },
@@ -1103,376 +1106,470 @@ export class InternalAdvisorGetData {
       return error;
     }
   }
-  // async getFinalEvaluationMarks(body) {
-  //   try {
-  //     const EvaluationMarks = await this.FinalEvaluationMarksModel.findOne({
-  //       std1_rollNo: body.std1_rollNo,
-  //     });
+  async getFinalEvaluationMarks(body) {
+    try {
+      // count: "",
+      // supervior_id: "",
+      // project_title:"",
 
-  //     console.log(EvaluationMarks, 'there is');
-  //     let data;
-  //     if (!EvaluationMarks) {
-  //       console.log('frst time');
+      // std1_name: "",
+      // std1_rollNo: "",
+      // std1_Relevance_Content:"",
+      // std1_Organization_and_Delivery:"",
+      // std1_Design_or_Layout:"",
+      // std1_Time_Management:"",
+      // std1_Questions_and_Answers:"",
+      // std1_weighted_average: "",
 
-  //       data = {
-  //         std1_rollNo: body.std1_rollNo,
-  //         std1_Literature_Review: [body.std1_Literature_Review],
-  //         std1_Methodology: [body.std1_Methodology],
-  //         std1_Adherence_to_Work_Plan: [body.std1_Adherence_to_Work_Plan],
-  //         std1_Reporting_and_Presentation: [
-  //           body.std1_Reporting_and_Presentation,
-  //         ],
-  //         std2_rollNo: body.std2_rollNo,
-  //         std2_Literature_Review: [body.std2_Literature_Review],
-  //         std2_Methodology: [body.std2_Methodology],
-  //         std2_Adherence_to_Work_Plan: [body.std2_Adherence_to_Work_Plan],
-  //         std2_Reporting_and_Presentation: [
-  //           body.std2_Reporting_and_Presentation,
-  //         ],
-  //         std3_rollNo: body.std3_rollNo,
-  //         std3_Literature_Review: [body.std3_Literature_Review],
-  //         std3_Methodology: [body.std3_Methodology],
-  //         std3_Adherence_to_Work_Plan: [body.std3_Adherence_to_Work_Plan],
-  //         std3_Reporting_and_Presentation: [
-  //           body.std3_Reporting_and_Presentation,
-  //         ],
-  //         count: body.count,
-  //         project_title: body.project_title,
-  //         id: body.id,
-  //         comment: [body.comment],
-  //         isPanelSubmitted: false,
-  //       };
-  //       if (body.count === 4) {
-  //         data = {
-  //           ...data,
-  //           std4_rollNo: body.std4_rollNo,
-  //           std4_Literature_Review: [body.std4_Literature_Review],
+      // std2_name:"",
+      // std2_rollNo:"",
+      // std2_Relevance_Content:"",
+      // std2_Organization_and_Delivery:"",
+      // std2_Design_or_Layout:"",
+      // std2_Time_Management:"",
+      // std2_Questions_and_Answers:"",
+      // std2_weighted_average: "",
 
-  //           std4_Methodology: [body.std4_Methodology],
-  //           std4_Adherence_to_Work_Plan: [body.std4_Adherence_to_Work_Plan],
-  //           std4_Reporting_and_Presentation: [
-  //             body.std4_Reporting_and_Presentation,
-  //           ],
-  //         };
-  //       }
-  //       const SaveMarks = await this.FinalEvaluationMarksModel.create(data);
-  //       const internalAdvisor = await this.InternalAdvisorModel.findOne({
-  //         id: body.id,
-  //       });
-  //       if (!internalAdvisor) {
-  //         const external = await this.ExternalModel.findOne({ id: body.id });
-  //         const updateExternal = await this.ExternalModel.updateOne(
-  //           { id: body.id },
-  //           {
-  //             $set: {
-  //               finalprojectList: external.finalprojectList.filter(
-  //                 (val) => val !== body.project_title,
-  //               ),
+      // std3_name:"",
+      // std3_rollNo:"",
+      // std3_Relevance_Content:"",
+      // std3_Organization_and_Delivery:"",
+      // std3_Design_or_Layout:"",
+      // std3_Time_Management:"",
+      // std3_Questions_and_Answers:"",
+      // std3_weighted_average: "",
 
-  //               finalrespondedList: [
-  //                 ...external.finalrespondedList,
-  //                 body.project_title,
-  //               ],
-  //             },
-  //           },
-  //         );
-  //       } else {
-  //         console.log('internal advisor');
-  //         const internal = await this.InternalAdvisorModel.findOne({
-  //           id: body.id,
-  //         });
-  //         console.log('internale', internal);
-  //         if (internal.finalprojectList.includes(body.project_title)) {
-  //           const updateInternal = await this.InternalAdvisorModel.updateOne(
-  //             { id: body.id },
-  //             {
-  //               $set: {
-  //                 finalprojectList: internal.finalprojectList.filter(
-  //                   (val) => val !== body.project_title,
-  //                 ),
+      // std4_name:"",
+      // std4_rollNo:"",
+      // std4_Relevance_Content:"",
+      // std4_Organization_and_Delivery:"",
+      // std4_Design_or_Layout:"",
+      // std4_Time_Management:"",
+      // std4_Questions_and_Answers:"",
+      // std4_weighted_average: "",
+      const EvaluationMarks = await this.FinalEvaluationMarksModel.findOne({
+        std1_rollNo: body.std1_rollNo,
+      });
 
-  //                 finalrespondedList: [
-  //                   ...internal.finalrespondedList,
-  //                   body.project_title,
-  //                 ],
-  //               },
-  //             },
-  //           );
-  //         }
-  //       }
-  //       return { SaveMarks };
-  //     } else {
-  //       console.log('entered here');
-  //       const EvaluationMarks = await this.FinalEvaluationMarksModel.findOne({
-  //         std1_rollNo: body.std1_rollNo,
-  //       });
+      console.log(EvaluationMarks, 'there is');
+      let data;
+      if (!EvaluationMarks) {
+        console.log('frst time');
 
-  //       console.log(EvaluationMarks, '===============there is');
-  //       data = {
-  //         std1_Literature_Review: [
-  //           ...EvaluationMarks.std1_Literature_Review,
-  //           body.std1_Literature_Review,
-  //         ],
-  //         std1_Methodology: [
-  //           ...EvaluationMarks.std1_Methodology,
-  //           body.std1_Methodology,
-  //         ],
-  //         std1_Adherence_to_Work_Plan: [
-  //           ...EvaluationMarks.std1_Adherence_to_Work_Plan,
-  //           body.std1_Adherence_to_Work_Plan,
-  //         ],
-  //         std1_Reporting_and_Presentation: [
-  //           ...EvaluationMarks.std1_Reporting_and_Presentation,
-  //           body.std1_Reporting_and_Presentation,
-  //         ],
+        data = {
+          supervior_id: body.supervior_id,
+          count: body.count,
+          project_title: body.project_title,
 
-  //         std2_Literature_Review: [
-  //           ...EvaluationMarks.std2_Literature_Review,
-  //           body.std2_Literature_Review,
-  //         ],
-  //         std2_Methodology: [
-  //           ...EvaluationMarks.std2_Methodology,
-  //           body.std2_Methodology,
-  //         ],
-  //         std2_Adherence_to_Work_Plan: [
-  //           ...EvaluationMarks.std2_Adherence_to_Work_Plan,
-  //           body.std2_Adherence_to_Work_Plan,
-  //         ],
-  //         std2_Reporting_and_Presentation: [
-  //           ...EvaluationMarks.std2_Reporting_and_Presentation,
-  //           body.std2_Reporting_and_Presentation,
-  //         ],
+          std1_rollNo: body.std1_rollNo,
+          std1_name: body.std1_name,
+          std1_Relevance_Content: [body.std1_Relevance_Content],
+          std1_Organization_and_Delivery: [body.std1_Organization_and_Delivery],
+          std1_Design_or_Layout: [body.std1_Design_or_Layout],
+          std1_Time_Management: [body.std1_Time_Management],
+          std1_Questions_and_Answers: [body.std1_Questions_and_Answers],
 
-  //         std3_Literature_Review: [
-  //           ...EvaluationMarks.std3_Literature_Review,
-  //           body.std3_Literature_Review,
-  //         ],
-  //         std3_Methodology: [
-  //           ...EvaluationMarks.std3_Methodology,
-  //           body.std3_Methodology,
-  //         ],
-  //         std3_Adherence_to_Work_Plan: [
-  //           ...EvaluationMarks.std3_Adherence_to_Work_Plan,
-  //           body.std3_Adherence_to_Work_Plan,
-  //         ],
-  //         std3_Reporting_and_Presentation: [
-  //           ...EvaluationMarks.std3_Reporting_and_Presentation,
-  //           body.std3_Reporting_and_Presentation,
-  //         ],
-  //         count: body.count,
-  //         project_title: body.project_title,
-  //         comment: [...EvaluationMarks.comment, body.comment],
-  //       };
-  //       console.log(data, 'he dataaa');
-  //       if (body.count === 4) {
-  //         data = {
-  //           ...data,
+          std2_rollNo: body.std1_rollNo,
+          std2_name: body.std1_name,
+          std2_Relevance_Content: [body.std1_Relevance_Content],
+          std2_Organization_and_Delivery: [body.std1_Organization_and_Delivery],
+          std2_Design_or_Layout: [body.std1_Design_or_Layout],
+          std2_Time_Management: [body.std1_Time_Management],
+          std2_Questions_and_Answers: [body.std1_Questions_and_Answers],
 
-  //           std4_Literature_Review: [
-  //             ...EvaluationMarks.std4_Literature_Review,
-  //             body.std4_Literature_Review,
-  //           ],
+          std3_rollNo: body.std1_rollNo,
+          std3_name: body.std1_name,
+          std3_Relevance_Content: [body.std1_Relevance_Content],
+          std3_Organization_and_Delivery: [body.std1_Organization_and_Delivery],
+          std3_Design_or_Layout: [body.std1_Design_or_Layout],
+          std3_Time_Management: [body.std1_Time_Management],
+          std3_Questions_and_Answers: [body.std1_Questions_and_Answers],
 
-  //           std4_Methodology: [
-  //             ...EvaluationMarks.std4_Methodology,
-  //             body.std4_Methodology,
-  //           ],
-  //           std4_Adherence_to_Work_Plan: [
-  //             ...EvaluationMarks.std4_Adherence_to_Work_Plan,
-  //             body.std4_Adherence_to_Work_Plan,
-  //           ],
-  //           std4_Reporting_and_Presentation: [
-  //             ...EvaluationMarks.std4_Reporting_and_Presentation,
-  //             body.std4_Reporting_and_Presentation,
-  //           ],
-  //         };
-  //       }
-  //       const checkLength = [
-  //         ...EvaluationMarks.std1_Methodology,
-  //         body.std1_Methodology,
-  //       ].length;
-  //       console.log(checkLength, 'check length');
-  //       if (checkLength === 3) {
-  //         console.log(' i shoud not enter here');
-  //         const std1_Literature_Review_average = this.getSingleEvaluationAverge(
-  //           EvaluationMarks.std1_Literature_Review,
-  //         );
-  //         const std1_Methodology_average = this.getSingleEvaluationAverge(
-  //           EvaluationMarks.std1_Methodology,
-  //         );
-  //         const std1_Adherence_to_Work_Plan_average =
-  //           this.getSingleEvaluationAverge(
-  //             EvaluationMarks.std1_Adherence_to_Work_Plan,
-  //           );
-  //         const std1_Reporting_and_Presentation_average =
-  //           this.getSingleEvaluationAverge(
-  //             EvaluationMarks.std1_Reporting_and_Presentation,
-  //           );
-  //         const std2_Literature_Review_average = this.getSingleEvaluationAverge(
-  //           EvaluationMarks.std2_Literature_Review,
-  //         );
-  //         const std2_Methodology_average = this.getSingleEvaluationAverge(
-  //           EvaluationMarks.std2_Methodology,
-  //         );
-  //         const std2_Adherence_to_Work_Plan_average =
-  //           this.getSingleEvaluationAverge(
-  //             EvaluationMarks.std2_Adherence_to_Work_Plan,
-  //           );
-  //         const std2_Reporting_and_Presentation_average =
-  //           this.getSingleEvaluationAverge(
-  //             EvaluationMarks.std2_Reporting_and_Presentation,
-  //           );
-  //         const std3_Literature_Review_average = this.getSingleEvaluationAverge(
-  //           EvaluationMarks.std3_Literature_Review,
-  //         );
-  //         const std3_Methodology_average = this.getSingleEvaluationAverge(
-  //           EvaluationMarks.std3_Methodology,
-  //         );
-  //         const std3_Adherence_to_Work_Plan_average =
-  //           this.getSingleEvaluationAverge(
-  //             EvaluationMarks.std3_Adherence_to_Work_Plan,
-  //           );
-  //         const std3_Reporting_and_Presentation_average =
-  //           this.getSingleEvaluationAverge(
-  //             EvaluationMarks.std3_Reporting_and_Presentation,
-  //           );
-  //         const std1_weighted_average = this.getEvaluationWeightedAverage(
-  //           std1_Literature_Review_average,
-  //           std1_Methodology_average,
-  //           std1_Adherence_to_Work_Plan_average,
-  //           std1_Reporting_and_Presentation_average,
-  //         );
-  //         const std2_weighted_average = this.getEvaluationWeightedAverage(
-  //           std2_Literature_Review_average,
-  //           std2_Methodology_average,
-  //           std2_Adherence_to_Work_Plan_average,
+          id: body.supervior_id,
+          comment: [body.comment],
+          isPanelSubmitted: false,
+        };
+        if (body.count === 4) {
+          data = {
+            ...data,
+            std4_rollNo: body.std1_rollNo,
+            std4_name: body.std1_name,
+            std4_Relevance_Content: [body.std1_Relevance_Content],
+            std4_Organization_and_Delivery: [
+              body.std1_Organization_and_Delivery,
+            ],
+            std4_Design_or_Layout: [body.std1_Design_or_Layout],
+            std4_Time_Management: [body.std1_Time_Management],
+            std4_Questions_and_Answers: [body.std1_Questions_and_Answers],
+          };
+        }
+        const SaveMarks = await this.FinalEvaluationMarksModel.create(data);
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.supervior_id,
+        });
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({
+            id: body.supervior_id,
+          });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.supervior_id },
+            {
+              $set: {
+                finalprojectList: external.finalprojectList.filter(
+                  (val) => val !== body.project_title,
+                ),
 
-  //           std2_Reporting_and_Presentation_average,
-  //         );
-  //         const std3_weighted_average = this.getEvaluationWeightedAverage(
-  //           std3_Literature_Review_average,
-  //           std3_Methodology_average,
-  //           std3_Adherence_to_Work_Plan_average,
-  //           std3_Reporting_and_Presentation_average,
-  //         );
-  //         data = {
-  //           ...data,
-  //           std1_Literature_Review_average,
-  //           std1_Methodology_average,
-  //           std1_Adherence_to_Work_Plan_average,
-  //           std1_Reporting_and_Presentation_average,
-  //           std2_Literature_Review_average,
-  //           std2_Methodology_average,
-  //           std2_Adherence_to_Work_Plan_average,
-  //           std2_Reporting_and_Presentation_average,
-  //           std3_Literature_Review_average,
-  //           std3_Methodology_average,
-  //           std3_Adherence_to_Work_Plan_average,
-  //           std3_Reporting_and_Presentation_average,
-  //           std1_weighted_average,
-  //           std2_weighted_average,
-  //           std3_weighted_average,
-  //           isPanelSubmitted: true,
-  //         };
-  //         if (body.count === 4) {
-  //           const std4_Literature_Review_average =
-  //             this.getSingleEvaluationAverge(
-  //               EvaluationMarks.std4_Literature_Review,
-  //             );
-  //           const std4_Methodology_average = this.getSingleEvaluationAverge(
-  //             EvaluationMarks.std4_Methodology,
-  //           );
-  //           const std4_Adherence_to_Work_Plan_average =
-  //             this.getSingleEvaluationAverge(
-  //               EvaluationMarks.std4_Adherence_to_Work_Plan,
-  //             );
-  //           const std4_Reporting_and_Presentation_average =
-  //             this.getSingleEvaluationAverge(
-  //               EvaluationMarks.std4_Reporting_and_Presentation,
-  //             );
-  //           const std4_weighted_average = this.getEvaluationWeightedAverage(
-  //             std4_Literature_Review_average,
-  //             std4_Methodology_average,
-  //             std4_Adherence_to_Work_Plan_average,
-  //             std4_Reporting_and_Presentation_average,
-  //           );
-  //           data = {
-  //             ...data,
-  //             std4_Literature_Review_average,
-  //             std4_Methodology_average,
-  //             std4_Adherence_to_Work_Plan_average,
-  //             std4_Reporting_and_Presentation_average,
-  //             std4_weighted_average,
-  //           };
-  //         }
-  //       }
-  //       console.log('------------------final data', data);
-  //       const updatedEvaluationMarks =
-  //         await this.FinalEvaluationMarksModel.updateOne(
-  //           { std1_rollNo: body.std1_rollNo },
-  //           { $set: data },
-  //         );
-  //       const myEvaluation = await this.EvaluationModel.updateOne(
-  //         {
-  //           group_leader: body.std1_rollNo,
-  //         },
-  //         { $set: { isfinalEvaluationResponded: false } },
-  //       );
-  //       const internalAdvisor = await this.InternalAdvisorModel.findOne({
-  //         id: body.id,
-  //       });
-  //       if (!internalAdvisor) {
-  //         const external = await this.ExternalModel.findOne({ id: body.id });
-  //         const updateExternal = await this.ExternalModel.updateOne(
-  //           { id: body.id },
-  //           {
-  //             $set: {
-  //               finalprojectList: external.finalprojectList.filter(
-  //                 (val) => val !== body.project_title,
-  //               ),
+                finalrespondedList: [
+                  ...external.finalrespondedList,
+                  body.project_title,
+                ],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.supervior_id,
+          });
+          console.log('internale', internal);
+          if (internal.finalprojectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.supervior_id },
+              {
+                $set: {
+                  finalprojectList: internal.finalprojectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
 
-  //               finalrespondedList: [
-  //                 ...external.finalrespondedList,
-  //                 body.project_title,
-  //               ],
-  //             },
-  //           },
-  //         );
-  //       } else {
-  //         console.log('internal advisor');
-  //         const internal = await this.InternalAdvisorModel.findOne({
-  //           id: body.id,
-  //         });
-  //         console.log('internale', internal);
-  //         if (internal.finalprojectList.includes(body.project_title)) {
-  //           const updateInternal = await this.InternalAdvisorModel.updateOne(
-  //             { id: body.id },
-  //             {
-  //               $set: {
-  //                 finalprojectList: internal.projectList.filter(
-  //                   (val) => val !== body.project_title,
-  //                 ),
+                  finalrespondedList: [
+                    ...internal.finalrespondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
+        return { SaveMarks };
+      } else {
+        console.log('entered here');
+        const EvaluationMarks = await this.FinalEvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
 
-  //                 finalrespondedList: [
-  //                   ...internal.respondedList,
-  //                   body.project_title,
-  //                 ],
-  //               },
-  //             },
-  //           );
-  //         }
-  //       }
-  //       const SaveMarks = await this.FinalEvaluationMarksModel.findOne({
-  //         std1_rollNo: body.std1_rollNo,
-  //       });
-  //       console.log(updatedEvaluationMarks, 'updatedEvaluationMarks');
-  //       return { SaveMarks };
-  //     }
-  //     return 'all has been achieved successfully';
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
+        console.log(EvaluationMarks, '===============there is');
+        data = {
+          std1_Relevance_Content: [
+            ...EvaluationMarks.std1_Relevance_Content,
+            body.std1_Relevance_Content,
+          ],
+          std1_Organization_and_Delivery: [
+            ...EvaluationMarks.std1_Organization_and_Delivery,
+            body.std1_Organization_and_Delivery,
+          ],
+          std1_Design_or_Layout: [
+            ...EvaluationMarks.std1_Design_or_Layout,
+            body.std1_Design_or_Layout,
+          ],
+          std1_Time_Management: [
+            ...EvaluationMarks.std1_Time_Management,
+            body.std1_Time_Management,
+          ],
+          std1_Questions_and_Answers: [
+            ...EvaluationMarks.std1_Questions_and_Answers,
+            body.std1_Questions_and_Answers,
+          ],
+
+          std2_Relevance_Content: [
+            ...EvaluationMarks.std2_Relevance_Content,
+            body.std2_Relevance_Content,
+          ],
+          std2_Organization_and_Delivery: [
+            ...EvaluationMarks.std2_Organization_and_Delivery,
+            body.std2_Organization_and_Delivery,
+          ],
+          std2_Design_or_Layout: [
+            ...EvaluationMarks.std2_Design_or_Layout,
+            body.std2_Design_or_Layout,
+          ],
+          std2_Time_Management: [
+            ...EvaluationMarks.std2_Time_Management,
+            body.std2_Time_Management,
+          ],
+          std2_Questions_and_Answers: [
+            ...EvaluationMarks.std2_Questions_and_Answers,
+            body.std2_Questions_and_Answers,
+          ],
+
+          std3_Relevance_Content: [
+            ...EvaluationMarks.std3_Relevance_Content,
+            body.std3_Relevance_Content,
+          ],
+          std3_Organization_and_Delivery: [
+            ...EvaluationMarks.std3_Organization_and_Delivery,
+            body.std3_Organization_and_Delivery,
+          ],
+          std3_Design_or_Layout: [
+            ...EvaluationMarks.std3_Design_or_Layout,
+            body.std3_Design_or_Layout,
+          ],
+          std3_Time_Management: [
+            ...EvaluationMarks.std3_Time_Management,
+            body.std3_Time_Management,
+          ],
+          std3_Questions_and_Answers: [
+            ...EvaluationMarks.std3_Questions_and_Answers,
+            body.std3_Questions_and_Answers,
+          ],
+
+          count: body.count,
+          project_title: body.project_title,
+          comment: [...EvaluationMarks.comment, body.comment],
+        };
+        console.log(data, 'he dataaa');
+        if (body.count === 4) {
+          data = {
+            ...data,
+
+            std4_Relevance_Content: [
+              ...EvaluationMarks.std4_Relevance_Content,
+              body.std4_Relevance_Content,
+            ],
+            std4_Organization_and_Delivery: [
+              ...EvaluationMarks.std4_Organization_and_Delivery,
+              body.std4_Organization_and_Delivery,
+            ],
+            std4_Design_or_Layout: [
+              ...EvaluationMarks.std4_Design_or_Layout,
+              body.std4_Design_or_Layout,
+            ],
+            std4_Time_Management: [
+              ...EvaluationMarks.std4_Time_Management,
+              body.std4_Time_Management,
+            ],
+            std4_Questions_and_Answers: [
+              ...EvaluationMarks.std4_Questions_and_Answers,
+              body.std4_Questions_and_Answers,
+            ],
+          };
+        }
+        const checkLength = [
+          ...EvaluationMarks.std1_Relevance_Content,
+          body.std1_Relevance_Content,
+        ].length;
+        console.log(checkLength, 'check length');
+        let evaluatorLength = 3;
+        const sheduleEvaluation = await this.FinalEvaluationModel.findOne({
+          group_leader: body.std1_rollNo,
+        });
+        if (sheduleEvaluation.external_evaluator3.length > 0) {
+          evaluatorLength = 4;
+        }
+        if (checkLength === evaluatorLength) {
+          console.log(' i shoud not enter here');
+          const std1_Relevance_Content_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Relevance_Content,
+          );
+          const std1_Organization_and_Delivery_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Organization_and_Delivery,
+            );
+          const std1_Design_or_Layout_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Design_or_Layout,
+          );
+          const std1_Time_Management_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Time_Management,
+          );
+          const std1_Questions_and_Answers_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Questions_and_Answers,
+            );
+
+          const std2_Relevance_Content_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Relevance_Content,
+          );
+          const std2_Organization_and_Delivery_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Organization_and_Delivery,
+            );
+          const std2_Design_or_Layout_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Design_or_Layout,
+          );
+          const std2_Time_Management_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Time_Management,
+          );
+          const std2_Questions_and_Answers_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Questions_and_Answers,
+            );
+
+          const std3_Relevance_Content_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Relevance_Content,
+          );
+          const std3_Organization_and_Delivery_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Organization_and_Delivery,
+            );
+          const std3_Design_or_Layout_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Design_or_Layout,
+          );
+          const std3_Time_Management_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Time_Management,
+          );
+          const std3_Questions_and_Answers_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Questions_and_Answers,
+            );
+
+          const std1_weighted_average = this.getFinalEvaluationWeightedAverage(
+            std1_Relevance_Content_average,
+            std1_Organization_and_Delivery_average,
+            std1_Design_or_Layout_average,
+            std1_Time_Management_average,
+            std1_Questions_and_Answers_average,
+          );
+          const std2_weighted_average = this.getFinalEvaluationWeightedAverage(
+            std2_Relevance_Content_average,
+            std2_Organization_and_Delivery_average,
+            std2_Design_or_Layout_average,
+            std2_Time_Management_average,
+            std2_Questions_and_Answers_average,
+          );
+          const std3_weighted_average = this.getFinalEvaluationWeightedAverage(
+            std3_Relevance_Content_average,
+            std3_Organization_and_Delivery_average,
+            std3_Design_or_Layout_average,
+            std3_Time_Management_average,
+            std3_Questions_and_Answers_average,
+          );
+          data = {
+            ...data,
+            std1_Relevance_Content_average,
+            std1_Organization_and_Delivery_average,
+            std1_Design_or_Layout_average,
+            std1_Time_Management_average,
+            std1_Questions_and_Answers_average,
+            std2_Relevance_Content_average,
+            std2_Organization_and_Delivery_average,
+            std2_Design_or_Layout_average,
+            std2_Time_Management_average,
+            std2_Questions_and_Answers_average,
+            std3_Relevance_Content_average,
+            std3_Organization_and_Delivery_average,
+            std3_Design_or_Layout_average,
+            std3_Time_Management_average,
+            std3_Questions_and_Answers_average,
+            std1_weighted_average,
+            std2_weighted_average,
+            std3_weighted_average,
+            isPanelSubmitted: true,
+          };
+          if (body.count === 4) {
+            const std4_Relevance_Content_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std1_Relevance_Content,
+              );
+            const std4_Organization_and_Delivery_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std1_Organization_and_Delivery,
+              );
+            const std4_Design_or_Layout_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std1_Design_or_Layout,
+              );
+            const std4_Time_Management_average = this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Time_Management,
+            );
+            const std4_Questions_and_Answers_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std1_Questions_and_Answers,
+              );
+            const std4_weighted_average =
+              this.getFinalEvaluationWeightedAverage(
+                std4_Relevance_Content_average,
+                std4_Organization_and_Delivery_average,
+                std4_Design_or_Layout_average,
+                std4_Time_Management_average,
+                std4_Questions_and_Answers_average,
+              );
+            data = {
+              ...data,
+              std4_Relevance_Content_average,
+              std4_Organization_and_Delivery_average,
+              std4_Design_or_Layout_average,
+              std4_Time_Management_average,
+              std4_Questions_and_Answers_average,
+              std4_weighted_average,
+            };
+          }
+        }
+        console.log('------------------final data', data);
+        const updatedEvaluationMarks =
+          await this.FinalEvaluationMarksModel.updateOne(
+            { std1_rollNo: body.std1_rollNo },
+            { $set: data },
+          );
+        const myEvaluation = await this.EvaluationModel.updateOne(
+          {
+            group_leader: body.std1_rollNo,
+          },
+          { $set: { isfinalEvaluationResponded: false } },
+        );
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.supervior_id,
+        });
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({ id: body.id });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.supervior_id },
+            {
+              $set: {
+                finalprojectList: external.finalprojectList.filter(
+                  (val) => val !== body.project_title,
+                ),
+
+                finalrespondedList: [
+                  ...external.finalrespondedList,
+                  body.project_title,
+                ],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.id,
+          });
+          console.log('internale', internal);
+          if (internal.finalprojectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.supervior_id },
+              {
+                $set: {
+                  finalprojectList: internal.finalprojectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
+
+                  finalrespondedList: [
+                    ...internal.finalrespondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
+        const SaveMarks = await this.FinalEvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
+        console.log(updatedEvaluationMarks, 'updatedEvaluationMarks');
+        return { SaveMarks };
+      }
+      return 'all has been achieved successfully';
+    } catch (error) {
+      return error;
+    }
+  }
   getEvaluationWeightedAverage(
     mark1: number,
     mark2: number,
@@ -1487,6 +1584,24 @@ export class InternalAdvisorGetData {
       multiplyByFactor(mark2, 0.12) +
       multiplyByFactor(mark3, 0.12) +
       multiplyByFactor(mark4, 0.12);
+    return resultAverage;
+  }
+  getFinalEvaluationWeightedAverage(
+    mark1: number,
+    mark2: number,
+    mark3: number,
+    mark4: number,
+    mark5: number,
+  ) {
+    const multiplyByFactor = (mark, factor) => {
+      return mark * factor;
+    };
+    const resultAverage =
+      multiplyByFactor(mark1, 0.8) +
+      multiplyByFactor(mark2, 0.8) +
+      multiplyByFactor(mark3, 0.8) +
+      multiplyByFactor(mark4, 0.8) +
+      multiplyByFactor(mark5, 0.8);
     return resultAverage;
   }
   async getEvaluationAverage(id: string, mid) {
