@@ -1160,9 +1160,13 @@ export class InternalAdvisorGetData {
 
       console.log(EvaluationMarks, 'there is');
       let data;
+      console.log('frst time', body);
       if (!EvaluationMarks) {
+<<<<<<< HEAD
         console.log('frst time', body);
 
+=======
+>>>>>>> 2e75ff55679c29e02de3ce68d0d2a11cad177d5f
         data = {
           supervior_id: body.supervior_id,
           count: body.count,
@@ -1193,7 +1197,7 @@ export class InternalAdvisorGetData {
           std3_Questions_and_Answers: [body.std1_Questions_and_Answers],
 
           id: body.supervior_id,
-          comment: [body.comment],
+
           isPanelSubmitted: false,
         };
         if (body.count === 4) {
@@ -1331,7 +1335,6 @@ export class InternalAdvisorGetData {
 
           count: body.count,
           project_title: body.project_title,
-          comment: [...EvaluationMarks.comment, body.comment],
         };
         console.log(data, 'he dataaa');
         if (body.count === 4) {
@@ -1519,17 +1522,23 @@ export class InternalAdvisorGetData {
             { std1_rollNo: body.std1_rollNo },
             { $set: data },
           );
-        const myEvaluation = await this.EvaluationModel.updateOne(
+        console.log(updatedEvaluationMarks, 'updated');
+        const myEvaluation = await this.FinalEvaluationModel.updateOne(
           {
             group_leader: body.std1_rollNo,
           },
           { $set: { isfinalEvaluationResponded: false } },
         );
+        console.log(myEvaluation, 'my------evaluation');
         const internalAdvisor = await this.InternalAdvisorModel.findOne({
           id: body.supervior_id,
         });
+
+        console.log(internalAdvisor);
         if (!internalAdvisor) {
-          const external = await this.ExternalModel.findOne({ id: body.id });
+          const external = await this.ExternalModel.findOne({
+            id: body.supervior_id,
+          });
           const updateExternal = await this.ExternalModel.updateOne(
             { id: body.supervior_id },
             {
@@ -1548,7 +1557,7 @@ export class InternalAdvisorGetData {
         } else {
           console.log('internal advisor');
           const internal = await this.InternalAdvisorModel.findOne({
-            id: body.id,
+            id: body.supervior_id,
           });
           console.log('internale', internal);
           if (internal.finalprojectList.includes(body.project_title)) {

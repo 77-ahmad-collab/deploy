@@ -14,6 +14,8 @@ import { Coordinator } from 'src/Models/Coordinator/Coordinator.Model';
 import { Model } from 'mongoose';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
 import { Marks } from 'src/Models/Evaluation/Marks.model';
+import { StudentInterface } from 'src/Models/Student/student.model';
+import { Form } from 'src/Models/Student/form.model';
 @Controller('coordinator')
 export class CoordinatorController {
   constructor(
@@ -23,6 +25,9 @@ export class CoordinatorController {
     private CoordinatorModel: Model<Coordinator>,
     @InjectModel('Evaluation')
     private EvaluationModel: Model<Evaluation>,
+    @InjectModel('UndergradateStudents')
+    private StudentModel: Model<StudentInterface>,
+    @InjectModel('formdatas') private StudentFormModel: Model<Form>,
   ) {}
 
   @Post('/signup')
@@ -97,5 +102,15 @@ export class CoordinatorController {
     } catch (error) {
       return error;
     }
+  }
+  @Get('/total/students/department')
+  async getTotalStudents() {
+    const data = await this.StudentModel.find().count();
+    return data;
+  }
+  @Get('/total/fydp/groups')
+  async getTotalGroups() {
+    const data = await this.StudentFormModel.find().count();
+    return data;
   }
 }
