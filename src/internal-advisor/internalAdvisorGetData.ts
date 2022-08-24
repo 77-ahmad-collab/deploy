@@ -920,12 +920,19 @@ export class InternalAdvisorGetData {
           ...EvaluationMarks.std1_Methodology,
           body.std1_Methodology,
         ].length;
-        console.log(checkLength, 'check length');
+        console.log(checkLength, 'check length-------');
         let evaluatorLength = 3;
         const sheduleEvaluation = await this.EvaluationModel.findOne({
           group_leader: body.std1_rollNo,
         });
-        if (sheduleEvaluation.external_evaluator3.length > 0) {
+        console.log(
+          sheduleEvaluation.external_evaluator3,
+          'shedul90389848494948',
+        );
+        if (
+          sheduleEvaluation?.external_evaluator3 !== undefined &&
+          sheduleEvaluation?.external_evaluator3.length > 0
+        ) {
           evaluatorLength = 4;
         }
         if (checkLength === evaluatorLength) {
@@ -1362,7 +1369,10 @@ export class InternalAdvisorGetData {
         const sheduleEvaluation = await this.FinalEvaluationModel.findOne({
           group_leader: body.std1_rollNo,
         });
-        if (sheduleEvaluation.external_evaluator3.length > 0) {
+        if (
+          sheduleEvaluation?.external_evaluator3 !== undefined &&
+          sheduleEvaluation?.external_evaluator3.length > 0
+        ) {
           evaluatorLength = 4;
         }
         if (checkLength === evaluatorLength) {
