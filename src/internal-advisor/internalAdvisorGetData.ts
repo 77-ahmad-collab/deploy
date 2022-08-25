@@ -2258,14 +2258,14 @@ export class InternalAdvisorGetData {
       return mark * factor;
     };
     const resultAverage =
-      multiplyByFactor(mark1, 0.8) +
-      multiplyByFactor(mark2, 0.8) +
-      multiplyByFactor(mark3, 0.8) +
-      multiplyByFactor(mark4, 0.8) +
-      multiplyByFactor(mark5, 0.8) +
-      multiplyByFactor(mark6, 0.8) +
-      multiplyByFactor(mark7, 0.8) +
-      multiplyByFactor(mark8, 0.8);
+      multiplyByFactor(mark1, 0.4) +
+      multiplyByFactor(mark2, 0.4) +
+      multiplyByFactor(mark3, 0.4) +
+      multiplyByFactor(mark4, 0.4) +
+      multiplyByFactor(mark5, 0.4) +
+      multiplyByFactor(mark6, 0.4) +
+      multiplyByFactor(mark7, 0.4) +
+      multiplyByFactor(mark8, 0.4);
     return resultAverage;
   }
   async getEvaluationAverage(id: string, mid) {
