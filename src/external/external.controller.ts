@@ -11,6 +11,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 // import { Coordinator } from 'src/Models/Coordinator/Coordinator.Model';
 import { External } from 'src/Models/External/Externel.Model';
+import { Form } from 'src/Models/Student/form.model';
+import { StudentInterface } from 'src/Models/Student/student.model';
 import { ExternalService } from './external.service';
 
 @Controller('external')
@@ -20,6 +22,9 @@ export class ExternalController {
     private readonly jwtService: JwtService,
     @InjectModel('External')
     private ExternalModel: Model<External>,
+    @InjectModel('UndergradateStudents')
+    private StudentModel: Model<StudentInterface>,
+    @InjectModel('formdatas') private StudentFormModel: Model<Form>,
   ) {}
   @Post('/signup')
   //   @Serialize(new SerializeInterceptor(AdvisorDto))
@@ -35,7 +40,15 @@ export class ExternalController {
   async login(@Body() body) {
     try {
       const { email, password } = body;
-      const data = await this.externalService.login(email, password);
+      const previousdata = await this.externalService.login(email, password);
+      const count = await this.StudentModel.find().count();
+      const totalgroups = await this.StudentFormModel.find().count();
+      let data = {
+        ...previousdata,
+        totalStudents: count,
+        totalFydpGroups: totalgroups,
+      };
+
       return {
         data,
         jwt: this.externalService.signUser(10, data.email, 'user'),
