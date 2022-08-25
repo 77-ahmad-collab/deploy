@@ -44,7 +44,15 @@ export class CoordinatorController {
   async login(@Body() body) {
     try {
       const { email, password } = body;
-      const data = await this.CoordinatorService.login(email, password);
+      let previousdata = await this.CoordinatorService.login(email, password);
+      const count = await this.StudentModel.find().count();
+      const totalgroups = await this.StudentFormModel.find().count();
+      let data = {
+        ...previousdata,
+        totalStudents: count,
+        totalFydpGroups: totalgroups,
+      };
+
       return {
         data,
         jwt: this.CoordinatorService.signUser(10, data.email, 'user'),
@@ -112,5 +120,18 @@ export class CoordinatorController {
   async getTotalGroups() {
     const data = await this.StudentFormModel.find().count();
     return data;
+  }
+  @Get('/student/details/:id')
+  async getDetails(@Param('id') id: string) {
+    const student = await this.StudentModel.findOne({
+      id: id.toUpperCase(),
+    });
+    const FORMID = student.formid;
+    const studentForm = await this.StudentFormModel.findOne({ _id: FORMID });
+    return {
+      groupCount: studentForm.mem_count,
+      internal: studentForm.s_internal,
+      external: studentForm.s_external,
+    };
   }
 }
