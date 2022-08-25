@@ -16,6 +16,7 @@ export interface FinalEvaluation {
   isResultSubmitted: boolean;
   isEvaluationResponded: boolean;
   isfinalEvaluationResponded: boolean;
+  isreportEvaluationResponded: boolean;
   midEvaluation: boolean;
 }
 export const FinalEvaluationSchema = new Schema({
@@ -74,6 +75,10 @@ export const FinalEvaluationSchema = new Schema({
     default: true,
   },
   isfinalEvaluationResponded: {
+    type: Boolean,
+    default: true,
+  },
+  isreportEvaluationResponded: {
     type: Boolean,
     default: true,
   },

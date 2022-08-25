@@ -13,6 +13,7 @@ import { External } from 'src/Models/External/Externel.Model';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
 import { FinalEvaluationMarks } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
 import { FinalEvaluation } from 'src/Models/Evaluation/FinalEvaluation.model';
+import { ReportEvaluationMarks } from 'src/Models/Evaluation/ReportEvaluationMarks.model';
 @Injectable()
 export class InternalAdvisorGetData {
   constructor(
@@ -28,6 +29,8 @@ export class InternalAdvisorGetData {
     private EvaluationMarksModel: Model<EvaluationMarks>,
     @InjectModel('FinalEvaluationMarks')
     private FinalEvaluationMarksModel: Model<FinalEvaluationMarks>,
+    @InjectModel('ReportEvaluationMarks')
+    private ReportEvaluationMarksModel: Model<ReportEvaluationMarks>,
     @InjectModel('External')
     private ExternalModel: Model<External>,
     @InjectModel('Evaluation')
@@ -1162,11 +1165,6 @@ export class InternalAdvisorGetData {
       let data;
       console.log('frst time', body);
       if (!EvaluationMarks) {
-<<<<<<< HEAD
-        console.log('frst time', body);
-
-=======
->>>>>>> 2e75ff55679c29e02de3ce68d0d2a11cad177d5f
         data = {
           supervior_id: body.supervior_id,
           count: body.count,
@@ -1589,6 +1587,629 @@ export class InternalAdvisorGetData {
       return error;
     }
   }
+  async getReportEvaluationMarks(body) {
+    try {
+      // project_title:"",
+      // count:"",
+      // supervior_id:"",
+
+      // std1_name: "",
+      // std1_rollNo: "",
+      // std1_Literature_Review:"",
+      // std1_Methodology:"",
+      // std1_Results_and_Discussion:"",
+      // std1_Conclusions_and_Recommendations:"",
+      // std1_Relevance_to_SDGs:"",
+      // std1_Originality:"",
+      // std1_Formatting_and_Organization:"",
+      // std1_Technical_Writing:"",
+
+      // std2_name:"",
+      // std2_rollNo:"",
+      // std2_Literature_Review:"",
+      // std2_Methodology:"",
+      // std2_Results_and_Discussion:"",
+      // std2_Conclusions_and_Recommendations:"",
+      // std2_Relevance_to_SDGs:"",
+      // std2_Originality:"",
+      // std2_Formatting_and_Organization:"",
+      // std2_Technical_Writing:"",
+
+      // std3_name:"",
+      // std3_rollNo:"",
+      // std3_Literature_Review:"",
+      // std3_Methodology:"",
+      // std3_Results_and_Discussion:"",
+      // std3_Conclusions_and_Recommendations:"",
+      // std3_Relevance_to_SDGs:"",
+      // std3_Originality:"",
+      // std3_Formatting_and_Organization:"",
+      // std3_Technical_Writing:"",
+
+      // std4_name:"",
+      // std4_rollNo:"",
+      // std4_Literature_Review:"",
+      // std4_Methodology:"",
+      // std4_Results_and_Discussion:"",
+      // std4_Conclusions_and_Recommendations:"",
+      // std4_Relevance_to_SDGs:"",
+      // std4_Originality:"",
+      // std4_Formatting_and_Organization:"",
+      // std4_Technical_Writing:"",
+      const EvaluationMarks = await this.ReportEvaluationMarksModel.findOne({
+        std1_rollNo: body.std1_rollNo,
+      });
+
+      console.log(EvaluationMarks, 'there is');
+      let data;
+      console.log('frst time', body);
+      if (!EvaluationMarks) {
+        data = {
+          supervior_id: body.supervior_id,
+          count: body.count,
+          project_title: body.project_title,
+
+          std1_rollNo: body.std1_rollNo,
+          std1_name: body.std1_name,
+          std1_Literature_Review: [body.std1_Literature_Review],
+          std1_Methodology: [body.std1_Methodology],
+          std1_Results_and_Discussion: [body.std1_Results_and_Discussion],
+          std1_Conclusions_and_Recommendations: [
+            body.std1_Conclusions_and_Recommendations,
+          ],
+          std1_Relevance_to_SDGs: [body.std1_Relevance_to_SDGs],
+          std1_Originality: [body.std1_Originality],
+          std1_Formatting_and_Organization: [
+            body.std1_Formatting_and_Organization,
+          ],
+          std1_Technical_Writing: [body.std2_Technical_Writing],
+
+          std2_rollNo: body.std2_rollNo,
+          std2_name: body.std2_name,
+          std2_Literature_Review: [body.std2_Literature_Review],
+          std2_Methodology: [body.std2_Methodology],
+          std2_Results_and_Discussion: [body.std2_Results_and_Discussion],
+          std2_Conclusions_and_Recommendations: [
+            body.std2_Conclusions_and_Recommendations,
+          ],
+          std2_Relevance_to_SDGs: [body.std2_Relevance_to_SDGs],
+          std2_Originality: [body.std2_Originality],
+          std2_Formatting_and_Organization: [
+            body.std2_Formatting_and_Organization,
+          ],
+          std2_Technical_Writing: [body.std3_Technical_Writing],
+
+          std3_rollNo: body.std3_rollNo,
+          std3_name: body.std3_name,
+          std3_Literature_Review: [body.std3_Literature_Review],
+          std3_Methodology: [body.std3_Methodology],
+          std3_Results_and_Discussion: [body.std3_Results_and_Discussion],
+          std3_Conclusions_and_Recommendations: [
+            body.std3_Conclusions_and_Recommendations,
+          ],
+          std3_Relevance_to_SDGs: [body.std3_Relevance_to_SDGs],
+          std3_Originality: [body.std3_Originality],
+          std3_Formatting_and_Organization: [
+            body.std3_Formatting_and_Organization,
+          ],
+          std3_Technical_Writing: [body.std3_Technical_Writing],
+
+          id: body.supervior_id,
+
+          isPanelSubmitted: false,
+        };
+        if (body.count === 4) {
+          data = {
+            ...data,
+            std4_rollNo: body.std4_rollNo,
+            std4_name: body.std4_name,
+            std4_Literature_Review: [body.std4_Literature_Review],
+            std4_Methodology: [body.std4_Methodology],
+            std4_Results_and_Discussion: [body.std4_Results_and_Discussion],
+            std4_Conclusions_and_Recommendations: [
+              body.std4_Conclusions_and_Recommendations,
+            ],
+            std4_Relevance_to_SDGs: [body.std4_Relevance_to_SDGs],
+            std4_Originality: [body.std4_Originality],
+            std4_Formatting_and_Organization: [
+              body.std4_Formatting_and_Organization,
+            ],
+            std4_Technical_Writing: [body.std4_Technical_Writing],
+          };
+        }
+        const SaveMarks = await this.ReportEvaluationMarksModel.create(data);
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.supervior_id,
+        });
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({
+            id: body.supervior_id,
+          });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.supervior_id },
+            {
+              $set: {
+                reportprojectList: external.reportprojectList.filter(
+                  (val) => val !== body.project_title,
+                ),
+
+                reportrespondedList: [
+                  ...external.reportrespondedList,
+                  body.project_title,
+                ],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.supervior_id,
+          });
+          console.log('internale', internal);
+          if (internal.reportprojectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.supervior_id },
+              {
+                $set: {
+                  reportprojectList: internal.reportprojectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
+
+                  reportrespondedList: [
+                    ...internal.reportrespondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
+        return { SaveMarks };
+      } else {
+        console.log('entered here');
+        const EvaluationMarks = await this.ReportEvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
+
+        console.log(EvaluationMarks, '===============there is');
+        data = {
+          std1_Literature_Review: [
+            ...EvaluationMarks.std1_Literature_Review,
+            body.std1_Literature_Review,
+          ],
+          std1_Methodology: [
+            ...EvaluationMarks.std1_Methodology,
+            body.std1_Methodology,
+          ],
+          std1_Results_and_Discussion: [
+            ...EvaluationMarks.std1_Results_and_Discussion,
+            body.std1_Results_and_Discussion,
+          ],
+          std1_Conclusions_and_Recommendations: [
+            ...EvaluationMarks.std1_Conclusions_and_Recommendations,
+            body.std1_Conclusions_and_Recommendations,
+          ],
+          std1_Relevance_to_SDGs: [
+            ...EvaluationMarks.std1_Relevance_to_SDGs,
+            body.std1_Relevance_to_SDGs,
+          ],
+          std1_Originality: [
+            ...EvaluationMarks.std1_Originality,
+            body.std1_Originality,
+          ],
+          std1_Formatting_and_Organization: [
+            ...EvaluationMarks.std1_Formatting_and_Organization,
+            body.std1_Formatting_and_Organization,
+          ],
+          std1_Technical_Writing: [
+            ...EvaluationMarks.std1_Technical_Writing,
+            body.std1_Technical_Writing,
+          ],
+
+          std2_Literature_Review: [
+            ...EvaluationMarks.std2_Literature_Review,
+            body.std2_Literature_Review,
+          ],
+          std2_Methodology: [
+            ...EvaluationMarks.std2_Methodology,
+            body.std2_Methodology,
+          ],
+          std2_Results_and_Discussion: [
+            ...EvaluationMarks.std2_Results_and_Discussion,
+            body.std2_Results_and_Discussion,
+          ],
+          std2_Conclusions_and_Recommendations: [
+            ...EvaluationMarks.std2_Conclusions_and_Recommendations,
+            body.std2_Conclusions_and_Recommendations,
+          ],
+          std2_Relevance_to_SDGs: [
+            ...EvaluationMarks.std2_Relevance_to_SDGs,
+            body.std2_Relevance_to_SDGs,
+          ],
+          std2_Originality: [
+            ...EvaluationMarks.std2_Originality,
+            body.std2_Originality,
+          ],
+          std2_Formatting_and_Organization: [
+            ...EvaluationMarks.std2_Formatting_and_Organization,
+            body.std2_Formatting_and_Organization,
+          ],
+          std2_Technical_Writing: [
+            ...EvaluationMarks.std2_Technical_Writing,
+            body.std2_Technical_Writing,
+          ],
+
+          std3_Literature_Review: [
+            ...EvaluationMarks.std3_Literature_Review,
+            body.std3_Literature_Review,
+          ],
+          std3_Methodology: [
+            ...EvaluationMarks.std3_Methodology,
+            body.std3_Methodology,
+          ],
+          std3_Results_and_Discussion: [
+            ...EvaluationMarks.std3_Results_and_Discussion,
+            body.std3_Results_and_Discussion,
+          ],
+          std3_Conclusions_and_Recommendations: [
+            ...EvaluationMarks.std3_Conclusions_and_Recommendations,
+            body.std3_Conclusions_and_Recommendations,
+          ],
+          std3_Relevance_to_SDGs: [
+            ...EvaluationMarks.std3_Relevance_to_SDGs,
+            body.std3_Relevance_to_SDGs,
+          ],
+          std3_Originality: [
+            ...EvaluationMarks.std3_Originality,
+            body.std3_Originality,
+          ],
+          std3_Formatting_and_Organization: [
+            ...EvaluationMarks.std3_Formatting_and_Organization,
+            body.std3_Formatting_and_Organization,
+          ],
+          std3_Technical_Writing: [
+            ...EvaluationMarks.std3_Technical_Writing,
+            body.std3_Technical_Writing,
+          ],
+
+          count: body.count,
+          project_title: body.project_title,
+        };
+        console.log(data, 'he dataaa');
+        if (body.count === 4) {
+          data = {
+            ...data,
+
+            std4_Literature_Review: [
+              ...EvaluationMarks.std4_Literature_Review,
+              body.std4_Literature_Review,
+            ],
+            std4_Methodology: [
+              ...EvaluationMarks.std4_Methodology,
+              body.std4_Methodology,
+            ],
+            std4_Results_and_Discussion: [
+              ...EvaluationMarks.std4_Results_and_Discussion,
+              body.std4_Results_and_Discussion,
+            ],
+            std4_Conclusions_and_Recommendations: [
+              ...EvaluationMarks.std4_Conclusions_and_Recommendations,
+              body.std4_Conclusions_and_Recommendations,
+            ],
+            std4_Relevance_to_SDGs: [
+              ...EvaluationMarks.std4_Relevance_to_SDGs,
+              body.std4_Relevance_to_SDGs,
+            ],
+            std4_Originality: [
+              ...EvaluationMarks.std4_Originality,
+              body.std4_Originality,
+            ],
+            std4_Formatting_and_Organization: [
+              ...EvaluationMarks.std4_Formatting_and_Organization,
+              body.std4_Formatting_and_Organization,
+            ],
+            std4_Technical_Writing: [
+              ...EvaluationMarks.std4_Technical_Writing,
+              body.std4_Technical_Writing,
+            ],
+          };
+        }
+        const checkLength = [
+          ...EvaluationMarks.std1_Literature_Review,
+          body.std1_Literature_Review,
+        ].length;
+        console.log(checkLength, 'check length');
+        let evaluatorLength = 3;
+        const sheduleEvaluation = await this.FinalEvaluationModel.findOne({
+          group_leader: body.std1_rollNo,
+        });
+        if (
+          sheduleEvaluation?.external_evaluator3 !== undefined &&
+          sheduleEvaluation?.external_evaluator3.length > 0
+        ) {
+          evaluatorLength = 4;
+        }
+        if (checkLength === evaluatorLength) {
+          console.log(' i shoud not enter here');
+          const std1_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Literature_Review,
+          );
+          const std1_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Methodology,
+          );
+          const std1_Results_and_Discussion_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Results_and_Discussion,
+            );
+          const std1_Conclusions_and_Recommendations_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Conclusions_and_Recommendations,
+            );
+          const std1_Relevance_to_SDGs_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Relevance_to_SDGs,
+          );
+
+          const std1_Originality_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Originality,
+          );
+          const std1_Technical_Writing_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std1_Technical_Writing,
+          );
+          const std1_Formatting_and_Organization_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std1_Formatting_and_Organization,
+            );
+          //
+          const std2_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Literature_Review,
+          );
+          const std2_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Methodology,
+          );
+          const std2_Results_and_Discussion_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std2_Results_and_Discussion,
+            );
+          const std2_Conclusions_and_Recommendations_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std2_Conclusions_and_Recommendations,
+            );
+          const std2_Relevance_to_SDGs_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Relevance_to_SDGs,
+          );
+
+          const std2_Originality_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Originality,
+          );
+          const std2_Technical_Writing_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std2_Technical_Writing,
+          );
+          const std2_Formatting_and_Organization_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std2_Formatting_and_Organization,
+            );
+          ///
+
+          const std3_Literature_Review_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Literature_Review,
+          );
+          const std3_Methodology_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Methodology,
+          );
+          const std3_Results_and_Discussion_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std3_Results_and_Discussion,
+            );
+          const std3_Conclusions_and_Recommendations_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std3_Conclusions_and_Recommendations,
+            );
+          const std3_Relevance_to_SDGs_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Relevance_to_SDGs,
+          );
+
+          const std3_Originality_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Originality,
+          );
+          const std3_Technical_Writing_average = this.getSingleEvaluationAverge(
+            EvaluationMarks.std3_Technical_Writing,
+          );
+          const std3_Formatting_and_Organization_average =
+            this.getSingleEvaluationAverge(
+              EvaluationMarks.std3_Formatting_and_Organization,
+            );
+
+          const std1_weighted_average = this.getReportEvaluationWeightedAverage(
+            std1_Literature_Review_average,
+            std1_Methodology_average,
+            std1_Results_and_Discussion_average,
+            std1_Conclusions_and_Recommendations_average,
+            std1_Relevance_to_SDGs_average,
+            std1_Originality_average,
+            std1_Technical_Writing_average,
+            std1_Formatting_and_Organization_average,
+          );
+          const std2_weighted_average = this.getReportEvaluationWeightedAverage(
+            std2_Literature_Review_average,
+            std2_Methodology_average,
+            std2_Results_and_Discussion_average,
+            std2_Conclusions_and_Recommendations_average,
+            std2_Relevance_to_SDGs_average,
+            std2_Originality_average,
+            std2_Technical_Writing_average,
+            std2_Formatting_and_Organization_average,
+          );
+          const std3_weighted_average = this.getReportEvaluationWeightedAverage(
+            std3_Literature_Review_average,
+            std3_Methodology_average,
+            std3_Results_and_Discussion_average,
+            std3_Conclusions_and_Recommendations_average,
+            std3_Relevance_to_SDGs_average,
+            std3_Originality_average,
+            std3_Technical_Writing_average,
+            std3_Formatting_and_Organization_average,
+          );
+          data = {
+            ...data,
+            std1_Literature_Review_average,
+            std1_Methodology_average,
+            std1_Results_and_Discussion_average,
+            std1_Conclusions_and_Recommendations_average,
+            std1_Relevance_to_SDGs_average,
+            std1_Originality_average,
+            std1_Technical_Writing_average,
+            std1_Formatting_and_Organization_average,
+            std2_Literature_Review_average,
+            std2_Methodology_average,
+            std2_Results_and_Discussion_average,
+            std2_Conclusions_and_Recommendations_average,
+            std2_Relevance_to_SDGs_average,
+            std2_Originality_average,
+            std2_Technical_Writing_average,
+            std2_Formatting_and_Organization_average,
+            std3_Literature_Review_average,
+            std3_Methodology_average,
+            std3_Results_and_Discussion_average,
+            std3_Conclusions_and_Recommendations_average,
+            std3_Relevance_to_SDGs_average,
+            std3_Originality_average,
+            std3_Technical_Writing_average,
+            std3_Formatting_and_Organization_average,
+            std1_weighted_average,
+            std2_weighted_average,
+            std3_weighted_average,
+            isPanelSubmitted: true,
+          };
+          if (body.count === 4) {
+            const std4_Literature_Review_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Literature_Review,
+              );
+            const std4_Methodology_average = this.getSingleEvaluationAverge(
+              EvaluationMarks.std4_Methodology,
+            );
+            const std4_Results_and_Discussion_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Results_and_Discussion,
+              );
+            const std4_Conclusions_and_Recommendations_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Conclusions_and_Recommendations,
+              );
+            const std4_Relevance_to_SDGs_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Relevance_to_SDGs,
+              );
+
+            const std4_Originality_average = this.getSingleEvaluationAverge(
+              EvaluationMarks.std4_Originality,
+            );
+            const std4_Technical_Writing_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Technical_Writing,
+              );
+            const std4_Formatting_and_Organization_average =
+              this.getSingleEvaluationAverge(
+                EvaluationMarks.std4_Formatting_and_Organization,
+              );
+            const std4_weighted_average =
+              this.getReportEvaluationWeightedAverage(
+                std4_Literature_Review_average,
+                std4_Methodology_average,
+                std4_Results_and_Discussion_average,
+                std4_Conclusions_and_Recommendations_average,
+                std4_Relevance_to_SDGs_average,
+                std4_Originality_average,
+                std4_Technical_Writing_average,
+                std4_Formatting_and_Organization_average,
+              );
+            data = {
+              ...data,
+              std4_Literature_Review_average,
+              std4_Methodology_average,
+              std4_Results_and_Discussion_average,
+              std4_Conclusions_and_Recommendations_average,
+              std4_Relevance_to_SDGs_average,
+              std4_Originality_average,
+              std4_Technical_Writing_average,
+              std4_Formatting_and_Organization_average,
+              std4_weighted_average,
+            };
+          }
+        }
+        console.log('------------------final data', data);
+        const updatedEvaluationMarks =
+          await this.ReportEvaluationMarksModel.updateOne(
+            { std1_rollNo: body.std1_rollNo },
+            { $set: data },
+          );
+        console.log(updatedEvaluationMarks, 'updated');
+        const myEvaluation = await this.FinalEvaluationModel.updateOne(
+          {
+            group_leader: body.std1_rollNo,
+          },
+          { $set: { isreportEvaluationResponded: false } },
+        );
+        console.log(myEvaluation, 'my------evaluation');
+        const internalAdvisor = await this.InternalAdvisorModel.findOne({
+          id: body.supervior_id,
+        });
+
+        console.log(internalAdvisor);
+        if (!internalAdvisor) {
+          const external = await this.ExternalModel.findOne({
+            id: body.supervior_id,
+          });
+          const updateExternal = await this.ExternalModel.updateOne(
+            { id: body.supervior_id },
+            {
+              $set: {
+                reportprojectList: external.reportprojectList.filter(
+                  (val) => val !== body.project_title,
+                ),
+
+                reportrespondedList: [
+                  ...external.reportrespondedList,
+                  body.project_title,
+                ],
+              },
+            },
+          );
+        } else {
+          console.log('internal advisor');
+          const internal = await this.InternalAdvisorModel.findOne({
+            id: body.supervior_id,
+          });
+          console.log('internale', internal);
+          if (internal.reportprojectList.includes(body.project_title)) {
+            const updateInternal = await this.InternalAdvisorModel.updateOne(
+              { id: body.supervior_id },
+              {
+                $set: {
+                  reportprojectList: internal.reportprojectList.filter(
+                    (val) => val !== body.project_title,
+                  ),
+
+                  reportrespondedList: [
+                    ...internal.reportrespondedList,
+                    body.project_title,
+                  ],
+                },
+              },
+            );
+          }
+        }
+        const SaveMarks = await this.ReportEvaluationMarksModel.findOne({
+          std1_rollNo: body.std1_rollNo,
+        });
+        console.log(updatedEvaluationMarks, 'updatedEvaluationMarks');
+        return { SaveMarks };
+      }
+      return 'all has been achieved successfully';
+    } catch (error) {
+      return error;
+    }
+  }
   getEvaluationWeightedAverage(
     mark1: number,
     mark2: number,
@@ -1621,6 +2242,30 @@ export class InternalAdvisorGetData {
       multiplyByFactor(mark3, 0.8) +
       multiplyByFactor(mark4, 0.8) +
       multiplyByFactor(mark5, 0.8);
+    return resultAverage;
+  }
+  getReportEvaluationWeightedAverage(
+    mark1: number,
+    mark2: number,
+    mark3: number,
+    mark4: number,
+    mark5: number,
+    mark6: number,
+    mark7: number,
+    mark8: number,
+  ) {
+    const multiplyByFactor = (mark, factor) => {
+      return mark * factor;
+    };
+    const resultAverage =
+      multiplyByFactor(mark1, 0.8) +
+      multiplyByFactor(mark2, 0.8) +
+      multiplyByFactor(mark3, 0.8) +
+      multiplyByFactor(mark4, 0.8) +
+      multiplyByFactor(mark5, 0.8) +
+      multiplyByFactor(mark6, 0.8) +
+      multiplyByFactor(mark7, 0.8) +
+      multiplyByFactor(mark8, 0.8);
     return resultAverage;
   }
   async getEvaluationAverage(id: string, mid) {

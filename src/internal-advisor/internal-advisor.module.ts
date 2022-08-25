@@ -6,6 +6,7 @@ import { EvaluationMarksSchema } from 'src/Models/Evaluation/EvaluationMarks.mod
 import { FinalEvaluationSchema } from 'src/Models/Evaluation/FinalEvaluation.model';
 import { FinalEvaluationMarksSchema } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
 import { MarksSchema } from 'src/Models/Evaluation/Marks.model';
+import { ReportEvaluationMarksSchema } from 'src/Models/Evaluation/ReportEvaluationMarks.model';
 import { ExternalSchema } from 'src/Models/External/Externel.Model';
 import { AdvisorFormSchema } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisorSchema } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
@@ -62,6 +63,11 @@ import { InternalAdvisorGetData } from './internalAdvisorGetData';
         name: 'FinalEvaluationMarks',
         schema: FinalEvaluationMarksSchema,
         collection: 'FinalEvaluationMarks',
+      },
+      {
+        name: 'ReportEvaluationMarks',
+        schema: ReportEvaluationMarksSchema,
+        collection: 'ReportEvaluationMarks',
       },
       {
         name: 'External',

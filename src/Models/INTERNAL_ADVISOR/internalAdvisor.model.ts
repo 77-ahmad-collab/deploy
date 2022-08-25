@@ -9,6 +9,8 @@ export interface InternalAdvisor {
   advisorformid: string;
   projectList: string[];
   finalprojectList: string[];
+  reportprojectList: string[];
+  reportrespondedList: string[];
   respondedList: string[];
   finalrespondedList: string[];
   isFirstTime: boolean;
@@ -59,6 +61,14 @@ export const InternalAdvisorSchema = new Schema({
     type: [String],
     default: [],
   },
+  reportprojectList: {
+    type: [String],
+    default: [],
+  },
+  reportrespondedList: {
+    type: [String],
+    default: [],
+  },
 
   respondedList: {
     type: [String],
@@ -68,6 +78,7 @@ export const InternalAdvisorSchema = new Schema({
     type: [String],
     default: [],
   },
+
   isFirstTime: {
     type: Boolean,
     default: true,

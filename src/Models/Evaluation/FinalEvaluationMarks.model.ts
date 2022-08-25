@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 export interface FinalEvaluationMarks {
   count: number;
-  supervior_id: string;
+  supervior_id: number;
   project_title: string;
 
   std1_name: string;
@@ -70,8 +70,8 @@ export const FinalEvaluationMarksSchema = new Schema({
     default: 0,
   },
   supervior_id: {
-    type: String,
-    default: '',
+    type: Number,
+    default: 0,
   },
 
   project_title: {

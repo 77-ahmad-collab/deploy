@@ -13,6 +13,7 @@ import axios from 'axios';
 import { Model } from 'mongoose';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
 import { FinalEvaluationMarks } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
+import { ReportEvaluationMarks } from 'src/Models/Evaluation/ReportEvaluationMarks.model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
@@ -44,6 +45,8 @@ export class InternalAdvisorController {
     private EvaluationModel: Model<Evaluation>,
     @InjectModel('FinalEvaluationMarks')
     private FinalEvaluationMarksModel: Model<FinalEvaluationMarks>,
+    @InjectModel('ReportEvaluationMarks')
+    private ReportEvaluationMarksModel: Model<ReportEvaluationMarks>,
   ) {}
   @Get('/')
   async get() {
@@ -268,6 +271,13 @@ export class InternalAdvisorController {
       return data;
     }
   }
+  @Post('/submission/report/final')
+  async finalReportSubmission(@Body() body: any) {
+    const data = await this.internalAdvisorGetData.getReportEvaluationMarks(
+      body,
+    );
+    return data;
+  }
   @Get('/submission/evaluation/average/:id/:mid') //get mif marks updated 3
   async getEvaluationAverage(
     @Param('id') id: string,
@@ -286,6 +296,14 @@ export class InternalAdvisorController {
       return data;
     }
   }
+  @Get('/submission/report/average/:id')
+  async getReportAverage(@Param('id') id: string) {
+    const data = await this.ReportEvaluationMarksModel.findOne({
+      std1_rollNo: id,
+    });
+    return data;
+  }
+
   @Get('/all/allocated/projects') // dont need
   async getAllAllocatedProjects() {
     const data = this.EvaluationModel.find(
