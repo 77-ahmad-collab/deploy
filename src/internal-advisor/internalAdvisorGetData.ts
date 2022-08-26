@@ -2301,6 +2301,7 @@ export class InternalAdvisorGetData {
       );
       console.log(evaluationMarks, 'evaluuation marks----->>>');
       const {
+        std1_Literature_Review_average,
         std1_Methodology_average,
         std1_Adherence_to_Work_Plan_average,
         std1_Reporting_and_Presentation_average,
@@ -2328,7 +2329,11 @@ export class InternalAdvisorGetData {
         count,
       } = evaluationMarks;
       let evaluatedResult;
+      const std1 = await this.StudentModel.findOne({ id: std1_rollNo });
+      const std2 = await this.StudentModel.findOne({ id: std2_rollNo });
+      const std3 = await this.StudentModel.findOne({ id: std3_rollNo });
       evaluatedResult = {
+        std1_Literature_Review_average,
         std1_Methodology_average,
         std1_Adherence_to_Work_Plan_average,
         std1_Reporting_and_Presentation_average,
@@ -2347,11 +2352,15 @@ export class InternalAdvisorGetData {
         std1_rollNo,
         std2_rollNo,
         std3_rollNo,
+        std1_name: std1.s_name,
+        std2_name: std2.s_name,
+        std3_name: std3.s_name,
         project_title,
         count,
       };
       console.log(evaluatedResult, 'evajfhi8484488448848');
       if (evaluationMarks.std4_weighted_average !== 0) {
+        const std4 = await this.StudentModel.findOne({ id: std4_rollNo });
         evaluatedResult = {
           ...evaluatedResult,
           std4_Literature_Review_average,
@@ -2359,6 +2368,7 @@ export class InternalAdvisorGetData {
           std4_Adherence_to_Work_Plan_average,
           std4_Reporting_and_Presentation_average,
           std4_weighted_average,
+          std3_name: std4.s_name,
           std4_rollNo,
         };
       }
