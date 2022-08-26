@@ -133,12 +133,20 @@ export class CoordinatorController {
     const student = await this.StudentModel.findOne({
       id: id.toUpperCase(),
     });
-    const FORMID = student.formid;
-    const studentForm = await this.StudentFormModel.findOne({ _id: FORMID });
-    return {
-      groupCount: studentForm.mem_count,
-      internal: studentForm.s_internal,
-      external: studentForm.s_external,
-    };
+    if (student.formid) {
+      const FORMID = student.formid;
+      const studentForm = await this.StudentFormModel.findOne({ _id: FORMID });
+      return {
+        groupCount: studentForm.mem_count,
+        internal: studentForm.s_internal,
+        external: studentForm.s_external,
+      };
+    } else {
+      return {
+        groupCount: 0,
+        internal: '',
+        external: '',
+      };
+    }
   }
 }
