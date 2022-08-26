@@ -684,7 +684,7 @@ export class InternalAdvisorService {
       let list = attendanceInfo.week;
       list.push(body);
       console.log(list, 'list');
-      const count = Number(attendanceInfo.count);
+      let count = Number(attendanceInfo.count);
       // if(mem_count===3){
       //   if(body.mem1 == list[weekno].mem1){
       //     list[weekno].mem1_status = body.mem1_status;
@@ -709,7 +709,7 @@ export class InternalAdvisorService {
         { id: leader.groupRequest },
         { $set: { week: list, count: count + 1 } },
       );
-      return { list: list[weekno], weekno };
+      return { list: list[weekno], weekno: weekno + 1 };
     } catch (error) {
       console.log(error);
     }

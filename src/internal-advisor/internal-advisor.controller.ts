@@ -188,7 +188,7 @@ export class InternalAdvisorController {
   //     console.log(error);
   //   }
   // }
-  @Get('/attendance/:advisorid/:weekno/:count')
+  @Post('/attendance/:advisorid/:weekno/:count')
   async updateAttendance(
     @Param('advisorid') advisorid: string,
     @Param('count') count: string,
