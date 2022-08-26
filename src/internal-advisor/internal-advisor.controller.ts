@@ -243,6 +243,15 @@ export class InternalAdvisorController {
       console.log(error);
     }
   }
+  @Get('/all/projects/report/:id') // mid 1 updated that need tobe given today
+  async getAllReportProjects(@Param('id') id: number) {
+    try {
+      const data = await this.internalAdvisorGetData.getAllReportProjects(id);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   @Post('/all/progress/projects') // dont need in final evalution
   async getAllProgressProjects(@Body('id') id: string) {
     try {

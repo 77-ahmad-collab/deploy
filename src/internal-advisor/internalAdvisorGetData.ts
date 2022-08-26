@@ -400,6 +400,64 @@ export class InternalAdvisorGetData {
       return error;
     }
   }
+  async getReportProjectListforAdvisor(advisor, Model) {
+    try {
+      //----------------------------
+      console.log(advisor, 'advisor in enteruing in else stGE');
+      let newProjectList = [];
+      let projectTitles = await this.FinalEvaluationModel.find(
+        {
+          $or: [
+            { supervisor: advisor.name },
+            { external_evaluator: advisor.name },
+            { external_evaluator2: advisor.name },
+            { external_evaluator3: advisor.name },
+          ],
+        },
+        { _id: 0, project_title: 1, midEvaluation: 1 },
+      );
+
+      projectTitles = projectTitles.filter((val) => val !== undefined);
+      console.log(projectTitles, 'projectTitles7777------------');
+      console.log(projectTitles, 'projectTitles');
+      let projectList = [];
+
+      projectList = advisor.reportprojectList;
+
+      console.log(projectList);
+      for (let i = 0; i < projectTitles.length; i++) {
+        if (
+          projectList.includes(projectTitles[i].project_title) ||
+          advisor.reportrespondedList.includes(projectTitles[i].project_title)
+        ) {
+          console.log('yes it inclued ine ', projectTitles[i].project_title);
+        } else {
+          newProjectList.push(projectTitles[i].project_title);
+        }
+      }
+      console.log('new project st', newProjectList);
+      const updateAdvisor = await Model.findOneAndUpdate(
+        { id: advisor.id },
+        {
+          $set: {
+            reportprojectList: [...projectList, ...newProjectList],
+          },
+        },
+      );
+
+      let NewprojectTitles = advisor.reportprojectList;
+      NewprojectTitles = [...projectList, ...newProjectList].map(
+        (str, index) => ({
+          s_proj_title: str,
+        }),
+      );
+      return NewprojectTitles;
+
+      ///-----------------
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async getAllProjects(id: number, mid: string) {
     try {
       const advisor = await this.InternalAdvisorModel.findOne({ id });
@@ -418,6 +476,34 @@ export class InternalAdvisorGetData {
         advisor,
         this.InternalAdvisorModel,
         mid,
+      );
+      // const projectTitles = await this.StudentFormModel.find(
+      //   {
+      //     s_internal: advisor.name,
+      //   },
+      //   { _id: 0, s_proj_title: 1 },
+      // );
+      return projectTitles;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getAllReportProjects(id: number) {
+    try {
+      const advisor = await this.InternalAdvisorModel.findOne({ id });
+      // console.log(advisor, 'advisor>>');
+      if (!advisor) {
+        const data = await this.ExternalModel.findOne({ id });
+        if (!data) return [];
+        const projectTitles = await this.getReportProjectListforAdvisor(
+          data,
+          this.ExternalModel,
+        );
+        return projectTitles;
+      }
+      const projectTitles = await this.getReportProjectListforAdvisor(
+        advisor,
+        this.InternalAdvisorModel,
       );
       // const projectTitles = await this.StudentFormModel.find(
       //   {
