@@ -278,7 +278,7 @@ export class InternalAdvisorController {
     );
     return data;
   }
-  @Get('/submission/evaluation/average/:id/:mid') //get mif marks updated 3
+  @Get('/submission/evaluation/average/:id/:mid') //get mif marks updated
   async getEvaluationAverage(
     @Param('id') id: string,
     @Param('mid') mid: string,
