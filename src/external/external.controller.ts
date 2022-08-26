@@ -40,18 +40,42 @@ export class ExternalController {
   async login(@Body() body) {
     try {
       const { email, password } = body;
-      const previousdata = await this.externalService.login(email, password);
+      let previousdata = await this.externalService.login(email, password);
+      let temp = previousdata;
       const count = await this.StudentModel.find().count();
       const totalgroups = await this.StudentFormModel.find().count();
+      // temp['totalStudents'] = count;
+      // temp['totalFydpGroups'] = totalgroups;
+      console.log(
+        {
+          totalStudents: count,
+          totalFydpGroups: totalgroups,
+        },
+        '----------------',
+      );
+
       let data = {
-        ...previousdata,
+        name: previousdata.name,
+        id: previousdata.id,
+        email: previousdata.email,
+        contact: previousdata.contact,
+        designation: previousdata.designation,
+        password: previousdata.password,
+        projectList: previousdata.projectList,
+        finalprojectList: previousdata.finalprojectList,
+        reportprojectList: previousdata.reportprojectList,
+        reportrespondedList: previousdata.reportrespondedList,
+        respondedList: previousdata.respondedList,
+        finalrespondedList: previousdata.finalrespondedList,
+        isFirstTime: previousdata.isFirstTime,
         totalStudents: count,
         totalFydpGroups: totalgroups,
       };
-
+      console.log(data, '-->>');
       return {
         data,
-        jwt: this.externalService.signUser(10, data.email, 'user'),
+
+        jwt: this.externalService.signUser(10, previousdata.email, 'user'),
       };
     } catch (error) {
       throw new UnauthorizedException('credentials are not correct');

@@ -45,17 +45,24 @@ export class CoordinatorController {
     try {
       const { email, password } = body;
       let previousdata = await this.CoordinatorService.login(email, password);
+      console.log(previousdata, 'prr----------------');
       const count = await this.StudentModel.find().count();
       const totalgroups = await this.StudentFormModel.find().count();
       let data = {
-        ...previousdata,
+        name: previousdata.name,
+        id: previousdata.id,
+        email: previousdata.email,
+        contact: previousdata.contact,
+        designation: previousdata.designation,
+        password: previousdata.password,
+        locationOfEvaluation: previousdata.locationOfEvaluation,
         totalStudents: count,
         totalFydpGroups: totalgroups,
       };
 
       return {
         data,
-        jwt: this.CoordinatorService.signUser(10, data.email, 'user'),
+        jwt: this.CoordinatorService.signUser(10, previousdata.email, 'user'),
       };
     } catch (error) {
       throw new UnauthorizedException('credentials are not correct');
