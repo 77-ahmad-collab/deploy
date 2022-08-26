@@ -127,7 +127,7 @@ export class CoordinatorController {
   async getTotalGroups() {
     const data = await this.StudentFormModel.find().count();
     return data;
-  }
+  } //
   @Get('/student/details/:id')
   async getDetails(@Param('id') id: string) {
     const student = await this.StudentModel.findOne({
