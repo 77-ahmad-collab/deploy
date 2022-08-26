@@ -12,6 +12,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import axios from 'axios';
 import { Model } from 'mongoose';
 import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
+import { FinalEvaluation } from 'src/Models/Evaluation/FinalEvaluation.model';
 import { FinalEvaluationMarks } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
 import { ReportEvaluationMarks } from 'src/Models/Evaluation/ReportEvaluationMarks.model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
@@ -47,6 +48,8 @@ export class InternalAdvisorController {
     private FinalEvaluationMarksModel: Model<FinalEvaluationMarks>,
     @InjectModel('ReportEvaluationMarks')
     private ReportEvaluationMarksModel: Model<ReportEvaluationMarks>,
+    @InjectModel('FinalEvaluation')
+    private FinalEvaluationModel: Model<FinalEvaluation>,
   ) {}
   @Get('/')
   async get() {
@@ -323,7 +326,7 @@ export class InternalAdvisorController {
       );
       return data;
     } else {
-      const data = await this.EvaluationModel.find(
+      const data = await this.FinalEvaluationModel.find(
         { isfinalEvaluationResponded: false },
         { project_title: 1, _id: 0 },
       );
