@@ -814,7 +814,114 @@ export class InternalAdvisorGetData {
   }
   async getAverage(id: string) {
     const Marks = await this.MarksModel.findOne({ project_title: id });
-    return Marks;
+    if (Marks) {
+      const attendance = await this.attendanceModel.findOne({
+        id: Marks.std1_rollNo,
+      });
+      let total = 0;
+      let std1Present = 0;
+      let std2Present = 0;
+      let std3Present = 0;
+      let std4Present = 0;
+      if (attendance) {
+        console.log('attted', attendance.week);
+        if (attendance.week.length > 0) {
+          total = attendance.week.length;
+          attendance.week.forEach((element) => {
+            if (element.mem1_status.toLowerCase() === 'present') {
+              std1Present = std1Present + 1;
+            }
+            if (element.mem2_status.toLowerCase() === 'present') {
+              std2Present = std2Present + 1;
+            }
+            if (element.mem3_status.toLowerCase() === 'present') {
+              std3Present = std3Present + 1;
+            }
+            if (
+              element.mem4_status &&
+              element.mem3_status.toLowerCase() === 'present'
+            ) {
+              std4Present = std4Present + 1;
+            }
+          });
+        }
+      } else {
+      }
+      const std1_percent = (std1Present / total) * 100;
+      const std2_percent = (std2Present / total) * 100;
+      const std3_percent = (std3Present / total) * 100;
+      const std4_percent = (std4Present / total) * 100;
+
+      console.log(std1Present, std2Present, std3Present, std4Present, total);
+      let data: any = {
+        std1_coherence_with_group: Marks.std1_coherence_with_group,
+        std1_intellectual_contribution: Marks.std1_intellectual_contribution,
+        std1_name: Marks.std1_name,
+        std1_response_to_questions: Marks.std1_response_to_questions,
+        std1_rollNo: Marks.std1_rollNo,
+        std1_weighted_average: Marks.std1_weighted_average,
+        std2_coherence_with_group: Marks.std2_coherence_with_group,
+        std2_intellectual_contribution: Marks.std2_intellectual_contribution,
+        std2_name: Marks.std2_name,
+        std2_response_to_questions: Marks.std2_response_to_questions,
+        std2_rollNo: Marks.std2_rollNo,
+        std2_weighted_average: Marks.std2_weighted_average,
+        std3_coherence_with_group: Marks.std3_coherence_with_group,
+        std3_intellectual_contribution: Marks.std3_intellectual_contribution,
+        std3_name: Marks.std3_name,
+        std3_response_to_questions: Marks.std3_response_to_questions,
+        std3_rollNo: Marks.std3_rollNo,
+        std3_weighted_average: Marks.std3_weighted_average,
+        count: Marks.count,
+        std1_percent: parseInt(std1_percent.toString()),
+        std2_percent: parseInt(std2_percent.toString()),
+        std3_percent: parseInt(std3_percent.toString()),
+        std4_percent: parseInt(std4_percent.toString()),
+        project_title: Marks.project_title,
+        supervior_id: Marks.supervior_id,
+      };
+      if (Marks.count === 4) {
+        data = {
+          ...data,
+          std4_coherence_with_group: Marks.std4_coherence_with_group,
+          std4_intellectual_contribution: Marks.std4_intellectual_contribution,
+          std4_name: Marks.std4_name,
+          std4_response_to_questions: Marks.std4_response_to_questions,
+          std4_rollNo: Marks.std4_rollNo,
+          std4_weighted_average: Marks.std4_weighted_average,
+        };
+      }
+      return data;
+    } else {
+      let data = {
+        std1_coherence_with_group: 0,
+        std1_intellectual_contribution: 0,
+        std1_name: '',
+        std1_response_to_questions: 0,
+        std1_rollNo: '',
+        std1_weighted_average: 0,
+        std2_coherence_with_group: 0,
+        std2_intellectual_contribution: 0,
+        std2_name: '',
+        std2_response_to_questions: 0,
+        std2_rollNo: '',
+        std2_weighted_average: 0,
+        std3_coherence_with_group: 0,
+        std3_intellectual_contribution: 0,
+        std3_name: '',
+        std3_response_to_questions: 0,
+        std3_rollNo: '',
+        std3_weighted_average: 0,
+        count: 0,
+        std1_percent: 0,
+        std2_percent: 0,
+        std3_percent: 0,
+        std4_percent: 0,
+        project_title: '',
+        supervior_id: '',
+      };
+      return data;
+    }
   }
   getSingleEvaluationAverge(number: number[]) {
     let sum = 0;
