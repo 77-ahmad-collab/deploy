@@ -1204,45 +1204,6 @@ export class InternalAdvisorGetData {
   }
   async getFinalEvaluationMarks(body) {
     try {
-      // count: "",
-      // supervior_id: "",
-      // project_title:"",
-
-      // std1_name: "",
-      // std1_rollNo: "",
-      // std1_Relevance_Content:"",
-      // std1_Organization_and_Delivery:"",
-      // std1_Design_or_Layout:"",
-      // std1_Time_Management:"",
-      // std1_Questions_and_Answers:"",
-      // std1_weighted_average: "",
-
-      // std2_name:"",
-      // std2_rollNo:"",
-      // std2_Relevance_Content:"",
-      // std2_Organization_and_Delivery:"",
-      // std2_Design_or_Layout:"",
-      // std2_Time_Management:"",
-      // std2_Questions_and_Answers:"",
-      // std2_weighted_average: "",
-
-      // std3_name:"",
-      // std3_rollNo:"",
-      // std3_Relevance_Content:"",
-      // std3_Organization_and_Delivery:"",
-      // std3_Design_or_Layout:"",
-      // std3_Time_Management:"",
-      // std3_Questions_and_Answers:"",
-      // std3_weighted_average: "",
-
-      // std4_name:"",
-      // std4_rollNo:"",
-      // std4_Relevance_Content:"",
-      // std4_Organization_and_Delivery:"",
-      // std4_Design_or_Layout:"",
-      // std4_Time_Management:"",
-      // std4_Questions_and_Answers:"",
-      // std4_weighted_average: "",
       const EvaluationMarks = await this.FinalEvaluationMarksModel.findOne({
         std1_rollNo: body.std1_rollNo,
       });
@@ -1264,21 +1225,21 @@ export class InternalAdvisorGetData {
           std1_Time_Management: [body.std1_Time_Management],
           std1_Questions_and_Answers: [body.std1_Questions_and_Answers],
 
-          std2_rollNo: body.std1_rollNo,
-          std2_name: body.std1_name,
-          std2_Relevance_Content: [body.std1_Relevance_Content],
-          std2_Organization_and_Delivery: [body.std1_Organization_and_Delivery],
-          std2_Design_or_Layout: [body.std1_Design_or_Layout],
-          std2_Time_Management: [body.std1_Time_Management],
-          std2_Questions_and_Answers: [body.std1_Questions_and_Answers],
+          std2_rollNo: body.std2_rollNo,
+          std2_name: body.std2_name,
+          std2_Relevance_Content: [body.std2_Relevance_Content],
+          std2_Organization_and_Delivery: [body.std2_Organization_and_Delivery],
+          std2_Design_or_Layout: [body.std2_Design_or_Layout],
+          std2_Time_Management: [body.std2_Time_Management],
+          std2_Questions_and_Answers: [body.std2_Questions_and_Answers],
 
-          std3_rollNo: body.std1_rollNo,
-          std3_name: body.std1_name,
-          std3_Relevance_Content: [body.std1_Relevance_Content],
-          std3_Organization_and_Delivery: [body.std1_Organization_and_Delivery],
-          std3_Design_or_Layout: [body.std1_Design_or_Layout],
-          std3_Time_Management: [body.std1_Time_Management],
-          std3_Questions_and_Answers: [body.std1_Questions_and_Answers],
+          std3_rollNo: body.std3_rollNo,
+          std3_name: body.std3_name,
+          std3_Relevance_Content: [body.std3_Relevance_Content],
+          std3_Organization_and_Delivery: [body.std3_Organization_and_Delivery],
+          std3_Design_or_Layout: [body.std3_Design_or_Layout],
+          std3_Time_Management: [body.std3_Time_Management],
+          std3_Questions_and_Answers: [body.std3_Questions_and_Answers],
 
           id: body.supervior_id,
 
@@ -1287,15 +1248,15 @@ export class InternalAdvisorGetData {
         if (body.count === 4) {
           data = {
             ...data,
-            std4_rollNo: body.std1_rollNo,
-            std4_name: body.std1_name,
-            std4_Relevance_Content: [body.std1_Relevance_Content],
+            std4_rollNo: body.std4_rollNo,
+            std4_name: body.std4_name,
+            std4_Relevance_Content: [body.std4_Relevance_Content],
             std4_Organization_and_Delivery: [
-              body.std1_Organization_and_Delivery,
+              body.std4_Organization_and_Delivery,
             ],
-            std4_Design_or_Layout: [body.std1_Design_or_Layout],
-            std4_Time_Management: [body.std1_Time_Management],
-            std4_Questions_and_Answers: [body.std1_Questions_and_Answers],
+            std4_Design_or_Layout: [body.std4_Design_or_Layout],
+            std4_Time_Management: [body.std4_Time_Management],
+            std4_Questions_and_Answers: [body.std4_Questions_and_Answers],
           };
         }
         const SaveMarks = await this.FinalEvaluationMarksModel.create(data);
@@ -1483,39 +1444,39 @@ export class InternalAdvisorGetData {
             );
 
           const std2_Relevance_Content_average = this.getSingleEvaluationAverge(
-            EvaluationMarks.std1_Relevance_Content,
+            EvaluationMarks.std2_Relevance_Content,
           );
           const std2_Organization_and_Delivery_average =
             this.getSingleEvaluationAverge(
-              EvaluationMarks.std1_Organization_and_Delivery,
+              EvaluationMarks.std2_Organization_and_Delivery,
             );
           const std2_Design_or_Layout_average = this.getSingleEvaluationAverge(
-            EvaluationMarks.std1_Design_or_Layout,
+            EvaluationMarks.std2_Design_or_Layout,
           );
           const std2_Time_Management_average = this.getSingleEvaluationAverge(
-            EvaluationMarks.std1_Time_Management,
+            EvaluationMarks.std2_Time_Management,
           );
           const std2_Questions_and_Answers_average =
             this.getSingleEvaluationAverge(
-              EvaluationMarks.std1_Questions_and_Answers,
+              EvaluationMarks.std2_Questions_and_Answers,
             );
 
           const std3_Relevance_Content_average = this.getSingleEvaluationAverge(
-            EvaluationMarks.std1_Relevance_Content,
+            EvaluationMarks.std3_Relevance_Content,
           );
           const std3_Organization_and_Delivery_average =
             this.getSingleEvaluationAverge(
-              EvaluationMarks.std1_Organization_and_Delivery,
+              EvaluationMarks.std3_Organization_and_Delivery,
             );
           const std3_Design_or_Layout_average = this.getSingleEvaluationAverge(
-            EvaluationMarks.std1_Design_or_Layout,
+            EvaluationMarks.std3_Design_or_Layout,
           );
           const std3_Time_Management_average = this.getSingleEvaluationAverge(
-            EvaluationMarks.std1_Time_Management,
+            EvaluationMarks.std3_Time_Management,
           );
           const std3_Questions_and_Answers_average =
             this.getSingleEvaluationAverge(
-              EvaluationMarks.std1_Questions_and_Answers,
+              EvaluationMarks.std3_Questions_and_Answers,
             );
 
           const std1_weighted_average = this.getFinalEvaluationWeightedAverage(
@@ -1564,22 +1525,22 @@ export class InternalAdvisorGetData {
           if (body.count === 4) {
             const std4_Relevance_Content_average =
               this.getSingleEvaluationAverge(
-                EvaluationMarks.std1_Relevance_Content,
+                EvaluationMarks.std4_Relevance_Content,
               );
             const std4_Organization_and_Delivery_average =
               this.getSingleEvaluationAverge(
-                EvaluationMarks.std1_Organization_and_Delivery,
+                EvaluationMarks.std4_Organization_and_Delivery,
               );
             const std4_Design_or_Layout_average =
               this.getSingleEvaluationAverge(
-                EvaluationMarks.std1_Design_or_Layout,
+                EvaluationMarks.std4_Design_or_Layout,
               );
             const std4_Time_Management_average = this.getSingleEvaluationAverge(
-              EvaluationMarks.std1_Time_Management,
+              EvaluationMarks.std4_Time_Management,
             );
             const std4_Questions_and_Answers_average =
               this.getSingleEvaluationAverge(
-                EvaluationMarks.std1_Questions_and_Answers,
+                EvaluationMarks.std4_Questions_and_Answers,
               );
             const std4_weighted_average =
               this.getFinalEvaluationWeightedAverage(

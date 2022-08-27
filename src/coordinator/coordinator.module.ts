@@ -5,6 +5,8 @@ import { CoordinatorSchema } from 'src/Models/Coordinator/Coordinator.Model';
 import { EvaluationSchema } from 'src/Models/Evaluation/Evaluation.Model';
 import { FinalEvaluationSchema } from 'src/Models/Evaluation/FinalEvaluation.model';
 import { MarksSchema } from 'src/Models/Evaluation/Marks.model';
+import { ExternalSchema } from 'src/Models/External/Externel.Model';
+import { InternalAdvisorSchema } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { FormSchema } from 'src/Models/Student/form.model';
 import { StudentSchema } from 'src/Models/Student/student.model';
 import { CoordinatorController } from './coordinator.controller';
@@ -17,6 +19,16 @@ import { CoordinatorService } from './coordinator.service';
         name: 'Coordinator',
         schema: CoordinatorSchema,
         collection: 'Coordinator',
+      },
+      {
+        name: 'InternalAdvisor',
+        schema: InternalAdvisorSchema,
+        collection: 'internalAdvisor',
+      },
+      {
+        name: 'External',
+        schema: ExternalSchema,
+        collection: 'External',
       },
       {
         name: 'UndergradateStudents',
