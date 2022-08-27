@@ -847,10 +847,17 @@ export class InternalAdvisorGetData {
         }
       } else {
       }
-      const std1_percent = (std1Present / total) * 100;
-      const std2_percent = (std2Present / total) * 100;
-      const std3_percent = (std3Present / total) * 100;
-      const std4_percent = (std4Present / total) * 100;
+      let std1_percent = 0;
+      let std2_percent = 0;
+      let std3_percent = 0;
+      let std4_percent = 0;
+
+      if (total > 0) {
+        std1_percent = (std1Present / total) * 100;
+        std2_percent = (std2Present / total) * 100;
+        std3_percent = (std3Present / total) * 100;
+        std4_percent = (std4Present / total) * 100;
+      }
 
       console.log(std1Present, std2Present, std3Present, std4Present, total);
       let data: any = {
