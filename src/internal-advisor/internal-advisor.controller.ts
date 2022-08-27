@@ -243,8 +243,8 @@ export class InternalAdvisorController {
       console.log(error);
     }
   }
-  @Get('/all/projects/report/:id') // mid 1 updated that need tobe given today
-  async getAllReportProjects(@Param('id') id: number) {
+  @Get('/all/report/projects/:id') // mid 1 updated that need tobe given today
+  async getAllReportProjects(@Param('id') id: any) {
     try {
       const data = await this.internalAdvisorGetData.getAllReportProjects(id);
       return data;

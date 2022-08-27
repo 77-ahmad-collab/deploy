@@ -488,10 +488,10 @@ export class InternalAdvisorGetData {
       console.log(error);
     }
   }
-  async getAllReportProjects(id: number) {
+  async getAllReportProjects(id: any) {
     try {
       const advisor = await this.InternalAdvisorModel.findOne({ id });
-      // console.log(advisor, 'advisor>>');
+      console.log(advisor, 'advisor>>');
       if (!advisor) {
         const data = await this.ExternalModel.findOne({ id });
         if (!data) return [];
