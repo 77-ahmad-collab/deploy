@@ -15,6 +15,7 @@ import { Evaluation } from 'src/Models/Evaluation/Evaluation.Model';
 import { FinalEvaluation } from 'src/Models/Evaluation/FinalEvaluation.model';
 import { FinalEvaluationMarks } from 'src/Models/Evaluation/FinalEvaluationMarks.model';
 import { ReportEvaluationMarks } from 'src/Models/Evaluation/ReportEvaluationMarks.model';
+import { AdvisorForm } from 'src/Models/INTERNAL_ADVISOR/AdvisorForm.Model';
 import { InternalAdvisor } from 'src/Models/INTERNAL_ADVISOR/internalAdvisor.model';
 import { Attendance } from 'src/Models/Student/attendance.model';
 import { Form } from 'src/Models/Student/form.model';
@@ -50,6 +51,7 @@ export class InternalAdvisorController {
     private ReportEvaluationMarksModel: Model<ReportEvaluationMarks>,
     @InjectModel('FinalEvaluation')
     private FinalEvaluationModel: Model<FinalEvaluation>,
+    @InjectModel('AdvisorForm') private AdvisorFormModel: Model<AdvisorForm>,
   ) {}
   @Get('/')
   async get() {
@@ -70,10 +72,46 @@ export class InternalAdvisorController {
   async login(@Body() body) {
     try {
       const { email, password } = body;
-      const data = await this.authorizationService.login(email, password);
+      let previousdata = await this.authorizationService.login(email, password);
+      let data: any = {
+        name: previousdata.name,
+        id: previousdata.id,
+        email: previousdata.email,
+        contact: previousdata.contact,
+        designation: previousdata.designation,
+        password: previousdata.password,
+        advisorformid: previousdata.advisorformid,
+        attendanceid: previousdata.attendanceid,
+        projectList: previousdata.projectList,
+        finalprojectList: previousdata.finalprojectList,
+        reportprojectList: previousdata.reportprojectList,
+        reportrespondedList: previousdata.reportrespondedList,
+        respondedList: previousdata.respondedList,
+        finalrespondedList: previousdata.finalrespondedList,
+        isFirstTime: previousdata.isFirstTime,
+        progressProjectList: previousdata.progressProjectList,
+        progressRespondedList: previousdata.progressProjectList,
+        isProgressFirstTime: previousdata.isProgressFirstTime,
+      };
+      if (previousdata.advisorformid.length > 4) {
+        const advisorFormdata = await this.AdvisorFormModel.findOne({
+          _id: previousdata.advisorformid,
+        });
+        data = {
+          ...data,
+          allocationPendingCount: advisorFormdata.pending.length,
+          allocationAcceptedRecepted: advisorFormdata.accepted.length,
+        };
+      } else {
+        data = {
+          ...data,
+          allocationPendingCount: 0,
+          allocationAcceptedRecepted: 0,
+        };
+      }
       return {
         data,
-        jwt: this.authorizationService.signUser(10, data.email, 'user'),
+        jwt: this.authorizationService.signUser(10, previousdata.email, 'user'),
       };
     } catch (error) {
       throw new UnauthorizedException('credentials are not correct');

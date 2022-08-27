@@ -7,6 +7,7 @@ export interface InternalAdvisor {
   designation: string;
   password: string;
   advisorformid: string;
+  attendanceid: string;
   projectList: string[];
   finalprojectList: string[];
   reportprojectList: string[];
