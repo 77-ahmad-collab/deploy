@@ -2529,7 +2529,7 @@ export class InternalAdvisorGetData {
           std4_Adherence_to_Work_Plan_average,
           std4_Reporting_and_Presentation_average,
           std4_weighted_average,
-          std3_name: std4.s_name,
+          std4_name: std4.s_name,
           std4_rollNo,
         };
       }
