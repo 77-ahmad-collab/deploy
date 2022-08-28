@@ -562,7 +562,7 @@ export class InternalAdvisorService {
           $set: {
             proposal_status: 'ACCEPTED',
 
-            // proposal_remarks: [remarks],
+            proposal_remarks: [remarks],
           },
         },
       );

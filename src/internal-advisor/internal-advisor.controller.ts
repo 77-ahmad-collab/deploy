@@ -52,6 +52,7 @@ export class InternalAdvisorController {
     @InjectModel('FinalEvaluation')
     private FinalEvaluationModel: Model<FinalEvaluation>,
     @InjectModel('AdvisorForm') private AdvisorFormModel: Model<AdvisorForm>,
+    @InjectModel('formdatas') private StudentFormModel: Model<Form>,
   ) {}
   @Get('/')
   async get() {
@@ -158,7 +159,7 @@ export class InternalAdvisorController {
       return data;
     }
   }
-  @Get('/proposal/:id/:status/:rollno')
+  @Post('/proposal/:id/:status/:rollno')
   async AdvisorStatusProposal(
     @Param('status') status: string,
     @Param('id') id: string,
@@ -387,5 +388,20 @@ export class InternalAdvisorController {
       { project_title: 1, _id: 0 },
     );
     return data;
+  }
+  @Get('/remarks/last/proposal/:id')
+  async getRemarks(@Param('id') id: string) {
+    try {
+      const data = await this.StudentFormModel.findOne({
+        $or: [{ mem1: id }, { mem2: id }, { mem3: id }],
+      });
+      return {
+        remarks: data.proposal_remarks[0] || '',
+      };
+    } catch (error) {
+      return {
+        remarks: '',
+      };
+    }
   }
 }
